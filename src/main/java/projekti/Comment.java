@@ -17,7 +17,7 @@ public class Comment extends AbstractPersistable<Long>{
     private String content;
     private LocalDate date;
     private LocalTime time;
-    
+
     @ManyToOne
     private Message message;
     @OneToOne
