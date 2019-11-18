@@ -11,11 +11,45 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        
+        <span th:text="${noInput}">No input</span>
+        
+<!--        <ul>
+            <li th:each="person:${familynames}">
+                <span th:text="${person.firstname}">etunimi</span>
+                <span th:text="${person.familyname}">sukunimi</span>
+                <span th:text="${person.username}">tunnus</span>
+                <form th:action="@{/search/${familyname}/${firstname}(familyname=${person.familyname} firstname=${person.firstname})" method="POST">
+                    <input type="submit" value="Follow" />
+                </form>
+
+            </li>
+        </ul>
+        
+        <ul>
+            <li th:each="person:${firstnames}">
+                <span th:text="${person.firstname}">etunimi</span>
+                <span th:text="${person.familyname}">sukunimi</span>
+                <span th:text="${person.username}">tunnus</span>
+                <form th:action="@{/search/${familyname}/${firstname}(familyname=${person.familyname} firstname=${person.firstname})" method="POST">
+                    <input type="submit" value="Follow" />
+                </form>
+
+            </li>
+        </ul>-->
+
+        <div th:if="${findings == null}">
+            <p>No results. Try another name.</p>
+        </div>
+<!--        (familyname=${person.familyname} firstname=${person.firstname})-->
         <ul>
             <li th:each="person:${findings}">
                 <span th:text="${person.firstname}">etunimi</span>
                 <span th:text="${person.familyname}">sukunimi</span>
                 <span th:text="${person.username}">tunnus</span>
+                <form th:action="@{/search/${familyname}/${firstname}}" method="POST">
+                    <input type="submit" value="Follow" />
+                </form>
 
             </li>
         </ul>
@@ -23,11 +57,10 @@ and open the template in the editor.
         <br>
         
         <p>Search users: </p>
-        <form th:action="@{/search}" method="POST">
+        <form th:action="@{/search/${familyname}/${firstname}}" method="POST">
             First name: <input type="text" name="firstname"/></br>
             Family name: <input type="text" name="familyname" /></br></br>
             <input type="submit" value="Search!"/>
-            
         </form>
     </body>
 </html>

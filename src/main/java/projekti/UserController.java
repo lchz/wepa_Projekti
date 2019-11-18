@@ -82,13 +82,34 @@ public class UserController {
         return "search";
     }
     
+    @GetMapping("/search/{firstname}/{familyname}")
+    public String getFindingds(Model model, @PathVariable String firstname, @PathVariable String familyname) {
+       
+        if(firstname.equals("-")) {
+            List<User> familynames = this.userRepository.findByFamilyname(familyname);
+            model.addAttribute("findings", familynames);
+        } else if(familyname.equals("-")) {
+            List<User> firstnames = this.userRepository.findByFirstname(firstname);
+            for(User f: firstnames) {
+                System.out.println(f.getFamilyname());
+            }
+            model.addAttribute("findings", firstnames);
+        } else {        
+            List<User> users = this.userRepository.findByFirstnameAndFamilyname(firstname, familyname);
+
+            model.addAttribute("findings", users);
+        }
+        return "search";
+    }
+    
     // search a user
-    @PostMapping("/search")
-    public String searchUser(Model model, @RequestParam String firstname, @RequestParam String familyname) {
-        
-        List<User> users = this.userRepository.findByFirstnameAndFamilyname(firstname, familyname);
-        model.addAttribute("findings", users);
-        
+    @PostMapping("/search/{firstname}/{familyname}")
+    public String searchUser(@RequestParam String firstname, @RequestParam String familyname) {
+        if(firstname.isEmpty()) {
+            firstname = "-";
+        } else if(familyname.isEmpty()) {
+            familyname = "-";
+        }
         return "redirect:/" + firstname + "/" + familyname;
     }
     
