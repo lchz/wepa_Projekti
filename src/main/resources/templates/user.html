@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        
+        First name: <span th:text="${user.firstname}">etunimi</span></br>
+        Family name: <span th:text="${user.familyname}">sukunimi</span></br>
+        Username: <span th:text="${user.username}">käyttäjätunnus</span>
+        <br>
+        Messages:
+        <div th:if="${messages} == null">
+            <p>No messages yet. Post one!</p>
+        </div>
+        <div>
+        <ul>
+            <li th:each="m : ${messages}">
+                <p th:text="${m.content}">message content</p> 
+                Posted by: <span th:text="${m.getUser().getUsername()}">Message writerritter</span><br>
+                Time: <span th:text="${m.getDate()}">Time</span>  <span th:text="${m.getTime()}">time</span><br>
+                <a th:href="@{/{userId}/messages/{messageId}/comment(userId=${user.id}, messageId=${m.id})}">Add a comment</a> <br>
+
+                <form th:action="@{/{userId}(userId=${user.id})}" method="POST">
+                    <input type="submit" value="Like!" />
+                </form>
+
+                <br><br>
+                Comments:
+                
+<!--                <div th:if="${m.getComments()} == null">
+                    <p>No comments yet. Comment!</p>-->
+                <!--</div>-->
+                <!--<div>Comments:</div>-->
+                <ul>
+                    <li th:each="c : ${m.getComments()}">
+                        <span th:text="${c.content}">Comment content</span><br>
+                        commented by: <span th:text="${c.getWriter().getUsername()}">Comment writer</span><br>
+                        Time: <span th:text="${c.getDate()}"> Comment date</span>  <span th:text="${c.getTime()}">Comment time</span><br>
+                    </li>
+                </ul>
+
+            </li>
+        </ul>
+        </div>
+        <br>
+        <form th:action="@{/{userId}(userId=${user.id})}" method="POST" >
+            <input type="text" name="content" placeholder="New message..." /> <br><br>
+            <input type="submit" value="Post" />
+        </form>
+        
+        <br>
+        <br>
+        
+        <a th:href="@{/search}" >Search!</a>
+
+    </body>
+</html>
