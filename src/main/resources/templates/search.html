@@ -13,35 +13,11 @@ and open the template in the editor.
     <body>
         
         <span th:text="${noInput}">No input</span>
-        
-<!--        <ul>
-            <li th:each="person:${familynames}">
-                <span th:text="${person.firstname}">etunimi</span>
-                <span th:text="${person.familyname}">sukunimi</span>
-                <span th:text="${person.username}">tunnus</span>
-                <form th:action="@{/search/${familyname}/${firstname}(familyname=${person.familyname} firstname=${person.firstname})" method="POST">
-                    <input type="submit" value="Follow" />
-                </form>
-
-            </li>
-        </ul>
-        
-        <ul>
-            <li th:each="person:${firstnames}">
-                <span th:text="${person.firstname}">etunimi</span>
-                <span th:text="${person.familyname}">sukunimi</span>
-                <span th:text="${person.username}">tunnus</span>
-                <form th:action="@{/search/${familyname}/${firstname}(familyname=${person.familyname} firstname=${person.firstname})" method="POST">
-                    <input type="submit" value="Follow" />
-                </form>
-
-            </li>
-        </ul>-->
 
         <div th:if="${findings == null}">
             <p>No results. Try another name.</p>
         </div>
-<!--        (familyname=${person.familyname} firstname=${person.firstname})-->
+
         <ul>
             <li th:each="person:${findings}">
                 <span th:text="${person.firstname}">etunimi</span>
