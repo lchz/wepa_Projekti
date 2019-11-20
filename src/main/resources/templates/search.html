@@ -13,12 +13,12 @@ and open the template in the editor.
     <body>
 
         <div th:if="${findings == null}">
-            <p>Start searching!</p>
+            <p>Please insert a name.</p>
         </div>
         
         <div th:unless="${findings == null}">
             <div th:if="${findings.empty}">
-                <p>No match. Please check the name</p>
+                <p>No match. Please check the name.</p>
             </div>
         </div>
 
