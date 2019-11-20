@@ -59,7 +59,7 @@ public class UserController {
         
         return "user";
     }
-    
+ 
     // post a new message
     @PostMapping("/{userId}")
     public String saveNewMessage(@RequestParam String content, @PathVariable Long userId) {
@@ -76,32 +76,34 @@ public class UserController {
         return "redirect:/{userId}";
     }
     
+    
     // go to search page
     @GetMapping("/search")
     public String searchPage() {
         return "search";
     }
     
-    @GetMapping("/search/{firstname}/{familyname}")
-    public String getFindingds(Model model, @PathVariable String firstname, @PathVariable String familyname) {
+    @PostMapping("/search")
+    public String getFindingds(Model model, @RequestParam String firstname, @PathVariable String familyname) {
        
-        if(firstname.equals("-")) {
+        if(firstname.isEmpty() && !familyname.isEmpty()) {
+            
             List<User> familynames = this.userRepository.findByFamilyname(familyname);
             model.addAttribute("findings", familynames);
-        } else if(familyname.equals("-")) {
+            
+        } else if(familyname.isEmpty() && !firstname.isEmpty()) {
+            
             List<User> firstnames = this.userRepository.findByFirstname(firstname);
-            for(User f: firstnames) {
-                System.out.println(f.getFamilyname());
-            }
             model.addAttribute("findings", firstnames);
-        } else {        
+            
+        } else if(!familyname.isEmpty() && !firstname.isEmpty()) {    
+            
             List<User> users = this.userRepository.findByFirstnameAndFamilyname(firstname, familyname);
-
             model.addAttribute("findings", users);
         }
         return "search";
     }
-    
+ /*   
     // search a user
     @PostMapping("/search/{firstname}/{familyname}")
     public String searchUser(@RequestParam String firstname, @RequestParam String familyname) {
@@ -112,7 +114,7 @@ public class UserController {
         }
         return "redirect:/" + firstname + "/" + familyname;
     }
-    
+ */   
     // find the user
     @GetMapping("/{firstname}/{familyname}")
     public String find(Model model, @PathVariable String firstname, @PathVariable String familyname) {
