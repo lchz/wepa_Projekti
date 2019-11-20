@@ -4,7 +4,10 @@ package projekti;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -27,9 +30,17 @@ public class User extends AbstractPersistable<Long>{
     private LocalDate date;
     private LocalTime time;
     
-    @OneToMany
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="follower_id")
+    private User follower;
+    
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="following_id")
+    private User following;
+    
+    @OneToMany(mappedBy="follower")
     private List<User> followers = new ArrayList<>();
-    @OneToMany
+    @OneToMany(mappedBy="following")
     private List<User> followings = new ArrayList<>();
     
     @OneToMany(mappedBy="user")

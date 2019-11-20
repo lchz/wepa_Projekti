@@ -64,9 +64,9 @@ and open the template in the editor.
         
         <ul>
             <li th:each="f : ${followings}">
-                Username: <span th:text="f.username">username</span> <br>
-                Name: <span th:text="f.firstname">first name</span>  <span th:text="f.familyname">family name</span> <br><br>
-                Time you start to follow: <span th:text="f.date">date</span>  <span th:text="f.time">time</span>
+                Username: <span th:text="${f.username}">username</span> <br>
+                Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span> <br><br>
+                Time you start to follow: <span th:text="${f.date}">date</span>  <span th:text="${f.time}">time</span>
             </li>
         </ul>
         
@@ -77,9 +77,9 @@ and open the template in the editor.
         
         <ul>
             <li th:each="f : ${followers}">
-                Username: <span th:text="f.username">username</span> <br>
-                Name: <span th:text="f.firstname">first name</span>  <span th:text="f.familyname">family name</span> <br><br>
-                Time start to follow you: <span th:text="f.date">date</span>  <span th:text="f.time">time</span>
+                Username: <span th:text="${f.username}">username</span> <br>
+                Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span> <br><br>
+                Time start to follow you: <span th:text="${f.date}">date</span>  <span th:text="${f.time}">time</span>
             </li>
         </ul>
         

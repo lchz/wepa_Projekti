@@ -27,9 +27,11 @@ and open the template in the editor.
                 <span th:text="${person.firstname}">etunimi</span>
                 <span th:text="${person.familyname}">sukunimi</span>
                 <span th:text="${person.username}">tunnus</span>
-                <form th:action="@{/{userId}/search/{personId}(userId=${user.id})(personId=${person.id})}" method="POST">
-                    <input type="submit" value="Follow" />
-                </form>
+                <div th:if="${person.id != user.id}">
+                    <form th:action="@{/{userId}/search/{personId}(userId=${user.id}, personId=${person.id})}" method="POST">
+                        <input type="submit" value="Follow" />
+                    </form>
+                </div>
             </li>
         </ul>
         <br>
