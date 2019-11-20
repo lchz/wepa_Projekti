@@ -16,14 +16,18 @@ public class SearchController {
     private UserRepository userRepository;
     
     // go to search page
-    @GetMapping("/search")
-    public String searchPage() {
+    @GetMapping("/{userId}/search")
+    public String searchPage(Model model, @PathVariable Long userId) {
+        User user = this.userRepository.getOne(userId);
+        model.addAttribute("user", user);
         return "search";
     }
     
-    @PostMapping("/search")
-    public String getFindingds(Model model, @RequestParam String firstname, @PathVariable String familyname) {
-       
+    @PostMapping("/{userId}/search")
+    public String getFindings(Model model, @RequestParam String firstname, @RequestParam String familyname, @PathVariable Long userId) {
+        User user = this.userRepository.getOne(userId);
+        model.addAttribute("user", user);
+        
         if(firstname.isEmpty() && !familyname.isEmpty()) {
             
             List<User> familynames = this.userRepository.findByFamilyname(familyname);

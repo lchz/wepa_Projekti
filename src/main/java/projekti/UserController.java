@@ -47,15 +47,15 @@ public class UserController {
     @GetMapping("/{userId}")
     public String userHome(Model model, @PathVariable Long userId) {
         User user = this.userRepository.getOne(userId);
-        List<Message> m = user.getMessages();
+        List<Message> messages = user.getMessages();
+        
+        List<User> followings = user.getFollowings();
+        List<User> followers = user.getFollowers();
         
         model.addAttribute("user", user);
-        
-        if(m.isEmpty()) {
-            model.addAttribute("messages", null); 
-        } else {
-            model.addAttribute("messages", m); 
-        }
+        model.addAttribute("messages", messages); 
+        model.addAttribute("followings", followings);
+        model.addAttribute("followers", followers);
         
         return "user";
     }
@@ -74,15 +74,6 @@ public class UserController {
         this.messageRepository.save(m);
         
         return "redirect:/{userId}";
-    }
-    
-    // find the user
-    @GetMapping("/{firstname}/{familyname}")
-    public String find(Model model, @PathVariable String firstname, @PathVariable String familyname) {
-        List<User> users =  this.userRepository.findByFirstnameAndFamilyname(firstname, familyname);
-        
-        model.addAttribute("findings", users);
-        return "search";
     }
     
     // show a comment to a message
@@ -117,6 +108,7 @@ public class UserController {
         
         return "redirect:/{userId}";
     }
+    
     
     // likes of a message add up 
 

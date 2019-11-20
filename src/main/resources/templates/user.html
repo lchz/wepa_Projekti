@@ -17,15 +17,15 @@ and open the template in the editor.
         Username: <span th:text="${user.username}">käyttäjätunnus</span>
         <br>
         Messages:
-        <div th:if="${messages} == null">
+        <div th:if="${messages.empty}">
             <p>No messages yet. Post one!</p>
         </div>
         <div>
         <ul>
             <li th:each="m : ${messages}">
                 <p th:text="${m.content}">message content</p> 
-                Posted by: <span th:text="${m.getUser().getUsername()}">Message writerritter</span><br>
-                Time: <span th:text="${m.getDate()}">Time</span>  <span th:text="${m.getTime()}">time</span><br>
+                Posted by: <span th:text="${m.user.username}">Message writerritter</span><br>
+                Time: <span th:text="${m.date}">Time</span>  <span th:text="${m.time}">time</span><br>
                 <a th:href="@{/{userId}/messages/{messageId}/comment(userId=${user.id}, messageId=${m.id})}">Add a comment</a> <br>
 
                 <form th:action="@{/{userId}(userId=${user.id})}" method="POST">
@@ -34,16 +34,14 @@ and open the template in the editor.
 
                 <br><br>
                 Comments:
-                
-<!--                <div th:if="${m.getComments()} == null">
-                    <p>No comments yet. Comment!</p>-->
-                <!--</div>-->
-                <!--<div>Comments:</div>-->
+                <div th:if="${m.comments.empty}">
+                    <p>No comments yet. Leave a comment!</p>
+                </div>
                 <ul>
-                    <li th:each="c : ${m.getComments()}">
+                    <li th:each="c : ${m.comments}">
                         <span th:text="${c.content}">Comment content</span><br>
-                        commented by: <span th:text="${c.getWriter().getUsername()}">Comment writer</span><br>
-                        Time: <span th:text="${c.getDate()}"> Comment date</span>  <span th:text="${c.getTime()}">Comment time</span><br>
+                        commented by: <span th:text="${c.writer.username}">Comment writer</span><br>
+                        Time: <span th:text="${c.date}"> Comment date</span>  <span th:text="${c.time}">Comment time</span><br>
                     </li>
                 </ul>
 
@@ -59,7 +57,36 @@ and open the template in the editor.
         <br>
         <br>
         
-        <a th:href="@{/search}" >Search!</a>
+        Following <span th:text="${followings.size()}">how many</span>:
+        <div th:if="${followings.size() == 0}">
+            <p>Start to follow!</p>
+        </div>
+        
+        <ul>
+            <li th:each="f : ${followings}">
+                Username: <span th:text="f.username">username</span> <br>
+                Name: <span th:text="f.firstname">first name</span>  <span th:text="f.familyname">family name</span> <br><br>
+                Time you start to follow: <span th:text="f.date">date</span>  <span th:text="f.time">time</span>
+            </li>
+        </ul>
+        
+        Followers <span th:text="${followers.size()}">how many</span>:
+        <div th:if="${followers.size() == 0}">
+            <p>You have no followers yet. Get to know more people!</p>
+        </div>
+        
+        <ul>
+            <li th:each="f : ${followers}">
+                Username: <span th:text="f.username">username</span> <br>
+                Name: <span th:text="f.firstname">first name</span>  <span th:text="f.familyname">family name</span> <br><br>
+                Time start to follow you: <span th:text="f.date">date</span>  <span th:text="f.time">time</span>
+            </li>
+        </ul>
+        
+        <br>
+        <br>
+        
+        <a th:href="@{/{userId}/search (userId=${user.id})}" >Search!</a>
 
     </body>
 </html>

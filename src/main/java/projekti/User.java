@@ -1,6 +1,8 @@
 
 package projekti;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -21,6 +23,9 @@ public class User extends AbstractPersistable<Long>{
     private String password;
     @OneToOne
     private Picture profilePic;
+    
+    private LocalDate date;
+    private LocalTime time;
     
     @OneToMany
     private List<User> followers = new ArrayList<>();
