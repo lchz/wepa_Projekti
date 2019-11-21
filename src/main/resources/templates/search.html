@@ -11,6 +11,15 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        
+        <form th:action="@{/{userId}/search(userId=${user.id})}" method="POST">
+            <fieldset>
+                <legend>Search users:</legend>
+                First name: <input type="text" name="firstname" /><br><br>
+                Family name: <input type="text" name="familyname" /><br><br>
+                <input type="submit" value="Search!"/>
+            </fieldset>
+        </form>
 
         <div th:if="${findings == null}">
             <p>Please insert a name.</p>
@@ -28,20 +37,12 @@ and open the template in the editor.
                 <span th:text="${person.familyname}">sukunimi</span>
                 <span th:text="${person.username}">tunnus</span>
                 <div th:if="${person.id != user.id}">
-                    <form th:action="@{/{userId}/search/{personId}(userId=${user.id}, personId=${person.id})}" method="POST">
+                    <form th:action="@{/{userId}/follow/{personId}(userId=${user.id},personId=${person.id})}" method="POST">
                         <input type="submit" value="Follow" />
                     </form>
                 </div>
             </li>
         </ul>
-        <br>
-        <br>
         
-        <p>Search users: </p>
-        <form th:action="@{/{userId}/search(userId=${user.id})}" method="POST">
-            First name: <input type="text" name="firstname" /><br><br>
-            Family name: <input type="text" name="familyname" /><br><br>
-            <input type="submit" value="Search!"/>
-        </form>
     </body>
 </html>
