@@ -49,8 +49,8 @@ public class UserController {
         User user = this.userRepository.getOne(userId);
         List<Message> messages = user.getMessages();
         
-        List<User> followings = user.getFollowings();
-        List<User> followers = user.getFollowers();
+        List<Followingship> followings = user.getFollowings();
+        List<Followership> followers = user.getFollowers();
         
         model.addAttribute("user", user);
         model.addAttribute("messages", messages); 

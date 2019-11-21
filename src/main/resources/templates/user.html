@@ -62,9 +62,9 @@ and open the template in the editor.
         
         <ul>
             <li th:each="f : ${followings}">
-                Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span><br>
-                Username: <span th:text="${f.username}">username</span> <br>
-                Time start to follow: <span th:text="${f.date}">date</span>  <span th:text="${f.time}">time</span><br><br>
+                Name: <span th:text="${f.getFirstname()}">first name</span>  <span th:text="${f.getFamilyname()}">family name</span><br>
+                Username: <span th:text="${f.getUsername()}">username</span> <br>
+                Time start to follow: <span th:text="${f.getTime()}">date</span> <br>
             </li>
         </ul>
         
@@ -75,9 +75,9 @@ and open the template in the editor.
         
         <ul>
             <li th:each="f : ${followers}">
-                Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span> <br>
-                Username: <span th:text="${f.username}">username</span> <br>
-                Time start to be followed: <span th:text="${f.date}">date</span>  <span th:text="${f.time}">time</span><br><br>
+                Name: <span th:text="${f.getFirstname()}">first name</span>  <span th:text="${f.getFamilyname()}">family name</span> <br>
+                Username: <span th:text="${f.getUsername()}">username</span> <br>
+                Time start to be followed: <span th:text="${f.getTime()}">date</span> <br>
             </li><br><br>
         </ul>
         

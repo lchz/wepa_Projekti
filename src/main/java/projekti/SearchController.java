@@ -1,8 +1,10 @@
 
 package projekti;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,52 +30,35 @@ public class SearchController {
     public String getFindings(Model model, @RequestParam String firstname, @RequestParam String familyname, @PathVariable Long userId) {
         User user = this.userRepository.getOne(userId);
         model.addAttribute("user", user);
-        List<User> followed = new ArrayList<>();
+//        List<User> followed = new ArrayList<>();
         
         if(firstname.isEmpty() && !familyname.isEmpty()) {
             
             List<User> familynames = this.userRepository.findByFamilyname(familyname);
-//            List<User> followed = new ArrayList
-            for(User f: user.getFollowings()) {
-                if(f.getFamilyname().equals(familyname)) {
-                    followed.add(f);
-                }
-            }
             
-            familynames.removeAll(followed);
-            
+//            familynames.removeAll(followed);
             model.addAttribute("findings", familynames);
-            model.addAttribute("followed", followed);
             
-        } else if(familyname.isEmpty() && !firstname.isEmpty()) {
+        } 
+        else if(familyname.isEmpty() && !firstname.isEmpty()) {
             
             List<User> firstnames = this.userRepository.findByFirstname(firstname);
 //            List<User> followed = user.getFollowings();
-            for(User f: user.getFollowings()) {
-                if(f.getFamilyname().equals(firstname)) {
-                    followed.add(f);
-                }
-            }
-            firstnames.removeAll(followed);
+
+//            firstnames.removeAll(followed);
             model.addAttribute("findings", firstnames);
-            model.addAttribute("followed", followed);
+//            model.addAttribute("followed", followed);
             
         } else if(!familyname.isEmpty() && !firstname.isEmpty()) {    
             
             List<User> users = this.userRepository.findByFirstnameAndFamilyname(firstname, familyname);
 //            List<User> followed = user.getFollowings();
-            for(User f: user.getFollowings()) {
-                if(f.getFamilyname().equals(familyname) && f.getFirstname().equals(firstname)) {
-                    followed.add(f);
-                }
-            }
-            users.removeAll(followed);
+
+//            users.removeAll(followed);
             model.addAttribute("findings", users);
-            model.addAttribute("followed", followed);
+//            model.addAttribute("followed", followed);
         }
         
-        // people already been followed
-//        model.addAttribute("followed", followed);
         
         return "search";
     }

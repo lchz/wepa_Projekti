@@ -1,8 +1,7 @@
 
 package projekti;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class FollowController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private FollowershipRepository followershipRepository;
+    @Autowired
+    private FollowingshipRepository followingshipRepository;
     
     @PostMapping("/{userId}/follow/{personId}")
     public String follow(Model model, @PathVariable Long userId, @PathVariable Long personId) {
@@ -20,13 +23,27 @@ public class FollowController {
         User user = this.userRepository.getOne(userId); 
         User person = this.userRepository.getOne(personId);
         
-        user.setDate(LocalDate.now());
-        user.setTime(LocalTime.now());
-        person.setDate(LocalDate.now());
-        person.setTime(LocalTime.now());
+        Followingship following = new Followingship();
+        following.setFollowing(personId);
+        following.setFamilyname(person.getFamilyname());
+        following.setFistname(person.getFirstname());
+        following.setUsername(person.getUsername());
+        following.setTime(LocalDateTime.now());
+        following.setUser(user);
+        user.getFollowings().add(following);
         
-        user.getFollowings().add(person);
-        person.getFollowers().add(user);
+        this.followingshipRepository.save(following);
+        
+        Followership follower = new Followership();
+        follower.setFollower(userId);
+        follower.setFamilyname(user.getFamilyname());
+        follower.setFistname(user.getFirstname());
+        follower.setUsername(user.getUsername());
+        follower.setTime(LocalDateTime.now());
+        follower.setUser(person);
+        person.getFollowers().add(follower);
+        
+        this.followershipRepository.save(follower);
         
         this.userRepository.save(user);
         this.userRepository.save(person);
