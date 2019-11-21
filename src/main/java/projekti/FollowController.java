@@ -25,10 +25,10 @@ public class FollowController {
         person.setDate(LocalDate.now());
         person.setTime(LocalTime.now());
         
-        user.setFollower(person);
-        this.userRepository.save(user);
+        user.getFollowings().add(person);
+        person.getFollowers().add(user);
         
-        person.setFollowing(user);
+        this.userRepository.save(user);
         this.userRepository.save(person);
         
         return "redirect:/" + userId;

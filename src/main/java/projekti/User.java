@@ -7,6 +7,8 @@ import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -30,17 +32,28 @@ public class User extends AbstractPersistable<Long>{
     private LocalDate date;
     private LocalTime time;
     
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name="follower_id")
-    private User follower;
+//    @ManyToOne(cascade={CascadeType.ALL})
+//    @JoinColumn(name="follower_id")
+//    private User follower;
+//    
+//    @ManyToOne(cascade={CascadeType.ALL})
+//    @JoinColumn(name="following_id")
+//    private User following;
+    @ManyToMany(mappedBy="followers")
+    private List<User> followership = new ArrayList<>();
+    @ManyToMany(mappedBy="followings")
+    private List<User> followingship = new ArrayList<>();
     
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name="following_id")
-    private User following;
-    
-    @OneToMany(mappedBy="follower")
+    @ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="User_followers", 
+            joinColumns={@JoinColumn(name="follower_id")},
+            inverseJoinColumns={@JoinColumn(name="followership_id")})
     private List<User> followers = new ArrayList<>();
-    @OneToMany(mappedBy="following")
+    
+    @ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="User_followings", 
+            joinColumns={@JoinColumn(name="following_id")},
+            inverseJoinColumns={@JoinColumn(name="followingship_id")})
     private List<User> followings = new ArrayList<>();
     
     @OneToMany(mappedBy="user")

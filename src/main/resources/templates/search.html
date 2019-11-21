@@ -35,12 +35,23 @@ and open the template in the editor.
             <li th:each="person:${findings}">
                 <span th:text="${person.firstname}">etunimi</span>
                 <span th:text="${person.familyname}">sukunimi</span>
-                <span th:text="${person.username}">tunnus</span>
+                <!--<span th:text="${person.username}">tunnus</span>-->
                 <div th:if="${person.id != user.id}">
                     <form th:action="@{/{userId}/follow/{personId}(userId=${user.id},personId=${person.id})}" method="POST">
                         <input type="submit" value="Follow" />
                     </form>
                 </div>
+            </li>
+            
+            <li th:each="person:${followed}">
+                <span th:text="${person.firstname}">etunimi</span>
+                <span th:text="${person.familyname}">sukunimi</span>
+                <!--<span th:text="${person.username}">tunnus</span>-->
+                <!--<div th:if="${person.id != user.id}">-->
+                <!--<form th:action="" method="POST">-->
+                <button type="button" disabled>Following</button>
+                <!--</form>-->
+                <!--</div>-->
             </li>
         </ul>
         
