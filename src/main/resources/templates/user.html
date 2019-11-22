@@ -64,7 +64,7 @@ and open the template in the editor.
             <li th:each="f : ${followings}">
                 Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span><br>
                 Username: <span th:text="${f.username}">username</span> <br>
-                Time start to follow: <span th:text="${f.time}">date</span> <br>
+                Time start to follow: <span th:text="${f.time}">date</span> <br><br>
             </li>
         </ul>
         
@@ -77,7 +77,7 @@ and open the template in the editor.
             <li th:each="f : ${followers}">
                 Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span> <br>
                 Username: <span th:text="${f.username}">username</span> <br>
-                Time start to be followed: <span th:text="${f.time}">date</span> <br>
+                Time start to be followed: <span th:text="${f.time}">date</span> <br><br>
             </li><br><br>
         </ul>
         

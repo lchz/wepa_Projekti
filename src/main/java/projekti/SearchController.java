@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SearchController {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private FollowingshipRepository followingshipRepository;
     
     // go to search page
     @GetMapping("/{userId}/search")
@@ -30,33 +32,53 @@ public class SearchController {
     public String getFindings(Model model, @RequestParam String firstname, @RequestParam String familyname, @PathVariable Long userId) {
         User user = this.userRepository.getOne(userId);
         model.addAttribute("user", user);
-//        List<User> followed = new ArrayList<>();
+        List<Followingship> followed = new ArrayList<>();
         
         if(firstname.isEmpty() && !familyname.isEmpty()) {
             
             List<User> familynames = this.userRepository.findByFamilyname(familyname);
-            
-//            familynames.removeAll(followed);
+            followed = this.followingshipRepository.findByFamilyname(familyname);
+            for(int i = 0; i < followed.size(); i++) {
+                User followingPerson = this.userRepository.getOne(followed.get(i).getFollowing());
+                if(familynames.contains(followingPerson)) {
+                    familynames.remove(followingPerson);
+                }
+            }
+//            familynames.removeAll(followed.);
             model.addAttribute("findings", familynames);
+            model.addAttribute("followed", followed);
             
         } 
         else if(familyname.isEmpty() && !firstname.isEmpty()) {
             
             List<User> firstnames = this.userRepository.findByFirstname(firstname);
-//            List<User> followed = user.getFollowings();
-
+            followed = this.followingshipRepository.findByFirstname(firstname);
+            for(int i = 0; i < followed.size(); i++) {
+                User followingPerson = this.userRepository.getOne(followed.get(i).getFollowing());
+                if(firstnames.contains(followingPerson)) {
+                    firstnames.remove(followingPerson);
+                }
+            }
 //            firstnames.removeAll(followed);
             model.addAttribute("findings", firstnames);
-//            model.addAttribute("followed", followed);
+            model.addAttribute("followed", followed);
+            for(User u: firstnames) {
+                System.out.println(u.getFirstname() + " " + u.getFamilyname());
+            }
             
         } else if(!familyname.isEmpty() && !firstname.isEmpty()) {    
             
             List<User> users = this.userRepository.findByFirstnameAndFamilyname(firstname, familyname);
-//            List<User> followed = user.getFollowings();
-
+            followed = this.followingshipRepository.findByFamilynameAndFirstname(familyname, firstname);
+            for(int i = 0; i < followed.size(); i++) {
+                User followingPerson = this.userRepository.getOne(followed.get(i).getFollowing());
+                if(users.contains(followingPerson)) {
+                    users.remove(followingPerson);
+                }
+            }
 //            users.removeAll(followed);
             model.addAttribute("findings", users);
-//            model.addAttribute("followed", followed);
+            model.addAttribute("followed", followed);
         }
         
         

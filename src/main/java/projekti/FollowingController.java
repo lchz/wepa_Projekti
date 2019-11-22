@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class FollowController {
+public class FollowingController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
