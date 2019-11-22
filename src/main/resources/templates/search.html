@@ -45,12 +45,7 @@ and open the template in the editor.
             <li th:each="person:${followed}">
                 <span th:text="${person.firstname}">etunimi</span>
                 <span th:text="${person.familyname}">sukunimi</span>
-                <!--<span th:text="${person.username}">tunnus</span>-->
-                <!--<div th:if="${person.id != user.id}">-->
-                <!--<form th:action="" method="POST">-->
                 <button type="button" disabled>Followed</button>
-                <!--</form>-->
-                <!--</div>-->
             </li>
         </ul>
         

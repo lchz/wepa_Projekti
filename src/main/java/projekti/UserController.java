@@ -1,6 +1,7 @@
 package projekti;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +17,6 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-//    @Autowired
-//    private FollowingshipRepository followingshipRepository;
-//    @Autowired
-//    private FollowershipRepository followership;
     @Autowired
     private PictureRepository pictureRepository;
     @Autowired
