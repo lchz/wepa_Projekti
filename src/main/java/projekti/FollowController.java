@@ -26,7 +26,7 @@ public class FollowController {
         Followingship following = new Followingship();
         following.setFollowing(personId);
         following.setFamilyname(person.getFamilyname());
-        following.setFistname(person.getFirstname());
+        following.setFirstname(person.getFirstname());
         following.setUsername(person.getUsername());
         following.setTime(LocalDateTime.now());
         following.setUser(user);
@@ -37,7 +37,7 @@ public class FollowController {
         Followership follower = new Followership();
         follower.setFollower(userId);
         follower.setFamilyname(user.getFamilyname());
-        follower.setFistname(user.getFirstname());
+        follower.setFirstname(user.getFirstname());
         follower.setUsername(user.getUsername());
         follower.setTime(LocalDateTime.now());
         follower.setUser(person);

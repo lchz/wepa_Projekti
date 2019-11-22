@@ -19,7 +19,7 @@ public class Followership extends AbstractPersistable<Long> {
     private User user;
     
     private Long follower;
-    private String fistname;
+    private String firstname;
     private String familyname;
     private String username;
     private LocalDateTime time;

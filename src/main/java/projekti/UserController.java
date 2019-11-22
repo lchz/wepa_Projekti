@@ -16,6 +16,10 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+//    @Autowired
+//    private FollowingshipRepository followingshipRepository;
+//    @Autowired
+//    private FollowershipRepository followership;
     @Autowired
     private PictureRepository pictureRepository;
     @Autowired
