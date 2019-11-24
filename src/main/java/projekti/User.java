@@ -36,4 +36,7 @@ public class User extends AbstractPersistable<Long>{
     @OneToMany(mappedBy="messagePoster")
     private List<Comment> comments = new ArrayList<>();
     
+//    @OneToMany(mappedBy="followingMessage")
+//    private List<Message> msgF = new ArrayList<>();
+    
 }

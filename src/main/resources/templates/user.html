@@ -63,7 +63,6 @@ and open the template in the editor.
         <ul>
             <li th:each="f : ${followings}">
                 Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span><br>
-                Username: <span th:text="${f.username}">username</span> <br>
                 Time start to follow: <span th:text="${f.time}">date</span> <br><br>
             </li>
         </ul>
@@ -76,7 +75,6 @@ and open the template in the editor.
         <ul>
             <li th:each="f : ${followers}">
                 Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span> <br>
-                Username: <span th:text="${f.username}">username</span> <br>
                 Time start to be followed: <span th:text="${f.time}">date</span> <br><br>
             </li><br><br>
         </ul>
@@ -84,6 +82,28 @@ and open the template in the editor.
         <br>
         
         <a th:href="@{/{userId}/search (userId=${user.id})}" >Search!</a>
-
+        <br>
+        
+        <div th:if="${followings.size() > 0}">
+            Messages from following:
+            
+            <li th:each="msgF : ${msgFList}">
+                <fieldset>
+                    <legend th:text="${msgF.user.firstname} + ${msgF.user.familyname}"></legend>
+                    <span th:text="${msgF.content}">msgF content</span><br>
+                    <span th:text="${msgF.date}">date</span> <span th:text="${msgF.time}">time</span><br>
+                </fieldset>       
+            </li>
+            
+        </div>
     </body>
 </html>
+        
+<!--        <form th:action="@{/{userId}/search(userId=${user.id})}" method="POST">
+            <fieldset>
+                <legend>Search users:</legend>
+                First name: <input type="text" name="firstname" /><br><br>
+                Family name: <input type="text" name="familyname" /><br><br>
+                <input type="submit" value="Search!"/>
+            </fieldset>
+        </form>-->

@@ -1,6 +1,4 @@
 DROP TABLE IF EXISTS User;
-DROP TABLE IF EXISTS Message;
-DROP TABLE IF EXISTS Comment;
 
 CREATE TABLE User (
     id Long PRIMARY KEY AUTO_INCREMENT,
@@ -10,10 +8,3 @@ CREATE TABLE User (
     password VARCHAR(250) NOT NULL
 
 );
-
--- CREATE TABLE Message (
---     id Long PRIMARY KEY AUTO_INCREMENT,
---     date LocalDate,
---     time LocalTime,
---     likes Long
--- );

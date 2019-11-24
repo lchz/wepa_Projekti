@@ -53,6 +53,8 @@ public class UserController {
         List<Followingship> followings = user.getFollowings();
         List<Followership> followers = user.getFollowers();
         
+//        List<Followingship> msgFList = user.getFollowings().g
+        
         model.addAttribute("user", user);
         model.addAttribute("messages", messages); 
         model.addAttribute("followings", followings);
@@ -109,6 +111,8 @@ public class UserController {
         
         return "redirect:/{userId}";
     }
+    
+//    @GetMapping
     
     
     // likes of a message add up 
