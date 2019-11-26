@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long>{
-//    @EntityGraph(attributePaths={"profilePic", "picAlbum", "messages", "comments", "followers", "followings"})
+//    @EntityGraph(attributePaths={"messages", "comments", "followers", "followings"})
+
+    
     List<User> findByFirstnameAndFamilyname(String firstname, String familyname);
     List<User> findByFirstname(String firstname);
     List<User> findByFamilyname(String familyname);

@@ -12,9 +12,8 @@ and open the template in the editor.
     </head>
     <body>
         
-        First name: <span th:text="${user.firstname}">etunimi</span></br>
-        Family name: <span th:text="${user.familyname}">sukunimi</span></br>
-        Username: <span th:text="${user.username}">käyttäjätunnus</span><br>
+        <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span></br><br>
+        <!--Family name: <span th:text="${user.familyname}">sukunimi</span></br><br>-->
         
         Messages:
         <div th:if="${messages.empty}">
@@ -24,8 +23,8 @@ and open the template in the editor.
         <ul>
             <li th:each="m : ${messages}">
                 <p th:text="${m.content}">message content</p> 
-                Posted by: <span th:text="${m.user.username}">Message writerritter</span><br>
-                Time: <span th:text="${m.date}">Time</span>  <span th:text="${m.time}">time</span><br>
+                Posted by: <span th:text="${m.user.firstname} + ' ' + ${m.user.familyname}">Message writerritter</span><br>
+                Time: <span th:text="${m.time}">time</span><br>
                 <a th:href="@{/{userId}/messages/{messageId}/comment(userId=${user.id}, messageId=${m.id})}">Add a comment</a> <br>
 
                 <form th:action="@{/{userId}(userId=${user.id})}" method="POST">
@@ -62,7 +61,7 @@ and open the template in the editor.
         
         <ul>
             <li th:each="f : ${followings}">
-                Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span><br>
+                Name: <span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span><br>
                 Time start to follow: <span th:text="${f.time}">date</span> <br><br>
             </li>
         </ul>
@@ -74,7 +73,7 @@ and open the template in the editor.
         
         <ul>
             <li th:each="f : ${followers}">
-                Name: <span th:text="${f.firstname}">first name</span>  <span th:text="${f.familyname}">family name</span> <br>
+                Name: <span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span> <br>
                 Time start to be followed: <span th:text="${f.time}">date</span> <br><br>
             </li><br><br>
         </ul>
@@ -85,25 +84,16 @@ and open the template in the editor.
         <br>
         
         <div th:if="${followings.size() > 0}">
-            Messages from following:
+            Messages from following: <br><br>
             
-            <li th:each="msgF : ${msgFList}">
+            <div th:each="msgF : ${msgFList}">
                 <fieldset>
-                    <legend th:text="${msgF.user.firstname} + ${msgF.user.familyname}"></legend>
+                    <legend th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}"></legend>
                     <span th:text="${msgF.content}">msgF content</span><br>
-                    <span th:text="${msgF.date}">date</span> <span th:text="${msgF.time}">time</span><br>
+                    <span th:text="${msgF.time}">time</span><br>
                 </fieldset>       
-            </li>
+            </div>
             
         </div>
     </body>
 </html>
-        
-<!--        <form th:action="@{/{userId}/search(userId=${user.id})}" method="POST">
-            <fieldset>
-                <legend>Search users:</legend>
-                First name: <input type="text" name="firstname" /><br><br>
-                Family name: <input type="text" name="familyname" /><br><br>
-                <input type="submit" value="Search!"/>
-            </fieldset>
-        </form>-->

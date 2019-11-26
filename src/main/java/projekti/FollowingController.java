@@ -2,6 +2,7 @@
 package projekti;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ public class FollowingController {
     private FollowershipRepository followershipRepository;
     @Autowired
     private FollowingshipRepository followingshipRepository;
+    @Autowired
+    private FollowingMessageRepository msgFRepository;
     
     @PostMapping("/{userId}/follow/{personId}")
     public String follow(Model model, @PathVariable Long userId, @PathVariable Long personId) {
@@ -31,8 +34,22 @@ public class FollowingController {
         following.setTime(LocalDateTime.now());
         following.setUser(user);
         user.getFollowings().add(following);
-        
         this.followingshipRepository.save(following);
+        
+        
+        for(Message m: person.getMessages()) {
+            FollowingMessage msgF = new FollowingMessage();
+            msgF.setContent(m.getContent());
+            msgF.setTime(m.getTime());
+            msgF.setWriterIdentity(personId);
+            msgF.setWriterFamilyname(person.getFamilyname());
+            msgF.setWriterFirstname(person.getFirstname());
+            msgF.setUser(user);
+            
+            user.getMsgF().add(msgF);
+            
+            this.msgFRepository.save(msgF);
+        }
         
         Followership follower = new Followership();
         follower.setFollower(userId);

@@ -1,8 +1,11 @@
-
 package projekti;
 
 import java.util.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
@@ -14,29 +17,31 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends AbstractPersistable<Long>{
+public class User extends AbstractPersistable<Long> {
+
     private String firstname;
     private String familyname;
     private String username;
     private String password;
     @OneToOne
     private Picture profilePic;
-    
-    @OneToMany(mappedBy="user")
+
+    @OneToMany(mappedBy = "user")
     private List<Followingship> followings = new ArrayList<>();
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy = "user")
     private List<Followership> followers = new ArrayList<>();
-     
-    @OneToMany(mappedBy="user")
+
+    @OneToMany(mappedBy = "user")
     private List<Picture> picAlbum = new ArrayList<>();
-    
-    @OneToMany(mappedBy="user")
+
+    @OneToMany(mappedBy = "user")
     private List<Message> messages = new ArrayList<>();
-    
-    @OneToMany(mappedBy="messagePoster")
+
+    @OneToMany(mappedBy = "messagePoster")
     private List<Comment> comments = new ArrayList<>();
     
-//    @OneToMany(mappedBy="followingMessage")
-//    private List<Message> msgF = new ArrayList<>();
-    
+    @OneToMany(mappedBy="user")
+    private List<FollowingMessage> msgF = new ArrayList<>();
+
+
 }

@@ -1,9 +1,13 @@
 package projekti;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +27,8 @@ public class UserController {
     private MessageRepository messageRepository;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private FollowingMessageRepository msgFRepository;
     
 
 /*    // Get profile picture
@@ -44,7 +50,7 @@ public class UserController {
         return this.userRepository.getOne(userId).getProfilePic().getContent();	
     }
     
-    // Get user's name, username, messages
+    // Get user's name, messages, followings, followers, following messages
     @GetMapping("/{userId}")
     public String userHome(Model model, @PathVariable Long userId) {
         User user = this.userRepository.getOne(userId);
@@ -53,12 +59,15 @@ public class UserController {
         List<Followingship> followings = user.getFollowings();
         List<Followership> followers = user.getFollowers();
         
-//        List<Followingship> msgFList = user.getFollowings().g
-        
         model.addAttribute("user", user);
         model.addAttribute("messages", messages); 
         model.addAttribute("followings", followings);
         model.addAttribute("followers", followers);
+        
+        Pageable pageable = PageRequest.of(0, 25, Sort.by("time").descending());
+        List<FollowingMessage> msgF = this.msgFRepository.findByUser(user, pageable);
+        
+        model.addAttribute("msgFList", msgF);
         
         return "user";
     }
@@ -66,13 +75,29 @@ public class UserController {
     // post a new message
     @PostMapping("/{userId}")
     public String saveNewMessage(@RequestParam String content, @PathVariable Long userId) {
+        User user = this.userRepository.getOne(userId);
+        
         Message m = new Message();
         m.setComments(new ArrayList<>());
         m.setContent(content);
-        m.setDate(LocalDate.now());
-        m.setTime(LocalTime.now());
+        m.setTime(LocalDateTime.now());
         m.setLikes(0);
-        m.setUser(this.userRepository.getOne(userId));
+        m.setUser(user);
+
+        List<FollowingMessage> userMsgF = new ArrayList<>();
+        for(Followership f : user.getFollowers()) {
+            FollowingMessage msgF = new FollowingMessage();
+            msgF.setContent(content);
+            msgF.setTime(m.getTime());
+            msgF.setWriterIdentity(userId);
+            msgF.setWriterFamilyname(user.getFamilyname());
+            msgF.setWriterFirstname(user.getFirstname());
+            
+            User person = this.userRepository.getOne(f.getFollower());
+            msgF.setUser(person);
+            this.msgFRepository.save(msgF);
+        }
+        
         
         this.messageRepository.save(m);
         
@@ -111,8 +136,6 @@ public class UserController {
         
         return "redirect:/{userId}";
     }
-    
-//    @GetMapping
     
     
     // likes of a message add up 

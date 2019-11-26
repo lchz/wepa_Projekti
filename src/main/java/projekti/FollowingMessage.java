@@ -4,7 +4,6 @@ package projekti;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -19,21 +18,14 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class Followership extends AbstractPersistable<Long> {
+public class FollowingMessage extends AbstractPersistable<Long>{
+    // user is following writer, user owns this relationship
     @ManyToOne
     private User user;
     
-    private Long follower;
-    private String firstname;
-    private String familyname;
-    private String username;
+    private Long writerIdentity;
+    private String writerFirstname;
+    private String writerFamilyname;
+    private String content;
     private LocalDateTime time;
-    
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name="msgF_msg",
-//            joinColumns = @JoinColumn(name="user_id", referencedColumnName="id"),
-//            inverseJoinColumns=@JoinColumn(name="message_id", referencedColumnName="id"))
-//    private List<Message> msgF = new ArrayList<>();
-    
 }
