@@ -8,16 +8,23 @@ and open the template in the editor.
     <head>
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="My Album" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form action="/action_page.php">
-            Select a file: <input type="file" name="myFile"><br><br>
-            <input type="submit">
+        <form th:action="@{/{userId}/myAlbum(userId=${user.id})}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" />
+            <input type="submit" value="Send!"/>
         </form>
         
-        // Use a image as the submit button
-        <form action="/action_page.php">
+        <ul>
+            <li th:each="p : ${pictures}">
+                <a th:href="@{/{userId}/myAlbum/{pId}(userId=${user.id}, pId=${p.id})}"><span th:text="${p.name}">picture name</span></a>
+            </li>
+        </ul>
+
+    </body>
+</html>
+<!--        <form action="/action_page.php">
             Select a file: <input type="file" name="myFile"><br><br>
             <input type="submit">
         </form>
@@ -29,7 +36,4 @@ and open the template in the editor.
             <input type="submit">
         </form>
         
-         button or form that can set the picture as a profile pic
-        
-    </body>
-</html>
+         button or form that can set the picture as a profile pic-->
