@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 public class Followership extends AbstractPersistable<Long> {
     @ManyToOne
-    private User user;
+    private Account user;
     
     private Long follower;
     private String firstname;

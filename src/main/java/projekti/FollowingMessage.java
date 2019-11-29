@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,11 +22,14 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class FollowingMessage extends AbstractPersistable<Long>{
     // user is following writer, user owns this relationship
     @ManyToOne
-    private User user;
+    private Account user;
     
     private Long writerIdentity;
     private String writerFirstname;
     private String writerFamilyname;
     private String content;
     private LocalDateTime time;
+    
+    @OneToMany(mappedBy="commentMsgF")
+    private List<Comment> msgFComments = new ArrayList<>();
 }

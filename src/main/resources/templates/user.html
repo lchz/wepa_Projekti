@@ -11,21 +11,21 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+
+        <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span>  <a th:href="@{/{userId}/myAlbum(userId=${user.id})}">My Album</a>
+        </br><br>
         
-        <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span></br><br>
-        <!--Family name: <span th:text="${user.familyname}">sukunimi</span></br><br>-->
-        
-        Messages:
+        My messages:
         <div th:if="${messages.empty}">
             <p>No messages yet. Post one!</p>
         </div>
-        
-        <ul>
-            <li th:each="m : ${messages}">
-                <p th:text="${m.content}">message content</p> 
-                Posted by: <span th:text="${m.user.firstname} + ' ' + ${m.user.familyname}">Message writerritter</span><br>
-                Time: <span th:text="${m.time}">time</span><br>
-                <a th:href="@{/{userId}/messages/{messageId}/comment(userId=${user.id}, messageId=${m.id})}">Add a comment</a> <br>
+
+        <ul th:unless="${messages.empty}">
+            <div>
+                <p th:text="${message.content}">message content</p> 
+                Posted by: <span th:text="${message.user.firstname} + ' ' + ${message.user.familyname}">Message writerritter</span><br>
+                Time: <span th:text="${message.time}">time</span><br>
+                <a th:href="@{/{userId}/messages/{messageId}/comment(userId=${user.id}, messageId=${message.id})}">Add a comment</a> <br>
 
                 <form th:action="@{/{userId}(userId=${user.id})}" method="POST">
                     <input type="submit" value="Like!" />
@@ -33,67 +33,74 @@ and open the template in the editor.
 
                 <br><br>
                 Comments:
-                <div th:if="${m.comments.empty}">
+                <div th:if="${comments == null}">
                     <p>No comments yet. Leave a comment!</p>
                 </div>
                 <ul>
-                    <li th:each="c : ${m.comments}">
+                    <li th:each="c : ${comments}">
                         <span th:text="${c.content}">Comment content</span><br>
                         commented by: <span th:text="${c.writer.username}">Comment writer</span><br>
-                        Time: <span th:text="${c.date}"> Comment date</span>  <span th:text="${c.time}">Comment time</span><br>
+                        Time: <span th:text="${c.time}"> Comment time</span><br>
                     </li>
                 </ul>
 
-            </li>
+            </div>
         </ul> <br>
-        
+
         <form th:action="@{/{userId}(userId=${user.id})}" method="POST" >
             <input type="text" name="content" placeholder="New message..." /> <br><br>
             <input type="submit" value="Post" />
         </form>
-        
+
         <br><br>
-        
+
         Following <span th:text="${followings.size()}">how many</span>:
         <div th:if="${followings.size() == 0}">
             <p>Start to follow!</p>
         </div>
-        
+
         <ul>
             <li th:each="f : ${followings}">
                 Name: <span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span><br>
                 Time start to follow: <span th:text="${f.time}">date</span> <br><br>
             </li>
         </ul>
-        
+
         Followers <span th:text="${followers.size()}">how many</span>:
         <div th:if="${followers.size() == 0}">
             <p>You have no followers yet. Get to know more people!</p>
         </div>
-        
+
         <ul>
             <li th:each="f : ${followers}">
                 Name: <span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span> <br>
                 Time start to be followed: <span th:text="${f.time}">date</span> <br><br>
             </li><br><br>
         </ul>
-        
+
         <br>
-        
+
         <a th:href="@{/{userId}/search (userId=${user.id})}" >Search!</a>
         <br>
-        
+
         <div th:if="${followings.size() > 0}">
             Messages from following: <br><br>
-            
+
             <div th:each="msgF : ${msgFList}">
                 <fieldset>
-                    <legend th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}"></legend>
+                    <legend th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}">writer name</legend>
                     <span th:text="${msgF.content}">msgF content</span><br>
                     <span th:text="${msgF.time}">time</span><br>
+                    
+                    <form th:action="@{/{userId}(userId=${user.id})}" method="POST">
+                        <input type="submit" value="Like!" />
+                    </form>
+                    
+                    <a th:href="@{/{userId}/messages/{msgFId}/comment(userId=${user.id}, msgFid=${msgF.id})}">Add a comment</a> <br>
+
                 </fieldset>       
             </div>
-            
+
         </div>
     </body>
 </html>

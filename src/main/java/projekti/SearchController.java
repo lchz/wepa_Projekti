@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SearchController {
 
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository userRepository;
     @Autowired
     private FollowingshipRepository followingshipRepository;
 
@@ -22,7 +22,7 @@ public class SearchController {
     @GetMapping("/{userId}/search")
     public String searchPage(Model model, @PathVariable Long userId) {
 
-        User user = this.userRepository.getOne(userId);
+        Account user = this.userRepository.getOne(userId);
         model.addAttribute("user", user);
         
         return "search";
@@ -31,9 +31,9 @@ public class SearchController {
     @PostMapping("/{userId}/search")
     public String getFindings(Model model, @RequestParam String firstname, @RequestParam String familyname, @PathVariable Long userId) {
 
-        User user = this.userRepository.getOne(userId);
+        Account user = this.userRepository.getOne(userId);
         List<Followingship> followed = user.getFollowings();
-        List<User> users = new ArrayList<>();
+        List<Account> users = new ArrayList<>();
 
         if (firstname.isEmpty() && !familyname.isEmpty()) {
             users = this.userRepository.findByFamilyname(familyname);
@@ -44,7 +44,7 @@ public class SearchController {
         }
 
         for (int i = 0; i < followed.size(); i++) {
-            User followingPerson = this.userRepository.getOne(followed.get(i).getFollowing());
+            Account followingPerson = this.userRepository.getOne(followed.get(i).getFollowing());
             if (users.contains(followingPerson)) {
                 users.remove(followingPerson);
             }

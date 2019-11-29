@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface FollowingMessageRepository extends JpaRepository<FollowingMessage, Long>{
-    List<FollowingMessage> findByUser(User user, Pageable page);
+    List<FollowingMessage> findByUser(Account user, Pageable page);
 }

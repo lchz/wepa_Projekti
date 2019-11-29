@@ -23,13 +23,13 @@ public class AlbumController {
     @Autowired
     private PictureRepository pictureRepository;
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository userRepository;
 
     @PostMapping("/{userId}/myAlbum")
     @Transactional
     public String save(@RequestParam("file") MultipartFile file, @PathVariable Long userId) throws IOException {
         
-        User user = this.userRepository.getOne(userId);
+        Account user = this.userRepository.getOne(userId);
         
         Picture pi = new Picture();
         pi.setContent(file.getBytes());
@@ -50,7 +50,7 @@ public class AlbumController {
 // show the collection of pics
     @GetMapping("/{userId}/myAlbum")
     public String getAlbum(@PathVariable Long userId, Model model) {
-        User user = this.userRepository.getOne(userId);
+        Account user = this.userRepository.getOne(userId);
         
         model.addAttribute("user", this.userRepository.getOne(userId));
         model.addAttribute("pictures", this.pictureRepository.findByUser(user));

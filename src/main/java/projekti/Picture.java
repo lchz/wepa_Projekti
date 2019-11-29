@@ -21,7 +21,7 @@ public class Picture extends AbstractPersistable<Long>{
     private Boolean profilePic;
     
     @ManyToOne
-    private User user;
+    private Account user;
     
     private String name;
     private String mediaType;

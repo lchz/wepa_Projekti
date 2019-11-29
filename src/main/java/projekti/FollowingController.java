@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class FollowingController {
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository userRepository;
     @Autowired
     private FollowershipRepository followershipRepository;
     @Autowired
@@ -22,9 +22,9 @@ public class FollowingController {
     
     @PostMapping("/{userId}/follow/{personId}")
     public String follow(Model model, @PathVariable Long userId, @PathVariable Long personId) {
-        // User is going to follow person
-        User user = this.userRepository.getOne(userId); 
-        User person = this.userRepository.getOne(personId);
+        // Account is going to follow person
+        Account user = this.userRepository.getOne(userId); 
+        Account person = this.userRepository.getOne(personId);
         
         Followingship following = new Followingship();
         following.setFollowing(personId);

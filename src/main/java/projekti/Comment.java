@@ -1,8 +1,7 @@
 
 package projekti;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -15,13 +14,18 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 public class Comment extends AbstractPersistable<Long>{
     private String content;
-    private LocalDate date;
-    private LocalTime time;
+    private LocalDateTime time;
 
     @ManyToOne
-    private Message message;
+    private Message message;   
+    @ManyToOne
+    private Picture picture;
     @OneToOne
-    private User writer;
+    private Account writer;
     @OneToOne
-    private User messagePoster;
+    private Account messagePoster;
+    
+    @ManyToOne
+    private FollowingMessage commentMsgF;
+ 
 }

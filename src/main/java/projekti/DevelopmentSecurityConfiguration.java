@@ -7,9 +7,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Override
-    public void configure(WebSecurity sec) throws Exception {
-        // Pyyntöjä ei tarkasteta
-        sec.ignoring().antMatchers("/**");
-    }
+//    @Override
+//    public void configure(WebSecurity sec) throws Exception {
+//        // Pyyntöjä ei tarkasteta
+//        sec.ignoring().antMatchers("/**");
+//    }
+    
+    
 }

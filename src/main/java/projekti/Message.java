@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 public class Message extends AbstractPersistable<Long> {
     @ManyToOne
-    private User user;
+    private Account user;
     
     private String content;
     private LocalDateTime time;

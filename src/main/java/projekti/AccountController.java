@@ -1,26 +1,20 @@
 package projekti;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class UserController {
+public class AccountController {
 
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository userRepository;
     @Autowired
     private PictureRepository pictureRepository;
     @Autowired
@@ -29,19 +23,7 @@ public class UserController {
     private CommentRepository commentRepository;
     @Autowired
     private FollowingMessageRepository msgFRepository;
-    
 
-/*    // Get profile picture
-    @GetMapping(path = "/{userId}")
-    public ResponseEntity<byte[]> viewProfilePicture(@PathVariable Long userId) {
-        Picture picture = this.userRepository.getOne(userId).getProfilePic();
-        
-        final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(picture.getMediaType()));
-        headers.setContentLength(picture.getSize());
-        
-        return new ResponseEntity<>(picture.getContent(), headers, HttpStatus.CREATED);
-    } */
 
 // Get profile picture
     @GetMapping(path = "/{userId}", produces = "image/*")
@@ -53,14 +35,21 @@ public class UserController {
     // Get user's name, messages, followings, followers, following messages
     @GetMapping("/{userId}")
     public String userHome(Model model, @PathVariable Long userId) {
-        User user = this.userRepository.getOne(userId);
+        Account user = this.userRepository.getOne(userId);
         List<Message> messages = user.getMessages();
+        model.addAttribute("messages", messages); 
+        
+        Pageable page = PageRequest.of(0, 10, Sort.by("time").descending());
+        for(Message m: messages) {
+            model.addAttribute("message", m); 
+            model.addAttribute("comments", this.commentRepository.findByMessage(m, page));
+        }
         
         List<Followingship> followings = user.getFollowings();
         List<Followership> followers = user.getFollowers();
         
         model.addAttribute("user", user);
-        model.addAttribute("messages", messages); 
+        
         model.addAttribute("followings", followings);
         model.addAttribute("followers", followers);
         
@@ -75,7 +64,7 @@ public class UserController {
     // post a new message
     @PostMapping("/{userId}")
     public String saveNewMessage(@RequestParam String content, @PathVariable Long userId) {
-        User user = this.userRepository.getOne(userId);
+        Account user = this.userRepository.getOne(userId);
         
         Message m = new Message();
         m.setComments(new ArrayList<>());
@@ -93,7 +82,7 @@ public class UserController {
             msgF.setWriterFamilyname(user.getFamilyname());
             msgF.setWriterFirstname(user.getFirstname());
             
-            User person = this.userRepository.getOne(f.getFollower());
+            Account person = this.userRepository.getOne(f.getFollower());
             msgF.setUser(person);
             this.msgFRepository.save(msgF);
         }
@@ -104,7 +93,7 @@ public class UserController {
         return "redirect:/{userId}";
     }
     
-    // show a comment to a message
+    // show a comment on a message
     @GetMapping("/{userId}/messages/{messageId}/comment")
     public String addComment(Model model, @PathVariable Long userId, @PathVariable Long messageId) {
         model.addAttribute("user", this.userRepository.getOne(userId));
@@ -122,12 +111,11 @@ public class UserController {
     public String postComment(Model model, @RequestParam String comment, @PathVariable Long userId, @PathVariable Long messageId) {
         Comment c = new Comment();
         Message m = this.messageRepository.getOne(messageId);
-        User w = this.userRepository.getOne(userId);
-        User mp = this.userRepository.getOne(userId);
+        Account w = this.userRepository.getOne(userId);
+        Account mp = this.userRepository.getOne(userId);
         
         c.setContent(comment);
-        c.setDate(LocalDate.now());
-        c.setTime(LocalTime.now());
+        c.setTime(LocalDateTime.now());
         c.setMessage(m);
         c.setWriter(w);
         c.setMessagePoster(mp);
