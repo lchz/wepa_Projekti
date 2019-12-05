@@ -20,7 +20,7 @@
         <div th:if="${messages.empty}">
             <p>No messages yet. Post one!</p>
         </div>
-        
+
         <div th:each="message: ${messages}">
             <fieldset>
                 <legend th:text="${message.user.firstname} + ' ' + ${message.user.familyname}">poster name</legend>
@@ -28,8 +28,8 @@
                 Time: <span th:text="${message.time}">time</span><br>
                 <a th:href="@{/myWall/messages/{messageId}/comments(messageId=${message.id})}">Add a comment</a> <br>
 
-                <form th:action="@{/myWall}" method="POST">
-                    <input type="submit" value="Like!" />
+                <form th:action="@{/myWall/likes/{messageId}(messageId=${message.id})}" method="POST">
+                    <input type="submit" value="Like!" /> <span th:text="${message.likes.size()} + ' likes'">likes</span>
                 </form>
 
                 <br><br>
@@ -92,7 +92,7 @@
             <div th:if="${msgFList.empty}">
                 <p>No new messages</p>
             </div>
-            
+
             <div th:unless="${msgFList.empty}">
                 Messages from following: <br><br>
 
@@ -100,18 +100,20 @@
                     <fieldset>
                         <legend th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}">message writer</legend>
                         <span th:text="${msgF.content}">msgF content</span><br>
-                        <span th:text="${msgF.time}">time</span><br>
+                        <p th:text="${msgF.time}">time</p>
 
-                        <form th:action="@{/myWall}" method="POST">
-                            <input type="submit" value="Like!" />
+
+                        <form th:action="@{/myWall/likes/{messageId}(messageId=${msgF.messageIdentity})}" method="POST">
+                            <input type="submit" value="Like!" /> <span th:text="${msgF.likes} + ' likes'">likes</span>
                         </form>
-
+                        
+                        
                         <a th:href="@{/myWall/messages/{messageId}/comments(messageId=${msgF.messageIdentity})}">Comments</a> <br>
 
                     </fieldset>       
                 </div>
 
-        </div>
+            </div>
 
     </body>
 </html>

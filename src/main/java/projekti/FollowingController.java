@@ -50,6 +50,12 @@ public class FollowingController {
                 msgF.setWriterFirstname(person.getFirstname());
                 msgF.setUser(user);
                 msgF.setMessageIdentity(m.getId());
+                msgF.setLikes(m.getLikes().size());
+                if(m.getPicture() != null) {
+                    msgF.setWithPic(true);
+                } else {
+                    msgF.setWithPic(false);
+                }
 
                 user.getMsgF().add(msgF);
 

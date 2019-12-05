@@ -2,6 +2,7 @@ package projekti;
 
 import java.time.*;
 import java.util.*;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,8 @@ public class AccountController {
     private CommentRepository commentRepository;
     @Autowired
     private FollowingMessageRepository msgFRepository;
+    @Autowired
+    private ThumbUpRepository likeRepository;
 
 // Get profile picture
 //    @GetMapping(path = "/myWall", produces = "image/*")
@@ -64,6 +67,7 @@ public class AccountController {
 
     // post a new message
     @PostMapping("/myWall")
+    @Transactional
     public String saveNewMessage(@RequestParam(required = false) String content) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -74,7 +78,6 @@ public class AccountController {
             m.setComments(new ArrayList<>());
             m.setContent(content);
             m.setTime(LocalDateTime.now());
-            m.setLikes(0);
             m.setUser(user);
             this.messageRepository.save(m);
 
@@ -87,6 +90,8 @@ public class AccountController {
                 msgF.setWriterFamilyname(user.getFamilyname());
                 msgF.setWriterFirstname(user.getFirstname());
                 msgF.setMessageIdentity(m.getId());
+                msgF.setLikes(0);
+                msgF.setWithPic(false);
 
                 Account person = this.userRepository.getOne(f.getFollower());
                 msgF.setUser(person);
@@ -101,5 +106,34 @@ public class AccountController {
         return "redirect:/myWall";
     }
     
-    // likes of a message add up 
+    // like a message
+    @PostMapping("/myWall/likes/{messageId}")
+    @Transactional
+    public String addALike(@PathVariable Long messageId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account user = this.userRepository.findByUsername(username);
+        Message m = this.messageRepository.getOne(messageId);
+
+        if(this.likeRepository.existsByUserAndMessage(user, m)) {
+            return "redirect:/myWall";
+        }
+        
+        ThumbUp like = new ThumbUp();
+        like.setUser(user);
+        like.setMessage(m);
+        
+        m.getLikes().add(like);
+        
+        FollowingMessage fm = this.msgFRepository.findByMessageIdentityAndUser(messageId, user);
+        if(fm != null) {
+            fm.setLikes(m.getLikes().size());
+            this.msgFRepository.save(fm);
+        }
+        
+        this.likeRepository.save(like);
+        this.messageRepository.save(m);
+        
+        return "redirect:/myWall";
+    }
 }

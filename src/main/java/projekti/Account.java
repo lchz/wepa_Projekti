@@ -1,14 +1,9 @@
 package projekti;
 
 import java.util.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +14,6 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//customer, account
 public class Account extends AbstractPersistable<Long> {
 
     private String firstname;
@@ -47,6 +41,5 @@ public class Account extends AbstractPersistable<Long> {
     
     @OneToMany(mappedBy="user")
     private List<FollowingMessage> msgF = new ArrayList<>();
-
 
 }

@@ -26,6 +26,7 @@ public class FollowingMessage extends AbstractPersistable<Long>{
     @ManyToOne
     private Account user;
     private Long messageIdentity;  // original message id
+    private boolean withPic;
     
     // message's writer
     private Long writerIdentity;
@@ -34,4 +35,6 @@ public class FollowingMessage extends AbstractPersistable<Long>{
     
     private String content;
     private LocalDateTime time;
+    
+    private Integer likes;
 }

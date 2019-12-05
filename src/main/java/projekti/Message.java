@@ -1,6 +1,5 @@
 package projekti;
 
-
 import java.time.*;
 import java.util.*;
 import javax.persistence.Entity;
@@ -23,12 +22,14 @@ public class Message extends AbstractPersistable<Long> {
 //    @NotEmpty
     private String content;
     private LocalDateTime time;
-    private long likes;
     
     @OneToOne(mappedBy="message")
     private Picture picture;
     
     @OneToMany
     private List<Comment> comments = new ArrayList<>();
+    
+    @OneToMany(mappedBy="message")
+    private List<ThumbUp> likes = new ArrayList<>();
     
 }

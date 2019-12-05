@@ -26,17 +26,7 @@ public class RegisterController {
             return "redirect:/*";
         }
         
-        
-//        Account a = new Account();
-//        a.setUsername(username);
-//        a.setFamilyname(familyname);
-//        a.setFirstname(firstname);
-//        a.setPassword(this.passwordEncoder.encode(password));
-//        a.setMessages(new ArrayList<>());
-//        a.setComments(new ArrayList<>());
-//        a.setMsgF(new ArrayList<>());
-        
-        if(a.getUsername() != null && !a.getUsername().isEmpty() && a.getPassword() != null && !a.getPassword().isEmpty()) {
+        if(a.getUsername()!= null && !a.getUsername().isEmpty() && a.getPassword() != null && !a.getPassword().isEmpty()) {
             a.setPassword(this.passwordEncoder.encode(a.getPassword()));
             this.accountRepository.save(a);
         }
@@ -53,8 +43,7 @@ public class RegisterController {
 
     
     @GetMapping("/login")
-    public String list(Model model) {
-//        model.addAttribute("accounts", accountRepository.findAll());
+    public String login(Model model) {
         return "login";
     }
 }
