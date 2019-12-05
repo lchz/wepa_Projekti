@@ -2,6 +2,7 @@
 package projekti;
 
 import java.time.LocalDateTime;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,6 +70,40 @@ public class FollowingController {
         
         this.userRepository.save(user);
         this.userRepository.save(person);
+        
+        return "redirect:/myWall";
+    }
+    
+    @PostMapping("myWall/deleteFollowing/{followingId}")
+    @Transactional
+    public String deleteFollowingship(@PathVariable Long followingId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account user = this.userRepository.findByUsername(username);
+        Account person = this.userRepository.getOne(followingId);
+        
+        Followingship f= this.followingshipRepository.findByUserAndFollowing(user, followingId);
+        this.followingshipRepository.delete(f);
+        
+        Followership follower = this.followershipRepository.findByUserAndFollower(person, user.getId());
+        this.followershipRepository.delete(follower);
+        
+        return "redirect:/myWall";
+    }
+    
+    @PostMapping("myWall/deleteFollower/{followerId}")
+    @Transactional
+    public String deleteFollowership(@PathVariable Long followerId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account user = this.userRepository.findByUsername(username);
+        Account person = this.userRepository.getOne(followerId);
+        
+        Followership follower = this.followershipRepository.findByUserAndFollower(user, followerId);
+        this.followershipRepository.delete(follower);
+        
+        Followingship f = this.followingshipRepository.findByUserAndFollowing(person, user.getId());
+        this.followingshipRepository.delete(f);
         
         return "redirect:/myWall";
     }

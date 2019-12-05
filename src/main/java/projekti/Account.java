@@ -35,7 +35,7 @@ public class Account extends AbstractPersistable<Long> {
     private List<Followership> followers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    @Size(max = 3)
+//    @Size(max = 3)
     private List<Picture> picAlbum = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

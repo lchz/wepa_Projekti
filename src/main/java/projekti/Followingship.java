@@ -21,7 +21,7 @@ public class Followingship extends AbstractPersistable<Long> {
     @ManyToOne
     private Account user;
 
-    private Long following;
+    private Long following; // personId
     private String firstname;
     private String familyname;
     private String username;

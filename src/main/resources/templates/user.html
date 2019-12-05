@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html>
     <head>
         <title>TwitterWall</title>
@@ -51,7 +47,6 @@ and open the template in the editor.
             </fieldset>
         </div>
 
-        <!--</div>--> 
         <br>
 
         <form th:action="@{/myWall}" method="POST" >
@@ -70,6 +65,9 @@ and open the template in the editor.
             <li th:each="f : ${followings}">
                 Name: <span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span><br>
                 Time start to follow: <span th:text="${f.time}">date</span> <br><br>
+                <form th:action="@{/myWall/deleteFollowing/{followingId}(followingId=${f.following})}" method="POST">
+                    <input type="submit" value="Cancel following" />
+                </form>
             </li>
         </ul>
 
@@ -82,6 +80,9 @@ and open the template in the editor.
             <li th:each="f : ${followers}">
                 Name: <span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span> <br>
                 Time start to be followed: <span th:text="${f.time}">date</span> <br><br>
+                <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST">
+                    <input type="submit" value="Block" />
+                </form>
             </li><br><br>
         </ul>
 
