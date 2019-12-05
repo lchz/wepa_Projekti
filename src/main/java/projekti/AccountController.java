@@ -28,6 +28,7 @@ public class AccountController {
     private FollowingMessageRepository msgFRepository;
     @Autowired
     private ThumbUpRepository likeRepository;
+    private String rool;
 
 // Get profile picture
 //    @GetMapping(path = "/myWall", produces = "image/*")
@@ -47,6 +48,8 @@ public class AccountController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Account user = this.userRepository.findByUsername(username);
+        
+        rool = user.getSignal();
 
         List<Message> messages = user.getMessages();
         

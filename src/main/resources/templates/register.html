@@ -11,38 +11,48 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form th:action="@{/register}" method="POST">
+        <form action="#" th:action="@{/register}" th:object="${account}" method="POST">
             <table>
                 <tr>
                     <td>Username:</td>
-                    <td><input type="text" name="username"></td>
+                    <td><input type="text" th:field="*{username}" /></td>
+                    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username errors</td>
+                    <td th:if="${unique != null}" th:text="${unique}"></td>
                 </tr>
                 <tr>
-                    <td>Firstname:</td>
-                    <td><input type="text" name="firstname"></td>
+                    <td>First name:</td>
+                    <td><input type="text" th:field="*{firstname}" /></td>
+                    <td th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">firstname errors</td>
                 </tr>
                 <tr>
-                    <td>Familyname:</td>
-                    <td><input type="text" name="familyname"></td>
+                    <td>Family name:</td>
+                    <td><input type="text" th:field="*{familyname}" /></td>
+                    <td th:if="${#fields.hasErrors('familyname')}" th:errors="*{familyname}">familyname errors</td>
                 </tr>
                 <tr>
                     <td>Password:</td>
-                    <td><input type="password" name="password" /></td>
+                    <td><input type="password" th:field="*{password}" /></td>
+                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password errors</td>
+                </tr>
+                <tr>
+                    <td>Password for profile:</td>
+                    <td><input type="password" th:field="*{signal}" /></td>
+                    <td th:if="${#fields.hasErrors('signal')}" th:errors="*{signal}">signal errors</td>
                 </tr>
                 <tr>
                     <td><input name="submit" type="submit" value="register" /></td>
                 </tr>
             </table>
         </form>
-        
-         <ol>
+
+        <ol>
             <li th:each="account : ${accounts}">
                 <span th:text="${account.username}">msg</span>
             </li>
-         </ol><br><br>
-        
-         <a th:href="@{/login}" >Log in</a>
-<!--            <input type="submit" value="Log in" />
-        </form>-->
+        </ol><br><br>
+
+        <a th:href="@{/login}" >Log in</a>
+        <!--            <input type="submit" value="Log in" />
+                </form>-->
     </body>
 </html>
