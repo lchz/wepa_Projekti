@@ -1,21 +1,18 @@
 package projekti;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.*;
+import org.springframework.http.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -24,12 +21,21 @@ public class AlbumController {
     private PictureRepository pictureRepository;
     @Autowired
     private AccountRepository userRepository;
+    @Autowired
+    private MessageRepository messageRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
-    @PostMapping("/{userId}/myAlbum")
+    @PostMapping("/myAlbum")    //@Valid, BindingResult bindingResult
     @Transactional
-    public String save(@RequestParam("file") MultipartFile file, @PathVariable Long userId) throws IOException {
+    public String saveNewPic(@RequestParam("file") MultipartFile file, @RequestParam String text) throws IOException {
+//        if(bindingResult.hasErrors()) {
+//            return "myAlbum";
+//        }
         
-        Account user = this.userRepository.getOne(userId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account user = this.userRepository.findByUsername(username);
         
         Picture pi = new Picture();
         pi.setContent(file.getBytes());
@@ -37,30 +43,58 @@ public class AlbumController {
         pi.setMediaType(file.getContentType());
         pi.setSize(file.getSize());
         pi.setUser(user);
-        pictureRepository.save(pi);
         
-        List<Picture> pictures = new ArrayList<>();
-        pictures.add(pi);
-        user.setPicAlbum(pictures);
+        Message m = new Message();
+        m.setContent(text);
+        m.setLikes(0);
+        m.setTime(LocalDateTime.now());
+        m.setUser(user);
+        m.setPicture(pi);
+        
+        pi.setMessage(m);
+        
+        this.pictureRepository.save(pi);
+        this.messageRepository.save(m);
+        
+        user.getPicAlbum().add(pi);
         this.userRepository.save(user);
-        Long id = this.pictureRepository.findByUser(user).get(0).getId();
 
-        return "redirect:/" + userId + "/myAlbum";
+        return "redirect:/myAlbum";
     }
-// show the collection of pics
-    @GetMapping("/{userId}/myAlbum")
-    public String getAlbum(@PathVariable Long userId, Model model) {
-        Account user = this.userRepository.getOne(userId);
+    
+// show the collection of pics and messages
+    @GetMapping("/myAlbum")
+    public String getAlbum(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account user = this.userRepository.findByUsername(username);
         
-        model.addAttribute("user", this.userRepository.getOne(userId));
+        model.addAttribute("user", user);
         model.addAttribute("pictures", this.pictureRepository.findByUser(user));
         return "album";
     }
     
+    @PostMapping("/myAlbum/delete/{picId}")
+    @Transactional
+    public String deletePic(@PathVariable Long picId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account user = this.userRepository.findByUsername(username);
+        
+        Picture pic = this.pictureRepository.getOne(picId);
+        
+        this.commentRepository.deleteByMessageIdentity(pic.getMessage().getId());
+        this.messageRepository.deleteById(pic.getMessage().getId());
+        
+        this.pictureRepository.deleteById(picId);
+        
+        return "redirect:/myAlbum";
+    }
+    
 // show every pic
-    @GetMapping(path = "/{userId}/myAlbum/{id}", produces = "image/*")
+    @GetMapping(path = "/myAlbum/{id}", produces = "image/*")
     @ResponseBody
-    public ResponseEntity<byte[]> viewAlbum(@PathVariable Long id) {
+    public ResponseEntity<byte[]> viewPic(@PathVariable Long id) {
         Picture pi = this.pictureRepository.getOne(id);
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(pi.getMediaType()));
@@ -69,5 +103,37 @@ public class AlbumController {
         
         return new ResponseEntity<>(pi.getContent(), headers, HttpStatus.CREATED);
         
+    }
+    
+    // add comment to a pic
+    @PostMapping("/myAlbum/messages/{messageId}/comments")
+    public String addComment(@PathVariable Long messageId, @RequestParam String comment) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Account user = this.userRepository.findByUsername(username);
+        
+        
+        Comment c = new Comment();
+        c.setContent(comment);
+        c.setMessageIdentity(messageId);
+        c.setTime(LocalDateTime.now());
+        c.setWriter(user);
+        
+        this.commentRepository.save(c);
+        
+        this.messageRepository.getOne(messageId).getComments().add(c);
+        
+        return "redirect:comment";
+    }
+    
+    // show comments of the pic
+    @GetMapping("/myAlbum/messages/{messageId}/comments")
+    public String showComments(Model model, @PathVariable Long messageId) {
+        Pageable page = PageRequest.of(0, 10, Sort.by("time").descending());
+        
+        model.addAttribute("comments", this.commentRepository.findByMessageIdentity(messageId, page));
+        model.addAttribute("messageId", messageId);
+        
+        return "comment";
     }
 }

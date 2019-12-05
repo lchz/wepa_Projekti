@@ -11,14 +11,27 @@ and open the template in the editor.
         <meta name="My Album" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form th:action="@{/{userId}/myAlbum(userId=${user.id})}" method="POST" enctype="multipart/form-data">
+        <form th:action="@{/myAlbum}" method="POST" enctype="multipart/form-data">
             <input type="file" name="file" />
+            <!--th:field="*{picAlbum}"-->
+            <!--<span th:if="${#fields.hasErrors('picAlbum')}" th:errors="*{picAlbum}">Too many pics error</span>-->
+            <input type="text" name="text" placeholder="Add a description" />
             <input type="submit" value="Send!"/>
         </form>
         
         <ul>
             <li th:each="p : ${pictures}">
-                <a th:href="@{/{userId}/myAlbum/{pId}(userId=${user.id}, pId=${p.id})}"><span th:text="${p.name}">picture name</span></a>
+                <p th:text="${p.message.content}">message of the pic</p>
+                <a th:href="@{/myAlbum/{pId}(pId=${p.id})}">
+                    <img th:src="@{/myAlbum/{id}(id=${p.id})}" syle="width:60px;height:60px;border:0">
+                </a><br><br>
+                <form th:action="@{/myAlbum/delete/{picId}(picId=${p.id})}" method="POST">
+                    <input type="submit" value="Delete" />
+                </form>
+                
+                <!--<a th:href="@{/myAlbum/{pId}(pId=${p.id})}"><span th:text="${p.name}">picture name</span></a>-->
+                
+                <a th:href="@{/myAlbum/messages/{messageId}/comments(messageId=${p.message.id})}">Comments</a>
             </li>
         </ul>
 

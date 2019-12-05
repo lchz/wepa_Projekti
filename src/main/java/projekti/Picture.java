@@ -9,6 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -17,7 +20,8 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Picture extends AbstractPersistable<Long>{
-    private String text;
+    @OneToOne
+    private Message message;
     private Boolean profilePic;
     
     @ManyToOne
@@ -31,8 +35,8 @@ public class Picture extends AbstractPersistable<Long>{
     @Basic(fetch = FetchType.LAZY)
     private byte[] content;
     
-    @OneToMany
-    private List<Comment> comments = new ArrayList<>();
+//    @OneToMany
+//    private List<Comment> comments = new ArrayList<>();
     
 
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -18,9 +20,13 @@ public class Message extends AbstractPersistable<Long> {
     @ManyToOne
     private Account user;
     
+//    @NotEmpty
     private String content;
     private LocalDateTime time;
     private long likes;
+    
+    @OneToOne(mappedBy="message")
+    private Picture picture;
     
     @OneToMany
     private List<Comment> comments = new ArrayList<>();

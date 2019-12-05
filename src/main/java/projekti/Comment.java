@@ -19,10 +19,8 @@ public class Comment extends AbstractPersistable<Long> {
     private LocalDateTime time;
 
     private Long messageIdentity;   
-    private Long pictureId;
     
     @ManyToOne
     private Account writer;
 
- 
 }

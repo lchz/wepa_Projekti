@@ -12,6 +12,7 @@ and open the template in the editor.
     </head>
     <body>
         <a th:href="@{/myWall}">My wall</a><br><br>
+        <a th:href="@{/myAlbum}">My album</a><br><br>
 
         <div th:if="${comments.empty}">
             No Comments yet. Be the first one!
@@ -25,11 +26,12 @@ and open the template in the editor.
             </fieldset> 
         </div>
 
-
         <form th:action="@{/myWall/messages/{messageId}/comments(messageId=${messageId})}" method="POST">
             <input type="text" name ="comment" placeholder="Add a comment..." /> <br>
             <input type="submit" value="Comment! " />
         </form>
+        
+        
 
     </body>
 </html>
