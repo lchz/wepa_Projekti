@@ -31,7 +31,7 @@ public class Picture extends AbstractPersistable<Long>{
     @Basic(fetch = FetchType.LAZY)
     private byte[] content;
     
-    @OneToMany(mappedBy="picture")
+    @OneToMany
     private List<Comment> comments = new ArrayList<>();
     
 

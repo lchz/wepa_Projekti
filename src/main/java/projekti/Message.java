@@ -22,7 +22,7 @@ public class Message extends AbstractPersistable<Long> {
     private LocalDateTime time;
     private long likes;
     
-    @OneToMany(mappedBy="message")
+    @OneToMany
     private List<Comment> comments = new ArrayList<>();
     
 }

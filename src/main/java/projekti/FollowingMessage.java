@@ -4,7 +4,9 @@ package projekti;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -23,13 +25,13 @@ public class FollowingMessage extends AbstractPersistable<Long>{
     // user is following writer, user owns this relationship
     @ManyToOne
     private Account user;
+    private Long messageIdentity;  // original message id
     
+    // message's writer
     private Long writerIdentity;
     private String writerFirstname;
     private String writerFamilyname;
+    
     private String content;
     private LocalDateTime time;
-    
-    @OneToMany(mappedBy="commentMsgF")
-    private List<Comment> msgFComments = new ArrayList<>();
 }

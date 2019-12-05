@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<Comment, Long>{
-    List<Comment> findByMessage(Message message, Pageable page);
+    List<Comment> findByMessageIdentity(Long messageId, Pageable page);
 }

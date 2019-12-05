@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Register</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -14,8 +14,16 @@ and open the template in the editor.
         <form th:action="@{/register}" method="POST">
             <table>
                 <tr>
-                    <td>User:</td>
+                    <td>Username:</td>
                     <td><input type="text" name="username"></td>
+                </tr>
+                <tr>
+                    <td>Firstname:</td>
+                    <td><input type="text" name="firstname"></td>
+                </tr>
+                <tr>
+                    <td>Familyname:</td>
+                    <td><input type="text" name="familyname"></td>
                 </tr>
                 <tr>
                     <td>Password:</td>
@@ -31,7 +39,10 @@ and open the template in the editor.
             <li th:each="account : ${accounts}">
                 <span th:text="${account.username}">msg</span>
             </li>
-        </ol>
+         </ol><br><br>
         
+         <a th:href="@{/login}" >Log in</a>
+<!--            <input type="submit" value="Log in" />
+        </form>-->
     </body>
 </html>

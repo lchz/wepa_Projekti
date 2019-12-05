@@ -12,42 +12,49 @@ and open the template in the editor.
     </head>
     <body>
 
-        <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span>  <a th:href="@{/{userId}/myAlbum(userId=${user.id})}">My Album</a>
+        <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span>  <a th:href="@{/myAlbum}">My Album</a>
+        <a th:href="@{/search}" >Search!</a>
+        <br>
+        <form method="POST" th:action="@{/logout}">
+            <input type="submit" name="Logout" value="Log out" />
+        </form>
         </br><br>
-        
+
         My messages:
         <div th:if="${messages.empty}">
             <p>No messages yet. Post one!</p>
         </div>
-
-        <ul th:unless="${messages.empty}">
-            <div>
+        
+        <div th:each="message: ${messages}">
+            <fieldset>
+                <legend th:text="${message.user.firstname} + ' ' + ${message.user.familyname}">poster name</legend>
                 <p th:text="${message.content}">message content</p> 
-                Posted by: <span th:text="${message.user.firstname} + ' ' + ${message.user.familyname}">Message writerritter</span><br>
                 Time: <span th:text="${message.time}">time</span><br>
-                <a th:href="@{/{userId}/messages/{messageId}/comment(userId=${user.id}, messageId=${message.id})}">Add a comment</a> <br>
+                <a th:href="@{/myWall/messages/{messageId}/comments(messageId=${message.id})}">Add a comment</a> <br>
 
-                <form th:action="@{/{userId}(userId=${user.id})}" method="POST">
+                <form th:action="@{/myWall}" method="POST">
                     <input type="submit" value="Like!" />
                 </form>
 
                 <br><br>
                 Comments:
-                <div th:if="${comments == null}">
-                    <p>No comments yet. Leave a comment!</p>
+                <div th:if="${message.comments.empty}">
+                    <p>No comments yet.</p>
                 </div>
                 <ul>
-                    <li th:each="c : ${comments}">
+                    <li th:each="c : ${message.comments}">
                         <span th:text="${c.content}">Comment content</span><br>
                         commented by: <span th:text="${c.writer.username}">Comment writer</span><br>
                         Time: <span th:text="${c.time}"> Comment time</span><br>
                     </li>
                 </ul>
+            </fieldset>
+        </div>
 
-            </div>
-        </ul> <br>
+        <!--</div>--> 
+        <br>
 
-        <form th:action="@{/{userId}(userId=${user.id})}" method="POST" >
+        <form th:action="@{/myWall}" method="POST" >
             <input type="text" name="content" placeholder="New message..." /> <br><br>
             <input type="submit" value="Post" />
         </form>
@@ -80,27 +87,30 @@ and open the template in the editor.
 
         <br>
 
-        <a th:href="@{/{userId}/search (userId=${user.id})}" >Search!</a>
-        <br>
-
         <div th:if="${followings.size() > 0}">
-            Messages from following: <br><br>
-
-            <div th:each="msgF : ${msgFList}">
-                <fieldset>
-                    <legend th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}">writer name</legend>
-                    <span th:text="${msgF.content}">msgF content</span><br>
-                    <span th:text="${msgF.time}">time</span><br>
-                    
-                    <form th:action="@{/{userId}(userId=${user.id})}" method="POST">
-                        <input type="submit" value="Like!" />
-                    </form>
-                    
-                    <a th:href="@{/{userId}/messages/{msgFId}/comment(userId=${user.id}, msgFid=${msgF.id})}">Add a comment</a> <br>
-
-                </fieldset>       
+            <div th:if="${msgFList.empty}">
+                <p>No new messages</p>
             </div>
+            
+            <div th:unless="${msgFList.empty}">
+                Messages from following: <br><br>
+
+                <div th:each="msgF : ${msgFList}">
+                    <fieldset>
+                        <legend th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}">message writer</legend>
+                        <span th:text="${msgF.content}">msgF content</span><br>
+                        <span th:text="${msgF.time}">time</span><br>
+
+                        <form th:action="@{/myWall}" method="POST">
+                            <input type="submit" value="Like!" />
+                        </form>
+
+                        <a th:href="@{/myWall/messages/{messageId}/comments(messageId=${msgF.messageIdentity})}">Comments</a> <br>
+
+                    </fieldset>       
+                </div>
 
         </div>
+
     </body>
 </html>

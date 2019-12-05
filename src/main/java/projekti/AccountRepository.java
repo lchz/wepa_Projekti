@@ -15,4 +15,5 @@ public interface AccountRepository extends JpaRepository<Account, Long>{
     List<Account> findByFirstname(String firstname);
     List<Account> findByFamilyname(String familyname);
     Account findByUsername(String username);
+//    Account findByMessageId(Long messageId);
 }

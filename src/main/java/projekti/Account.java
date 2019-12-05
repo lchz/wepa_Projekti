@@ -39,7 +39,8 @@ public class Account extends AbstractPersistable<Long> {
     @OneToMany(mappedBy = "user")
     private List<Message> messages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "messagePoster")
+    // user wrote the comments
+    @OneToMany(mappedBy = "writer")
     private List<Comment> comments = new ArrayList<>();
     
     @OneToMany(mappedBy="user")

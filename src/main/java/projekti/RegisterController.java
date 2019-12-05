@@ -1,11 +1,13 @@
 
 package projekti;
 
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,17 +17,30 @@ public class RegisterController {
     private AccountRepository accountRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+//    @RequestParam(required=false) String username, @RequestParam(required=false) String password, 
+//                            @RequestParam(required=false) String firstname, @RequestParam(required=false) String familyname
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password) {
-        if(this.accountRepository.findByUsername(username) != null) {
+    public String register(@ModelAttribute Account a) {
+        
+        if(this.accountRepository.findByUsername(a.getUsername()) != null) {
             return "redirect:/*";
         }
         
-        Account a = new Account();
-        a.setUsername(username);
-        a.setPassword(this.passwordEncoder.encode(password));
-        this.accountRepository.save(a);
+        
+//        Account a = new Account();
+//        a.setUsername(username);
+//        a.setFamilyname(familyname);
+//        a.setFirstname(firstname);
+//        a.setPassword(this.passwordEncoder.encode(password));
+//        a.setMessages(new ArrayList<>());
+//        a.setComments(new ArrayList<>());
+//        a.setMsgF(new ArrayList<>());
+        
+        if(a.getUsername() != null && !a.getUsername().isEmpty() && a.getPassword() != null && !a.getPassword().isEmpty()) {
+            a.setPassword(this.passwordEncoder.encode(a.getPassword()));
+            this.accountRepository.save(a);
+        }
+        
         return "redirect:/register";
         
     }

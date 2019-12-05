@@ -11,9 +11,25 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form th:action="@{/{userId}/messages/{messageId}/comment(userId=${user.id}, messageId=${message.id})}" method="POST">
+        <a th:href="@{/myWall}">My wall</a><br><br>
+
+        <div th:if="${comments.empty}">
+            No Comments yet. Be the first one!
+        </div>
+
+        <div th:each="c: ${comments}">
+            <fieldset>
+                <legend th:text="${c.writer.firstname} + ' ' + ${c.writer.familyname}">Comment writer</legend>
+                <p th:text='${c.content}'>Comment</p>
+                Time: <span th:text='${c.time}'>Posted time</span>
+            </fieldset> 
+        </div>
+
+
+        <form th:action="@{/myWall/messages/{messageId}/comments(messageId=${messageId})}" method="POST">
             <input type="text" name ="comment" placeholder="Add a comment..." /> <br>
             <input type="submit" value="Comment! " />
         </form>
+
     </body>
 </html>

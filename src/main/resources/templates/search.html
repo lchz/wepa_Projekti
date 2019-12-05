@@ -12,7 +12,7 @@ and open the template in the editor.
     </head>
     <body>
         
-        <form th:action="@{/{userId}/search(userId=${user.id})}" method="POST">
+        <form th:action="@{/search}" method="POST">
             <fieldset>
                 <legend>Search users:</legend>
                 First name: <input type="text" name="firstname" /><br><br>
@@ -36,7 +36,7 @@ and open the template in the editor.
                 <span th:text="${person.firstname}">etunimi</span>
                 <span th:text="${person.familyname}">sukunimi</span>
                 <div th:if="${person.id != user.id}">
-                    <form th:action="@{/{userId}/follow/{personId}(userId=${user.id},personId=${person.id})}" method="POST">
+                    <form th:action="@{/myWall/follow/{personId}(personId=${person.id})}" method="POST">
                         <input type="submit" value="Follow" />
                     </form>
                 </div>
