@@ -26,7 +26,7 @@ and open the template in the editor.
         </div>
         
         <div th:unless="${findings == null}">
-            <div th:if="${findings.empty}">
+            <div th:if="${findings.empty and followed.empty}">
                 <p>No match. Please check the name.</p>
             </div>
         </div>
@@ -45,7 +45,7 @@ and open the template in the editor.
             <li th:each="person:${followed}">
                 <span th:text="${person.firstname}">etunimi</span>
                 <span th:text="${person.familyname}">sukunimi</span>
-                <button type="button" disabled>Followed</button>
+                <button type="button" disabled>Following</button>
             </li>
         </ul>
         

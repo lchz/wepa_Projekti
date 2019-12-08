@@ -2,31 +2,22 @@
 
 <html>
     <head>
-        <title>TwitterWall</title>
+        <title>Other</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
 
-        <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span>  <a th:href="@{/myAlbum}">My Album</a>
+        <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span>
         <a th:href="@{/search}" >Search!</a>
         <br>
         <form method="POST" th:action="@{/logout}">
             <input type="submit" name="Logout" value="Log out" />
         </form>
-        <a th:href="@{/myProfile/{username}/{signal}(username=${user.username}, signal=${user.signal})}" >My Profile</a>
+        <a th:href="@{/myWall}" >Go back to my page</a>
         </br><br>
 
-        <form th:action="@{/myWall}" method="POST" >
-            <input type="text" name="content" placeholder="New message..." /> 
-            <span th:if="${error != null}" th:text="${error}">messageEmpty error</span><br><br>
-            <input type="submit" value="Post" />
-        </form><br><br>
-
-        My messages:
-        <div th:if="${messages.empty}">
-            <p>No messages yet. Post one!</p>
-        </div>
+        <span th:text="${user.firstname} + ' ' + ${user.familyname}"></span>'s posts:
 
         <div th:each="message: ${messages}">
             <fieldset>
@@ -56,42 +47,27 @@
 
         <br><br>
 
-        Following <span th:text="${followings.size()}">how many</span>:
-        <div th:if="${followings.size() == 0}">
-            <p>Start to follow!</p>
-        </div>
+        <span th:text="${user.firstname} + ' ' + ${user.familyname}"></span>'s following <span th:text="${followings.size()}">how many</span>:
 
         <ul>
             <li th:each="f : ${followings}">
                 Name: <a th:href="@{/profile/{signal}(signal=${f.signal})}"> <span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span></a><br>
                 Time: <span th:text="${f.time}">date</span> <br>
-                <form th:action="@{/myWall/deleteFollowing/{followingId}(followingId=${f.following})}" method="POST">
-                    <input type="submit" value="Cancel following" />
-                </form>
             </li>
         </ul>
 
-        Followers <span th:text="${followers.size()}">how many</span>:
-        <div th:if="${followers.size() == 0}">
-            <p>You have no followers yet. Get to know more people!</p>
-        </div>
+        <span th:text="${user.firstname} + ' ' + ${user.familyname}"></span>'s followers <span th:text="${followers.size()}">how many</span>:
 
         <ul>
             <li th:each="f : ${followers}">
                 Name: <a th:href="@{/profile/{signal}(signal=${f.signal})}"><span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span></a> <br>
                 Time: <span th:text="${f.time}">date</span> <br>
-                <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST">
-                    <input type="submit" value="Block" />
-                </form>
             </li><br><br>
         </ul>
 
         <br>
 
         <div th:if="${followings.size() > 0}">
-            <div th:if="${msgFList.empty}">
-                <p>No new messages</p>
-            </div>
 
             <div th:unless="${msgFList.empty}">
                 Posts from following: <br><br>
@@ -114,6 +90,7 @@
                 </div>
 
             </div>
+        </div>
 
     </body>
 </html>

@@ -11,7 +11,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form action="#" th:action="@{/register}" th:object="${account}" method="POST">
+        <form th:action="@{/register}" th:object="${account}" method="POST">
             <table>
                 <tr>
                     <td>Username:</td>
@@ -35,9 +35,10 @@ and open the template in the editor.
                     <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password errors</td>
                 </tr>
                 <tr>
-                    <td>Password for profile:</td>
-                    <td><input type="password" th:field="*{signal}" /></td>
+                    <td>Set a string for finding your profile:</td>
+                    <td><input type="text" th:field="*{signal}" /></td>
                     <td th:if="${#fields.hasErrors('signal')}" th:errors="*{signal}">signal errors</td>
+                    <td th:if="${signalUnique != null}" th:text="${signalUnique}"></td>
                 </tr>
                 <tr>
                     <td><input name="submit" type="submit" value="register" /></td>

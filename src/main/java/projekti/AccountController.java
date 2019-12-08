@@ -1,34 +1,26 @@
 package projekti;
 
-import java.time.*;
-import java.util.*;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import projekti.service.AccountService;
+import projekti.service.ThumbService;
 
 @Controller
 public class AccountController {
 
     @Autowired
-    private AccountRepository userRepository;
+    private AccountService accountService;
+    @Autowired
+    private ThumbService thumbService;
+
     @Autowired
     private PictureRepository pictureRepository;
-    @Autowired
-    private MessageRepository messageRepository;
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private FollowingMessageRepository msgFRepository;
-    @Autowired
-    private ThumbUpRepository likeRepository;
-    private String rool;
+    private String error;
 
 // Get profile picture
 //    @GetMapping(path = "/myWall", produces = "image/*")
@@ -40,103 +32,58 @@ public class AccountController {
 //        
 //        return user.getProfilePic().getContent();	
 //    }
-    
-    
     // Get user's name, messages, followings, followers, following messages
     @GetMapping("/myWall")
     public String userHome(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Account user = this.userRepository.findByUsername(username);
-        
-        rool = user.getSignal();
 
-        List<Message> messages = user.getMessages();
-        
-        List<Followingship> followings = user.getFollowings();
-        List<Followership> followers = user.getFollowers();
-        //show following messages
-        Pageable pageable = PageRequest.of(0, 25, Sort.by("time").descending());
-        List<FollowingMessage> msgFList = this.msgFRepository.findByUser(user, pageable);
-        
-        
-        model.addAttribute("user", user);
-        model.addAttribute("messages", messages);
-        model.addAttribute("followings", followings);
-        model.addAttribute("followers", followers);
-        model.addAttribute("msgFList", msgFList);
+        model.addAttribute("user", this.accountService.getUser());
+        model.addAttribute("messages", this.accountService.getMessages());
+        model.addAttribute("followings", this.accountService.getFollowings());
+        model.addAttribute("followers", this.accountService.getFollowers());
+        model.addAttribute("msgFList", this.accountService.getFollowingMessages());
+        model.addAttribute("error", error);
+        error = "";
+
         return "user";
     }
 
     // post a new message
     @PostMapping("/myWall")
     @Transactional
-    public String saveNewMessage(@RequestParam(required = false) String content) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Account user = this.userRepository.findByUsername(username);
-
-        if (content != null && !content.isEmpty()) {
-            Message m = new Message();
-            m.setComments(new ArrayList<>());
-            m.setContent(content);
-            m.setTime(LocalDateTime.now());
-            m.setUser(user);
-            this.messageRepository.save(m);
-
-            List<FollowingMessage> userMsgF = new ArrayList<>();
-            for (Followership f : user.getFollowers()) {
-                FollowingMessage msgF = new FollowingMessage();
-                msgF.setContent(content);
-                msgF.setTime(m.getTime());
-                msgF.setWriterIdentity(user.getId());
-                msgF.setWriterFamilyname(user.getFamilyname());
-                msgF.setWriterFirstname(user.getFirstname());
-                msgF.setMessageIdentity(m.getId());
-                msgF.setLikes(0);
-                msgF.setWithPic(false);
-
-                Account person = this.userRepository.getOne(f.getFollower());
-                msgF.setUser(person);
-                this.msgFRepository.save(msgF);
-            }
-
-            user.getMessages().add(m);
-            System.out.println("MESSAGE: " + m.getContent());
-            this.userRepository.save(user);
+    public String saveNewMessage(@RequestParam String content) {
+        if(content.isEmpty()) {
+            this.error = "The field must not be empty!";
+            return "redirect:/myWall";
         }
-
+        
+        this.accountService.postNewMessage(content);
         return "redirect:/myWall";
     }
-    
+
     // like a message
     @PostMapping("/myWall/likes/{messageId}")
     @Transactional
     public String addALike(@PathVariable Long messageId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Account user = this.userRepository.findByUsername(username);
-        Message m = this.messageRepository.getOne(messageId);
-
-        if(this.likeRepository.existsByUserAndMessage(user, m)) {
-            return "redirect:/myWall";
-        }
-        
-        ThumbUp like = new ThumbUp();
-        like.setUser(user);
-        like.setMessage(m);
-        
-        m.getLikes().add(like);
-        
-        FollowingMessage fm = this.msgFRepository.findByMessageIdentityAndUser(messageId, user);
-        if(fm != null) {
-            fm.setLikes(m.getLikes().size());
-            this.msgFRepository.save(fm);
-        }
-        
-        this.likeRepository.save(like);
-        this.messageRepository.save(m);
-        
+        this.thumbService.addLike(messageId);
         return "redirect:/myWall";
+    }
+
+    // to other's wall
+    @GetMapping("/profile/{signal}")
+    public String goToVisit(Model model, @PathVariable String signal) {
+        
+        model.addAttribute("user", this.accountService.getUser(signal));
+        model.addAttribute("messages", this.accountService.getMessages());
+        model.addAttribute("followings", this.accountService.getFollowings());
+        model.addAttribute("followers", this.accountService.getFollowers());
+        model.addAttribute("msgFList", this.accountService.getFollowingMessages());
+
+        return "visit";
+    }
+    
+    // to my profile
+    @GetMapping("/myProfile/{username}/{signal}")
+    public String goToProfile() {
+        return "profile";
     }
 }

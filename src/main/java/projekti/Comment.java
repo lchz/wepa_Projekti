@@ -2,11 +2,9 @@
 package projekti;
 
 import java.time.LocalDateTime;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -15,6 +13,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment extends AbstractPersistable<Long> {
+    @NotEmpty
     private String content;
     private LocalDateTime time;
 

@@ -19,7 +19,7 @@ public class Message extends AbstractPersistable<Long> {
     @ManyToOne
     private Account user;
     
-//    @NotEmpty
+    @NotEmpty
     private String content;
     private LocalDateTime time;
     

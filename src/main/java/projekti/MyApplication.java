@@ -17,11 +17,11 @@ public class MyApplication {
         SpringApplication.run(MyApplication.class);
     }
 
-    @Bean
-    public CacheManager cacheManager() {
-        SimpleCacheManager manager = new SimpleCacheManager();
-        manager.setCaches(Arrays.asList(new ConcurrentMapCache("registration")));
-        return manager;
-    }
+//    @Bean
+//    public CacheManager cacheManager() {
+//        SimpleCacheManager manager = new SimpleCacheManager();
+//        manager.setCaches(Arrays.asList(new ConcurrentMapCache("registration")));
+//        return manager;
+//    }
 
 }

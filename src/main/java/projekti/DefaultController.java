@@ -8,7 +8,7 @@ public class DefaultController {
 
     @GetMapping("/")
     public String helloWorld() {
-        return "index";
+        return "redirect:/login";
     }
 
 }

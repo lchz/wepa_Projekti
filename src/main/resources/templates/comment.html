@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+
 <html>
     <head>
         <title>Comment</title>
@@ -27,11 +23,18 @@ and open the template in the editor.
         </div>
 
         <form th:action="@{/myWall/messages/{messageId}/comments(messageId=${messageId})}" method="POST">
-            <input type="text" name ="comment" placeholder="Add a comment..." /> <br>
-            <input type="submit" value="Comment! " />
+            <table>
+                <tr>
+                    <td><input type="text" name ="comment" placeholder="Add a comment..." /></td>
+                    <td th:if="${error != null}" th:text="${error}">commentEmpty error</td>
+                    <!--<td th:if="${#fields.hasErrors('content')}" th:errors="*{content}">commentEmpty error</td>-->
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Comment! " /></td>
+                </tr>
+                
+            </table>
         </form>
         
-        
-
     </body>
 </html>

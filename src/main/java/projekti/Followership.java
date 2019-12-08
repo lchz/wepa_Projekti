@@ -26,5 +26,6 @@ public class Followership extends AbstractPersistable<Long> {
     private String firstname;
     private String familyname;
     private String username;
+    private String signal;
     private LocalDateTime time;
 }
