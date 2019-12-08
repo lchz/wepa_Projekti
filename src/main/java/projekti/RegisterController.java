@@ -3,6 +3,7 @@ package projekti;
 import java.util.ArrayList;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +48,7 @@ public class RegisterController {
     }
 
     @GetMapping("/register")
+    @Cacheable("registration")
     public String register(Model model) {
         model.addAttribute("accounts", this.accountRepository.findAll());
         return "register";
