@@ -50,7 +50,7 @@ public class AccountController {
     // post a new message
     @PostMapping("/myWall")
     @Transactional
-    public String saveNewMessage(@RequestParam String content) {
+    public String saveNewMessage(@RequestParam(required=false) String content) {
         if(content.isEmpty()) {
             this.error = "The field must not be empty!";
             return "redirect:/myWall";
