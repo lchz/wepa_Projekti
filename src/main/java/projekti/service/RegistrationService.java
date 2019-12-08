@@ -2,14 +2,14 @@
 package projekti.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import projekti.Account;
 import projekti.AccountRepository;
 
 @Service
+@Profile({"production", "default"})
 public class RegistrationService {
     
     @Autowired

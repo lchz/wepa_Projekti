@@ -4,6 +4,7 @@ package projekti.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,7 @@ import projekti.Message;
 import projekti.MessageRepository;
 
 @Service
+@Profile({"production", "default"})
 public class CommentService {
     
     @Autowired

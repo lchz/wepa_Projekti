@@ -2,6 +2,7 @@ package projekti.service;
 
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import projekti.Account;
 import projekti.AccountRepository;
@@ -14,6 +15,7 @@ import projekti.FollowingshipRepository;
 import projekti.Message;
 
 @Service
+@Profile({"production", "default"})
 public class FollowingService {
 
     @Autowired

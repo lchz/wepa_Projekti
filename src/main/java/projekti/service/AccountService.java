@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,6 +24,7 @@ import projekti.MessageRepository;
 import projekti.PictureRepository;
 
 @Service
+@Profile({"production", "default"})
 public class AccountService {
 
     @Autowired

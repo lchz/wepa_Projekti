@@ -3,6 +3,7 @@ package projekti;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import projekti.service.RegistrationService;
 
 @Controller
+@Profile({"production", "default"})
 public class RegisterController {
 
     @Autowired

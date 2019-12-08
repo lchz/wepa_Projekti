@@ -2,6 +2,7 @@ package projekti.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import projekti.Account;
 import projekti.FollowingMessage;
@@ -12,6 +13,7 @@ import projekti.ThumbUp;
 import projekti.ThumbUpRepository;
 
 @Service
+@Profile({"production", "default"})
 public class ThumbService {
 
     @Autowired
