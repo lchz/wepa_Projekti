@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,33 +14,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import projekti.Account;
-import projekti.AccountRepository;
-import projekti.Comment;
-import projekti.CommentRepository;
-import projekti.Followership;
-import projekti.FollowingMessage;
-import projekti.FollowingMessageRepository;
-import projekti.Message;
-import projekti.MessageRepository;
-import projekti.Picture;
-import projekti.PictureRepository;
-import projekti.ThumbUpRepository;
+import projekti.*;
 
 @Service
 public class AlbumService {
     
-       @Autowired
+    @Autowired
     private AccountService accountService;
-
     @Autowired
     private PictureRepository pictureRepository;
     @Autowired
@@ -56,51 +36,53 @@ public class AlbumService {
     private ThumbUpRepository thumbUpRepository;
     
     
-    public void saveNewPic(MultipartFile file, String text) throws IOException {
-
+    // add m and p to the followingMessage
+    public String saveNewPic(MultipartFile file, String text) throws IOException {
+        
         Account user = this.accountService.getUser();
-
-        // add m and p to the followingMessage
-        if (text != null && !text.isEmpty() && file.getBytes() != null) {
-
-            Picture pi = new Picture();
-            pi.setContent(file.getBytes());
-            pi.setName(file.getOriginalFilename());
-            pi.setMediaType(file.getContentType());
-            pi.setSize(file.getSize());
-            pi.setUser(user);
-
-            Message m = new Message();
-            m.setContent(text);
-            m.setTime(LocalDateTime.now());
-            m.setUser(user);
-            m.setPicture(pi);
-
-            pi.setMessage(m);
-
-            this.pictureRepository.save(pi);
-            this.messageRepository.save(m);
-
-            user.getPicAlbum().add(pi);
-            this.userRepository.save(user);
-
-            List<FollowingMessage> userMsgF = new ArrayList<>();
-            for (Followership f : user.getFollowers()) {
-                FollowingMessage msgF = new FollowingMessage();
-                msgF.setContent(m.getContent());
-                msgF.setTime(m.getTime());
-                msgF.setWriterIdentity(user.getId());
-                msgF.setWriterFamilyname(user.getFamilyname());
-                msgF.setWriterFirstname(user.getFirstname());
-                msgF.setMessageIdentity(m.getId());
-                msgF.setLikes(0);
-                msgF.setWithPic(true);
-
-                Account person = this.userRepository.getOne(f.getFollower());
-                msgF.setUser(person);
-                this.msgFRepository.save(msgF);
-            }
+        
+        if(this.pictureRepository.findByUser(user).size() == 10) {
+            return "Your album is full. Delete some pictures first.";
         }
+            
+        Picture pi = new Picture();
+        pi.setContent(file.getBytes());
+        pi.setName(file.getOriginalFilename());
+        pi.setMediaType(file.getContentType());
+        pi.setSize(file.getSize());
+        pi.setUser(user);
+
+        Message m = new Message();
+        m.setContent(text);
+        m.setTime(LocalDateTime.now());
+        m.setUser(user);
+        m.setPicture(pi);
+
+        pi.setMessage(m);
+
+        this.pictureRepository.save(pi);
+        this.messageRepository.save(m);
+
+        user.getPicAlbum().add(pi);
+        this.userRepository.save(user);
+
+        List<FollowingMessage> userMsgF = new ArrayList<>();
+        for (Followership f : user.getFollowers()) {
+            FollowingMessage msgF = new FollowingMessage();
+            msgF.setContent(m.getContent());
+            msgF.setTime(m.getTime());
+            msgF.setWriterIdentity(user.getId());
+            msgF.setWriterFamilyname(user.getFamilyname());
+            msgF.setWriterFirstname(user.getFirstname());
+            msgF.setMessageIdentity(m.getId());
+            msgF.setLikes(0);
+            msgF.setWithPic(true);
+
+            Account person = this.userRepository.getOne(f.getFollower());
+            msgF.setUser(person);
+            this.msgFRepository.save(msgF);
+        }
+        return "";
         
     }
 
@@ -147,6 +129,7 @@ public class AlbumService {
 
     // add comment to a pic
     public void addComment(Long messageId, String comment) {
+        
         Account user = this.accountService.getUser();
 
         Comment c = new Comment();
@@ -156,8 +139,8 @@ public class AlbumService {
         c.setWriter(user);
 
         this.commentRepository.save(c);
-
         this.messageRepository.getOne(messageId).getComments().add(c);
+        
     }
 
     // show comments of the pic
@@ -165,6 +148,14 @@ public class AlbumService {
         
         Pageable page = PageRequest.of(0, 10, Sort.by("time").descending());
         return this.commentRepository.findByMessageIdentity(messageId, page);
+        
+    }
+    
+    // set profile pic
+    public void setProfilePic(Long picId) {
+        
+        Account user = this.accountService.getUser();
+        user.setProfilePic(this.pictureRepository.getOne(picId));
         
     }
     

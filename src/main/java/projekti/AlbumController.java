@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import projekti.service.AccountService;
 import projekti.service.AlbumService;
+import projekti.service.ThumbService;
 
 @Controller
 public class AlbumController {
@@ -18,6 +19,9 @@ public class AlbumController {
     private AccountService accountService;
     @Autowired
     private AlbumService albumService;
+    @Autowired
+    private ThumbService thumbService;
+    private String error;
     
 
     @PostMapping("/myAlbum")
@@ -25,26 +29,33 @@ public class AlbumController {
     public String saveNewPic(@RequestParam("file") MultipartFile file, @RequestParam String text, Model model) throws IOException {
         
         if(text.isEmpty()) {
-            model.addAttribute("error", "The description must not be empty!");
-            return "album";
+            error = "The description must not be empty!";
+            return "redirect:/myAlbum";
         }
         
         if(file.getSize() == 0) {
-            model.addAttribute("error", "Picture does not exist!");
-            return "album";
+            error = "Picture does not exist!";
+            return "redirect:/myAlbum";
         }
 
-        this.albumService.saveNewPic(file, text);
+        String s = this.albumService.saveNewPic(file, text);
+        if(!s.isEmpty()) {
+            error = s;
+            return "redirect:/myAlbum";
+        }
+        
         return "redirect:/myAlbum";
     }
 
-// show the collection of pics and messages
+    // show the collection of pics and messages
     @GetMapping("/myAlbum")
     public String getAlbum(Model model, @ModelAttribute Message m) {
         
         Account user = this.accountService.getUser();
         model.addAttribute("user", user);
         model.addAttribute("pictures",this.albumService.getPictures(user));
+        model.addAttribute("error", error);
+        error="";
         return "album";
         
     }
@@ -55,6 +66,7 @@ public class AlbumController {
         
         this.albumService.deletePic(picId);
         return "redirect:/myAlbum";
+        
     }
     
 
@@ -69,6 +81,7 @@ public class AlbumController {
 
     // add comment to a pic
     @PostMapping("/myAlbum/messages/{messageId}/comments")
+    @Transactional
     public String addComment(@PathVariable Long messageId,@RequestParam String comment) {
         
         this.albumService.addComment(messageId, comment);
@@ -85,4 +98,24 @@ public class AlbumController {
         return "comment";
         
     }
+    
+    // like a pic on Album page
+    @PostMapping("/myAlbum/likes/{messageId}")
+    @Transactional
+    public String likePic(@PathVariable Long messageId) {
+        
+        this.thumbService.addLike(messageId);
+        return "redirect:/myAlbum";
+        
+    }
+    
+    @PostMapping("/myAlbum/profilePic/{picId}")
+    @Transactional
+    public String setProfilePid(@PathVariable Long picId) {
+        
+        this.albumService.setProfilePic(picId);
+        return "redirect:/myAlbum";
+        
+    }
+    
 }

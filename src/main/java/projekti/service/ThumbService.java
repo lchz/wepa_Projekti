@@ -18,7 +18,6 @@ public class ThumbService {
 
     @Autowired
     private AccountService accountService;
-
     @Autowired
     private MessageRepository messageRepository;
     @Autowired

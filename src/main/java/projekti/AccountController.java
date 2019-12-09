@@ -83,8 +83,8 @@ public class AccountController {
     }
     
     // to my profile
-    @GetMapping("/myProfile/{username}/{signal}")
-    public String goToProfile() {
-        return "profile";
-    }
+//    @GetMapping("/myProfile/{username}/{signal}")
+//    public String goToProfile() {
+//        return "profile";
+//    }
 }
