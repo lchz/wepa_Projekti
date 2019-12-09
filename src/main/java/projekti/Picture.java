@@ -8,6 +8,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import lombok.*;
+import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Entity
@@ -27,7 +28,8 @@ public class Picture extends AbstractPersistable<Long>{
     private Long size;
     
     @Lob
-    @Basic(fetch = FetchType.LAZY)
+//    @Basic(fetch = FetchType.LAZY)
+    @Type(type = "org.hibernate.type.ImageType")
     private byte[] content;
     
 }
