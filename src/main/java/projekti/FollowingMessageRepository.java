@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FollowingMessageRepository extends JpaRepository<FollowingMessage, Long>{
     List<FollowingMessage> findByUser(Account user, Pageable page);
     List<FollowingMessage> findByMessageIdentity(Long messageId);
+    void deleteByMessageIdentity(Long messageId);
 }

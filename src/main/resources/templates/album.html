@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <title>TODO supply a title</title>
@@ -12,11 +7,10 @@ and open the template in the editor.
     </head>
     <body>
         <form th:action="@{/myAlbum}" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" />
-            <!--th:field="*{picAlbum}"-->
-            <!--<span th:if="${#fields.hasErrors('picAlbum')}" th:errors="*{picAlbum}">Too many pics error</span>-->
-            <input type="text" name="text" placeholder="Add a description" />
+            <input type="file" name="file" /> 
+            <input type="text" name="text" placeholder="Add a description" /> 
             <input type="submit" value="Send!"/>
+            <p th:if="${error != null}" th:text="${error}">Error</p>
         </form>
         
         <ul>
