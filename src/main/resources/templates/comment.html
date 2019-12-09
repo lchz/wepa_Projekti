@@ -1,40 +1,48 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
+    <head th:replace="fragments/layout :: head">
         <title>Comment</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
+
     <body>
-        <a th:href="@{/myWall}">My wall</a><br><br>
-        <a th:href="@{/myAlbum}">My album</a><br><br>
 
-        <div th:if="${comments.empty}">
-            No Comments yet. Be the first one!
+        <div th:replace="fragments/layout :: navbar"></div>
+
+        <div class="container" style="margin-top:30px">
+            <form th:action="@{/myWall/messages/{messageId}/comments(messageId=${messageId})}" method="POST">
+                <table>
+                    <tr>
+                        <td><input type="text" name ="comment" placeholder="Add a comment..." /></td>
+                        <td th:if="${error != null}" th:text="${error}">commentEmpty error</td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Comment! " /></td>
+                    </tr>
+
+                </table>
+            </form>
+
+            <div th:if="${comments.empty}">
+                No Comments yet. Be the first one!
+            </div>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:each="c: ${comments}">
+                    <h5><small th:text="${c.writer.firstname} + ' ' + ${c.writer.familyname}">Comment writer</small></h5>
+                    <h6><small th:text="${c.time}">Posted time</span></small></h6>
+                    <p th:text='${c.content}'>Comment</p>
+                    
+                </li>
+            </ul>
+
         </div>
 
-        <div th:each="c: ${comments}">
-            <fieldset>
-                <legend th:text="${c.writer.firstname} + ' ' + ${c.writer.familyname}">Comment writer</legend>
-                <p th:text='${c.content}'>Comment</p>
-                Time: <span th:text='${c.time}'>Posted time</span>
-            </fieldset> 
-        </div>
-
-        <form th:action="@{/myWall/messages/{messageId}/comments(messageId=${messageId})}" method="POST">
-            <table>
-                <tr>
-                    <td><input type="text" name ="comment" placeholder="Add a comment..." /></td>
-                    <td th:if="${error != null}" th:text="${error}">commentEmpty error</td>
-                    <!--<td th:if="${#fields.hasErrors('content')}" th:errors="*{content}">commentEmpty error</td>-->
-                </tr>
-                <tr>
-                    <td><input type="submit" value="Comment! " /></td>
-                </tr>
-                
-            </table>
-        </form>
-        
     </body>
 </html>

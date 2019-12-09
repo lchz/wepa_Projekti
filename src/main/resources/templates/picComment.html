@@ -1,15 +1,24 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 
 <html>
-    <head>
-        <title>TODO supply a title</title>
+    <head th:replace="fragments/layout :: head">
+        <title>Image comment</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
+    
     <body>
+        
+        <div th:replace="fragments/layout :: navbar"></div>
+        WHAT???????????????
+        
         <form th:action="@{/myAlbum/messages/{messageId}/comments(messageId=${messageId})}" method="POST">
             <input type="text" name ="comment" placeholder="Add a comment..." /> <br>
             <input type="submit" value="Comment! " />
         </form>
     </body>
-</html>
+</html>-->
