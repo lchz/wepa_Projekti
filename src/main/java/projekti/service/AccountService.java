@@ -3,7 +3,6 @@ package projekti.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
@@ -12,16 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import projekti.Account;
-import projekti.AccountRepository;
-import projekti.CommentRepository;
-import projekti.Followership;
-import projekti.FollowingMessage;
-import projekti.FollowingMessageRepository;
-import projekti.Followingship;
-import projekti.Message;
-import projekti.MessageRepository;
-import projekti.PictureRepository;
+import projekti.*;
 
 @Service
 @Profile({"production", "default"})
@@ -77,36 +67,39 @@ public class AccountService {
         return this.msgFRepository.findByUser(user, pageable);
     }
 
-    @Transactional
-    public void postNewMessage(String content) {
-        if (content != null && !content.isEmpty()) {
-            Message m = new Message();
-            m.setComments(new ArrayList<>());
-            m.setContent(content);
-            m.setTime(LocalDateTime.now());
-            m.setUser(user);
-            this.messageRepository.save(m);
-
-            List<FollowingMessage> userMsgF = new ArrayList<>();
-            for (Followership f : user.getFollowers()) {
-                FollowingMessage msgF = new FollowingMessage();
-                msgF.setContent(content);
-                msgF.setTime(m.getTime());
-                msgF.setWriterIdentity(user.getId());
-                msgF.setWriterFamilyname(user.getFamilyname());
-                msgF.setWriterFirstname(user.getFirstname());
-                msgF.setMessageIdentity(m.getId());
-                msgF.setLikes(0);
-                msgF.setWithPic(false);
-
-                Account person = this.userRepository.getOne(f.getFollower());
-                msgF.setUser(person);
-                this.msgFRepository.save(msgF);
-            }
-
-            user.getMessages().add(m);
-            this.userRepository.save(user);
+    public String postNewMessage(Message message) {
+        if(message.getContent().isEmpty()) {
+            return "The field must not be empty!";
         }
+        
+        Message m = new Message();
+        m.setComments(new ArrayList<>());
+        m.setContent(message.getContent());
+        m.setTime(LocalDateTime.now());
+        m.setUser(user);
+        this.messageRepository.save(m);
+
+        List<FollowingMessage> userMsgF = new ArrayList<>();
+        for (Followership f : user.getFollowers()) {
+            FollowingMessage msgF = new FollowingMessage();
+            msgF.setContent(m.getContent());
+            msgF.setTime(m.getTime());
+            msgF.setWriterIdentity(user.getId());
+            msgF.setWriterFamilyname(user.getFamilyname());
+            msgF.setWriterFirstname(user.getFirstname());
+            msgF.setMessageIdentity(m.getId());
+            msgF.setLikes(0);
+            msgF.setWithPic(false);
+
+            Account person = this.userRepository.getOne(f.getFollower());
+            msgF.setUser(person);
+            this.msgFRepository.save(msgF);
+        }
+
+        user.getMessages().add(m);
+        this.userRepository.save(user);
+        
+        return "";
     }
     
 

@@ -50,13 +50,12 @@ public class AccountController {
     // post a new message
     @PostMapping("/myWall")
     @Transactional
-    public String saveNewMessage(@RequestParam(required=false) String content) {
-        if(content.isEmpty()) {
-            this.error = "The field must not be empty!";
-            return "redirect:/myWall";
+    public String saveNewMessage(@ModelAttribute Message message) {
+        
+        if(message.getContent() != null) {
+            error = this.accountService.postNewMessage(message);
         }
         
-        this.accountService.postNewMessage(content);
         return "redirect:/myWall";
     }
 
@@ -64,8 +63,10 @@ public class AccountController {
     @PostMapping("/myWall/likes/{messageId}")
     @Transactional
     public String addALike(@PathVariable Long messageId) {
+        
         this.thumbService.addLike(messageId);
         return "redirect:/myWall";
+        
     }
 
     // to other's wall
