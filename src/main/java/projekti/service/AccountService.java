@@ -81,21 +81,23 @@ public class AccountService {
             return "The field must not be empty!";
         }
         
-        Message m = new Message();
-        m.setComments(new ArrayList<>());
-        m.setContent(message.getContent());
-        m.setTime(LocalDateTime.now());
-        m.setUser(user);
-        this.messageRepository.save(m);
+        user = this.getUser();
+        
+//        Message m = new Message();
+        message.setComments(new ArrayList<>());
+        message.setTime(LocalDateTime.now());
+        message.setUser(user);
+        this.messageRepository.save(message);
 
+//        List<Followership>
         for (Followership f : user.getFollowers()) {
             FollowingMessage msgF = new FollowingMessage();
-            msgF.setContent(m.getContent());
-            msgF.setTime(m.getTime());
+            msgF.setContent(message.getContent());
+            msgF.setTime(message.getTime());
             msgF.setWriterIdentity(user.getId());
             msgF.setWriterFamilyname(user.getFamilyname());
             msgF.setWriterFirstname(user.getFirstname());
-            msgF.setMessageIdentity(m.getId());
+            msgF.setMessageIdentity(message.getId());
             msgF.setLikes(0);
             msgF.setWithPic(false);
 
@@ -104,7 +106,7 @@ public class AccountService {
             this.msgFRepository.save(msgF);
         }
 
-        user.getMessages().add(m);
+        user.getMessages().add(message);
         this.userRepository.save(user);
         
         return "";

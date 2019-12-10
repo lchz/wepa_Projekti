@@ -76,19 +76,7 @@
             </div>
         </div>
 
-        <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span>  <a th:href="@{/myAlbum}">My Album</a>
-        <a th:href="@{/search}" >Search!</a>
-        <br>
-        <form method="POST" th:action="@{/logout}">
-            <input type="submit" name="Logout" value="Log out" />
-        </form>
-        </br><br>
 
-        <form th:action="@{/myWall}" method="POST" >
-            <input type="text" name="content" placeholder="New message..." /> 
-            <span th:if="${error != null}" th:text="${error}">messageEmpty error</span><br><br>
-            <input type="submit" value="Post" />
-        </form><br><br>
 
 
 
