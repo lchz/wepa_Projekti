@@ -8,9 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import projekti.service.AccountService;
-import projekti.service.AlbumService;
-import projekti.service.ThumbService;
+import projekti.service.*;
 
 @Controller
 public class AlbumController {
@@ -21,6 +19,8 @@ public class AlbumController {
     private AlbumService albumService;
     @Autowired
     private ThumbService thumbService;
+    @Autowired
+    private CommentService commentService;
     private String error;
     
 
@@ -28,22 +28,7 @@ public class AlbumController {
     @Transactional
     public String saveNewPic(@RequestParam("file") MultipartFile file, @RequestParam String text, Model model) throws IOException {
         
-        if(text.isEmpty()) {
-            error = "The description must not be empty!";
-            return "redirect:/myAlbum";
-        }
-        
-        if(file.getSize() == 0) {
-            error = "Picture does not exist!";
-            return "redirect:/myAlbum";
-        }
-
-        String s = this.albumService.saveNewPic(file, text);
-        if(!s.isEmpty()) {
-            error = s;
-            return "redirect:/myAlbum";
-        }
-        
+        error = this.albumService.saveNewPic(file, text);
         return "redirect:/myAlbum";
     }
 
@@ -53,9 +38,10 @@ public class AlbumController {
         
         Account user = this.accountService.getUser();
         model.addAttribute("user", user);
-        model.addAttribute("pictures",this.albumService.getPictures(user));
+        model.addAttribute("pictures",this.albumService.getPictures(user.getSignal()));
         model.addAttribute("error", error);
         error="";
+        
         return "album";
         
     }
@@ -84,7 +70,7 @@ public class AlbumController {
     @Transactional
     public String addComment(@PathVariable Long messageId,@RequestParam String comment) {
         
-        this.albumService.addComment(messageId, comment);
+        this.commentService.postComment(comment, messageId);
         return "redirect:comment";
         
     }
@@ -93,7 +79,8 @@ public class AlbumController {
     @GetMapping("/myAlbum/messages/{messageId}/comments")
     public String showComments(Model model, @PathVariable Long messageId) {
 
-        model.addAttribute("comments", this.albumService.showComments(messageId));
+        model.addAttribute("user", this.accountService.getUser());
+        model.addAttribute("comments", this.commentService.showComments(messageId));
         model.addAttribute("messageId", messageId);
         return "comment";
         

@@ -10,26 +10,15 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-        <style>
-            .fakeimg {
-                height: 200px;
-                background: #aaa;
-            }
-        </style>
-        <style>
-            .profilePic {
-                height: 200px;
-                /*background: #aaa;*/
-            }
-        </style>
     </head>
+    
     <body>
 
         <header class="jumbotron text-center" style="margin-bottom:0" th:fragment="header">
             <h1>Welcome To TwitWee</h1>
         </header>
 
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:fragment="navbar()">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:fragment="navbar(name)">
             <a class="navbar-brand" href="#">TwitWee</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -48,41 +37,85 @@
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/search}">Search</a>
                     </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/logout}">Log out</a>
                     </li>
                     <li class="nav-item justify-content-end">
                         <a class="nav-link" href="#"><span th:text="'Logged in as ' + ${name}"></span></a>
-                    </li>    
+                    </li> 
                 </ul>
             </div>  
         </nav>
 
         <div class="container" style="margin-top:30px">
-            <div class="row">
-                <div class="col-sm-4">
-                    <h2>About Me</h2>
-                    <h5>My profile picture:</h5>
-                    <div class="profilePic">Profile img</div>
-                    <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
-                    <h3>Some Links</h3>
-                    <p>Lorem ipsum dolor sit ame.</p>
+            <div class="row" >
+
+                ==================================================================================
+
+
+                <div class="col-sm-4" th:fragment="aboutMe">
+
+                    <h3>About Me</h3>
+                    <div th:if="${user.profilePic == null}">
+                        <img class="rounded-circle" th:src="@{/img/default.png}" height="150">
+                    </div>
+                    <div th:unless="${user.profilePic == null}">
+                        <img class="rounded-circle" th:src="@{/myAlbum/{id}(id=${user.profilePic.id})}" width="130" height="130">
+                    </div><br>
+
+                    <div class="container">
+                        <h5>Name:</h5> 
+                        <p th:text="${user.firstname} + ' ' + ${user.familyname}">name</p>
+                    </div>
+
                     <ul class="nav nav-pills flex-column">
+                        <!--                        <li class="nav-item">
+                                                    <a class="nav-link" th:href="@{/myAlbum}"><h5><small>Album</small></h5></a>
+                                                </li>-->
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">Active</a>
+                            <a href="#following" class="btn btn-primary" data-toggle="collapse">
+                                <h5><small><span th:text="'Follow ' + ${followings.size()}">how many</span></small></h5></a>
+                            </a>
                         </li>
+                        <div id="following" class="collapse">
+                            <h5>Following: </h5>
+                            <ul class="list-group list-group-flush" th:fragment="following">
+                                <li class="list-group-item" th:each="f : ${followings}">
+                                    <a th:href="@{/profile/{signal}(signal=${f.signal})}">
+                                        <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                    </a>
+                                    <i th:text="'Started from ' +  ${f.time}"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                            <a href="#follower" class="btn btn-primary" data-toggle="collapse">
+                                <h5><small><span th:text="'Followers ' + ${followers.size() - 1}">how many</span></small></h5></a>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Disabled</a>
-                        </li>
+                        <div id="follower" class="collapse">
+                            <h5>Followers:</h5>
+                            <ul class="list-group list-group-flush" th:fragment="follower">
+                                <li class="list-group-item" th:each="f : ${followers}">
+                                    <div th:if="${f.username != user.username}">
+                                        <a th:href="@{/profile/{signal}(signal=${f.signal})}">
+                                            <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                        </a>
+                                        <i th:text="'Started from ' +  ${f.time}"></i>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </ul>
-                    <hr class="d-sm-none">
+
                 </div>
+
+                ====================================================
+
                 <div class="col-sm-8">
                     <h2>TITLE HEADING</h2>
                     <h5>Title description, Dec 7, 2017</h5>
@@ -99,6 +132,67 @@
             </div>
         </div>
 
+        ===============================================================
+
+        <div th:fragment="posts">
+            <div class="container">
+                <h2>My posts:</h2>
+            </div>
+            <div th:if="${messages.empty}">
+                <p>No messages yet. Post one!</p>
+            </div>
+
+            <div class="container mt-3" style="margin-top:30px">
+                <div class="media border p-3" th:each="message: ${messages}">
+                    <div th:fragment="image">
+                        <div th:if="${user.profilePic == null}">
+                            <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="50px;">
+                        </div>
+                        <div th:unless="${user.profilePic == null}">
+                            <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${user.profilePic.id})}" alt="profilePic" width="70px;" height="70">
+                        </div>
+                    </div>
+
+
+                    <div class="media-body" >
+                        <h5 th:text="${message.user.firstname} + ' ' + ${message.user.familyname}"></h5>
+
+                        <small><i th:text="'Posted on ' +  ${message.time}"></small></i>
+
+                        <p th:text="${message.content}">message content</p> 
+
+                        <div th:if="${message.picture != null}">
+                            <img class="img-fluid" th:src="@{/myAlbum/{id}(id=${message.picture.id})}" alt="${message.picture.name}" width="200" height="200" >
+                        </div>
+
+                        <a th:href="@{/myWall/messages/{messageId}/comments/{visitedSignal}(messageId=${message.id}, visitedSignal=${signal})}">Comments </a>
+
+                        <form th:action="@{/myWall/likes/{messageId}(messageId=${message.id})}" method="POST">
+                            <input type="submit" value="Like!" /> <span th:text="${message.likes.size()} + ' likes'">likes</span>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        ==================================================================================================
+
+
+
+        ===========================================================================        
+
+<!--        <ul class="list-group list-group-flush" th:fragment="follow(list)">
+            <li class="list-group-item" th:each="f : ${list}">
+                <a th:href="@{/profile/{signal}(signal=${f.signal})}">
+                    <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                </a>
+                <i th:text="'Started from ' +  ${f.time}"></i>
+                <br><br>
+            </li>
+        </ul>-->
+
+
+        ======================================================================
         <div class="jumbotron text-center" style="margin-bottom:0">
             <p>Footer</p>
         </div>

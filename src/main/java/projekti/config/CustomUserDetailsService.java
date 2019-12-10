@@ -1,5 +1,5 @@
 
-package projekti;
+package projekti.config;
 
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import projekti.Account;
+import projekti.AccountRepository;
 
 @Service 
 @Profile({"production", "default"})
@@ -17,6 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService{
     @Autowired
     private AccountRepository accountRepository;
     
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account a = this.accountRepository.findByUsername(username);
         if(a == null) {

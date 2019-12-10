@@ -39,6 +39,15 @@ public class AlbumService {
     // add m and p to the followingMessage
     public String saveNewPic(MultipartFile file, String text) throws IOException {
         
+        
+        if(text.isEmpty()) {
+            return "The description must not be empty!";
+        }
+        
+        if(file.getSize() == 0) {
+            return "Picture does not exist!";
+        }
+        
         Account user = this.accountService.getUser();
         
         if(this.pictureRepository.findByUser(user).size() == 10) {
@@ -87,8 +96,8 @@ public class AlbumService {
     }
 
     // show the collection of pics and messages
-    public List<Picture> getPictures(Account user) {
-        
+    public List<Picture> getPictures(String signal) {
+        Account user = this.accountService.getUser(signal);
         return this.pictureRepository.findByUser(user);
     
     }
@@ -125,30 +134,6 @@ public class AlbumService {
 
         return new ResponseEntity<>(pi.getContent(), headers, HttpStatus.CREATED);
 
-    }
-
-    // add comment to a pic
-    public void addComment(Long messageId, String comment) {
-        
-        Account user = this.accountService.getUser();
-
-        Comment c = new Comment();
-        c.setContent(comment);
-        c.setMessageIdentity(messageId);
-        c.setTime(LocalDateTime.now());
-        c.setWriter(user);
-
-        this.commentRepository.save(c);
-        this.messageRepository.getOne(messageId).getComments().add(c);
-        
-    }
-
-    // show comments of the pic
-    public List<Comment> showComments(Long messageId) {
-        
-        Pageable page = PageRequest.of(0, 10, Sort.by("time").descending());
-        return this.commentRepository.findByMessageIdentity(messageId, page);
-        
     }
     
     // set profile pic

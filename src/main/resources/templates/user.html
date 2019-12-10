@@ -17,30 +17,15 @@
 
 
         <div class="container" style="margin-top:30px">
-            <div class="row">
+            <div class="row"> 
                 
-                <div class="col-4">
-                    <h2>About Me</h2>
-                    <h5>My profile picture:</h5> 
-                    
-                    <div th:if="${user.profilePic == null}">
-                        <img class="rounded-circle" th:src="@{/img/default.png}" height="130">
-                    </div>
-                    <div th:unless="${user.profilePic == null}">
-                        <img class="rounded-circle" th:src="@{/myAlbum/{id}(id=${user.profilePic.id})}" height="130">
-                    </div><br>
-                    
-                    <h5>Name:</h5> 
-                    <p th:text="${user.firstname} + ' ' + ${user.familyname}">name</p>
-                    <h5><span th:text="'Follow ' + ${followings.size()}">how many</span></h5>
-                    <p>Followers <span th:text="${followers.size() - 1}">how many</span></p>
-                </div>
+                <div th:replace="fragments/layout :: aboutMe"></div>
 
                 <div class="col-8">
                     <h2>New post</h2>
                     <form th:action="@{/myWall}" method="POST" >
                         <input type="text" name="content" placeholder="New message..." /> 
-                        <span th:if="${error != null}" th:text="${error}">messageEmpty error</span><br><br>
+                        <span th:if="${error != null}" class="text-danger" th:text="${error}">messageEmpty error</span><br><br>
                         <input type="submit" value="Post" />
                     </form><br><br>
 
@@ -50,7 +35,7 @@
                         <div th:each="msgF : ${msgFList}">
                             <table class="table table-hover">
                                 <thead>
-                                    <th><span th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}">message writer</span></th>
+                                <th><span th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}">message writer</span></th>
                                 </thead>
                                 <tbody>
                                     <tr>
@@ -114,33 +99,5 @@
             </li><br><br>
         </ul>
 
-        <br>
-
-        <div th:if="${followings.size() > 0}">
-            <div th:if="${msgFList.empty}">
-                <p>No new messages</p>
-            </div>
-
-            <div th:unless="${msgFList.empty}">
-                Posts from following: <br><br>
-
-                <div th:each="msgF : ${msgFList}">
-                    <fieldset>
-                        <legend th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}">message writer</legend>
-                        <span th:text="${msgF.content}">msgF content</span><br>
-                        <p th:text="${msgF.time}">time</p>
-
-
-                        <form th:action="@{/myWall/likes/{messageId}(messageId=${msgF.messageIdentity})}" method="POST">
-                            <input type="submit" value="Like!" /> <span th:text="${msgF.likes} + ' likes'">likes</span>
-                        </form>
-
-                        COUNT!!!!!!!!!!!!!!!!!!
-                        <a th:href="@{/myWall/messages/{messageId}/comments(messageId=${msgF.messageIdentity})}">Comments <span th:text="${msgFCount}"></span></a> <br>
-
-                    </fieldset>       
-                </div>
-
-            </div>
     </body>
 </html>

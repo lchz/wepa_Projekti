@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import projekti.service.AccountService;
+import projekti.service.AlbumService;
 import projekti.service.ThumbService;
 
 @Controller
@@ -17,6 +18,8 @@ public class AccountController {
     private AccountService accountService;
     @Autowired
     private ThumbService thumbService;
+    @Autowired
+    private AlbumService albumService;
 
     private String error;
 
@@ -61,12 +64,16 @@ public class AccountController {
     @GetMapping("/profile/{signal}")
     public String goToVisit(Model model, @PathVariable String signal) {
         
+        Account user = this.accountService.getUser(signal);
+        
+        model.addAttribute("signal", user.getSignal());
         model.addAttribute("person", this.accountService.getUser());
-        model.addAttribute("user", this.accountService.getUser(signal));
+        model.addAttribute("user", user);
         model.addAttribute("messages", this.accountService.getMessages(signal));
+        model.addAttribute("pictures", this.albumService.getPictures(signal));
         model.addAttribute("followings", this.accountService.getFollowings());
         model.addAttribute("followers", this.accountService.getFollowers());
-        model.addAttribute("msgFList", this.accountService.getFollowingMessages());
+//        model.addAttribute("msgFList", this.accountService.getFollowingMessages());
 
         return "visit";
     }
@@ -74,6 +81,9 @@ public class AccountController {
     @GetMapping("/myPosts") 
     public String getPosts(Model model) {
         
+        Account user = this.accountService.getUser();
+        
+//        model.addAttribute("signal", user.getSignal());
         model.addAttribute("user", this.accountService.getUser());
         model.addAttribute("messages", this.accountService.getMessages(this.accountService.getUser().getSignal()));
         return "posts";
@@ -81,8 +91,8 @@ public class AccountController {
     }
     
     // to my profile
-    @GetMapping("/boot")
-    public String goToProfile() {
-        return "bootstrap";
-    }
+//    @GetMapping("/boot")
+//    public String goToProfile() {
+//        return "bootstrap";
+//    }
 }

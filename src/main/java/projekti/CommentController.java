@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import projekti.service.AccountService;
 import projekti.service.CommentService;
 
 @Controller
@@ -16,12 +17,32 @@ public class CommentController {
 
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private AccountService accountService;
     private String error;
     
 
-    @GetMapping("/myWall/messages/{messageId}/comments")
-    public String showComments(Model model, @PathVariable Long messageId) {
+    @GetMapping("/myWall/messages/{messageId}/comments/{signal}")
+    public String showComments(Model model, @PathVariable Long messageId, @PathVariable String signal) {
 
+        Account user = this.accountService.getUser();
+        
+        model.addAttribute("signal", signal);
+        model.addAttribute("user", user);
+        model.addAttribute("comments", this.commentService.showComments(messageId));
+        model.addAttribute("messageId", messageId);
+        model.addAttribute("error", error);
+        error="";
+
+        return "comment";
+    }
+    
+    @GetMapping("/myWall/messages/{messageId}/comments")
+    public String showCommentsWithoutSignal(Model model, @PathVariable Long messageId) {
+
+        Account user = this.accountService.getUser();
+        
+        model.addAttribute("user", user);
         model.addAttribute("comments", this.commentService.showComments(messageId));
         model.addAttribute("messageId", messageId);
         model.addAttribute("error", error);

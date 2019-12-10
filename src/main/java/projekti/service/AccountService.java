@@ -47,6 +47,7 @@ public class AccountService {
     public List<Message> getMessages(String signal) {
         
         user = getUser(signal);
+        
         if(!user.getMessages().isEmpty()) {
             Pageable pageable = PageRequest.of(0, user.getMessages().size(), Sort.by("time").descending());
             return this.messageRepository.findByUser(user, pageable);

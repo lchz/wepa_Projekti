@@ -19,7 +19,7 @@
                 <input type="file" name="file" /> 
                 <input type="text" name="text" placeholder="Add a description" /> 
                 <input type="submit" value="Send!"/>
-                <p th:if="${error != null}" th:text="${error}">Error</p>
+                <span th:if="${error != null}" class="text-danger" th:text="${error}">Error</span>
             </form>
 
             <ul class="list-group list-group-flush">
@@ -40,7 +40,7 @@
                         <input type="submit" value="Like!" /> <span th:text="${p.message.likes.size()} + ' likes'">likes</span>
                     </form>
 
-                    <a th:href="@{/myAlbum/messages/{messageId}/comments(messageId=${p.message.id})}">Comments</a>
+                    <a th:href="@{/myAlbum/messages/{messageId}/comments/(messageId=${p.message.id})}">Comments</a>
                 </li>
             </ul>
             
