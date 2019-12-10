@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+    <head th:replace="fragments/layout :: head">
+        <title>Posts</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+
+        <div th:replace="fragments/layout :: navbar"></div>
+
+        <div class="container" style="margin-top:30px">
+            <h3>My posts:</h3>
+            <div th:if="${messages.empty}">
+                <p>No messages yet. Post one!</p>
+            </div>
+
+            <div class="container" th:each="message: ${messages}" style="margin-top:30px">
+
+                <div class="media border p-3">
+                    <img th:src="@{/myAlbum/{id}(id=${user.profilePic.id})}" alt="ProfilePic" class="mr-3 mt-3 rounded-circle" style="width:50px;">
+                    
+                    <div class="media-body" >
+                        <h5 th:text="${message.user.firstname} + ' ' + ${message.user.familyname}"></h5>
+                        
+                        <small><i th:text="'Posted on ' +  ${message.time}"></small></i>
+                        
+                        <p th:text="${message.content}">message content</p> 
+                        
+                        <div th:if="${message.picture != null}">
+                            <img class="img-fluid" th:src="@{/myAlbum/{id}(id=${message.picture.id})}" alt="${message.picture.name}" width="200" height="150" >
+                        </div>
+                        
+                        <a th:href="@{/myWall/messages/{messageId}/comments(messageId=${message.id})}">Comments </a>
+                        
+                        <form th:action="@{/myWall/likes/{messageId}(messageId=${message.id})}" method="POST">
+                            <input type="submit" value="Like!" /> <span th:text="${message.likes.size()} + ' likes'">likes</span>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>

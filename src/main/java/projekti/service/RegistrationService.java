@@ -1,12 +1,15 @@
 
 package projekti.service;
 
+import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import projekti.Account;
 import projekti.AccountRepository;
+import projekti.Followership;
+import projekti.FollowershipRepository;
 
 @Service
 @Profile({"production", "default"})
@@ -14,6 +17,8 @@ public class RegistrationService {
     
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private FollowershipRepository followershipRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     
@@ -29,7 +34,19 @@ public class RegistrationService {
         }
 
         account.setPassword(this.passwordEncoder.encode(account.getPassword()));
+        this.accountRepository.save(account);
+        
+        Followership f = new Followership();
+        f.setUser(account);
+        f.setFamilyname(account.getFamilyname());
+        f.setFirstname(account.getFirstname());
+        f.setFollower(account.getId());
+        f.setTime(LocalDateTime.now());
+        f.setUsername(account.getUsername());
+        
+        account.getFollowers().add(f);
 
+        this.followershipRepository.save(f);
         this.accountRepository.save(account);
         
         return "";

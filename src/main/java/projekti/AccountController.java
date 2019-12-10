@@ -18,26 +18,14 @@ public class AccountController {
     @Autowired
     private ThumbService thumbService;
 
-    @Autowired
-    private PictureRepository pictureRepository;
     private String error;
 
-// Get profile picture
-//    @GetMapping(path = "/myWall", produces = "image/*")
-//    @ResponseBody
-//    public byte[] get() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String username = auth.getName();
-//        Account user = this.userRepository.findByUsername(username);
-//        
-//        return user.getProfilePic().getContent();	
-//    }
+    
     // Get user's name, messages, followings, followers, following messages
     @GetMapping("/myWall")
     public String userHome(Model model) {
 
         model.addAttribute("user", this.accountService.getUser());
-        model.addAttribute("messages", this.accountService.getMessages());
         model.addAttribute("followings", this.accountService.getFollowings());
         model.addAttribute("followers", this.accountService.getFollowers());
         model.addAttribute("msgFList", this.accountService.getFollowingMessages());
@@ -74,12 +62,21 @@ public class AccountController {
     public String goToVisit(Model model, @PathVariable String signal) {
         
         model.addAttribute("user", this.accountService.getUser(signal));
-        model.addAttribute("messages", this.accountService.getMessages());
+        model.addAttribute("messages", this.accountService.getMessages(signal));
         model.addAttribute("followings", this.accountService.getFollowings());
         model.addAttribute("followers", this.accountService.getFollowers());
         model.addAttribute("msgFList", this.accountService.getFollowingMessages());
 
         return "visit";
+    }
+    
+    @GetMapping("/myPosts") 
+    public String getPosts(Model model) {
+        
+        model.addAttribute("user", this.accountService.getUser());
+        model.addAttribute("messages", this.accountService.getMessages(this.accountService.getUser().getSignal()));
+        return "posts";
+        
     }
     
     // to my profile

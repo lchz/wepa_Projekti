@@ -25,7 +25,7 @@
                     <div class="profilePic">Profile img</div>
                     <p th:text="${user.firstname} + ' ' + ${user.familyname}">name</p>
                     <p>Follow <pspan th:text="${followings.size()}">how many</span></p>
-                        <p>Followers <span th:text="${followers.size()}">how many</span></p>
+                    <p>Followers <span th:text="${followers.size() - 1}">how many</span></p>
                 </div>
 
                 <div class="col-8">
@@ -82,36 +82,7 @@
             <input type="submit" value="Post" />
         </form><br><br>
 
-        My messages:
-        <div th:if="${messages.empty}">
-            <p>No messages yet. Post one!</p>
-        </div>
 
-        <div th:each="message: ${messages}">
-            <fieldset>
-                <legend th:text="${message.user.firstname} + ' ' + ${message.user.familyname}">poster name</legend>
-                <p th:text="${message.content}">message content</p> 
-                Time: <span th:text="${message.time}">time</span><br>
-                <a th:href="@{/myWall/messages/{messageId}/comments(messageId=${message.id})}">Add a comment</a> <br>
-
-                <form th:action="@{/myWall/likes/{messageId}(messageId=${message.id})}" method="POST">
-                    <input type="submit" value="Like!" /> <span th:text="${message.likes.size()} + ' likes'">likes</span>
-                </form>
-
-                <br><br>
-                Comments:
-                <div th:if="${message.comments.empty}">
-                    <p>No comments yet.</p>
-                </div>
-                <ul>
-                    <li th:each="c : ${message.comments}">
-                        <span th:text="${c.content}">Comment content</span><br>
-                        commented by: <span th:text="${c.writer.username}">Comment writer</span><br>
-                        Time: <span th:text="${c.time}"> Comment time</span><br>
-                    </li>
-                </ul>
-            </fieldset>
-        </div>
 
         <br><br>
 
@@ -137,11 +108,13 @@
 
         <ul>
             <li th:each="f : ${followers}">
-                Name: <a th:href="@{/profile/{signal}(signal=${f.signal})}"><span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span></a> <br>
-                Time: <span th:text="${f.time}">date</span> <br>
-                <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST">
-                    <input type="submit" value="Block" />
-                </form>
+                <span th:unless="${f.follower == user.id}">
+                    Name: <a th:href="@{/profile/{signal}(signal=${f.signal})}"><span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span></a> <br>
+                    Time: <span th:text="${f.time}">date</span> <br>
+                    <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST">
+                        <input type="submit" value="Block" />
+                    </form>
+                </span>
             </li><br><br>
         </ul>
 

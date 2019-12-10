@@ -111,7 +111,7 @@ public class AlbumController {
     
     @PostMapping("/myAlbum/profilePic/{picId}")
     @Transactional
-    public String setProfilePid(@PathVariable Long picId) {
+    public String setProfilePic(@PathVariable Long picId) {
         
         this.albumService.setProfilePic(picId);
         return "redirect:/myAlbum";

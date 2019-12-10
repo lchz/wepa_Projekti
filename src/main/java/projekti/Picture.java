@@ -28,7 +28,6 @@ public class Picture extends AbstractPersistable<Long>{
     private Long size;
     
     @Lob
-//    @Basic(fetch = FetchType.LAZY)
     @Type(type = "org.hibernate.type.ImageType")
     private byte[] content;
     

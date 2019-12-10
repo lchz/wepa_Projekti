@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>Other</title>
+    <head th:replace="fragments/layout :: head">
+        <title>Visit</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
     <body>
 
+        <div th:replace="fragments/layout :: navbar"></div>
+
         <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span>
-        <a th:href="@{/search}" >Search!</a>
-        <br>
-        <form method="POST" th:action="@{/logout}">
-            <input type="submit" name="Logout" value="Log out" />
-        </form>
-        <a th:href="@{/myWall}" >Go back to my page</a>
         </br><br>
 
         <span th:text="${user.firstname} + ' ' + ${user.familyname}"></span>'s posts:

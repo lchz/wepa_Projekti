@@ -20,31 +20,33 @@ public class AccountService {
     @Autowired
     private AccountRepository userRepository;
     @Autowired
-    private PictureRepository pictureRepository;
-    @Autowired
     private MessageRepository messageRepository;
-    @Autowired
-    private CommentRepository commentRepository;
     @Autowired
     private FollowingMessageRepository msgFRepository;
     
     private Account user;
 
     public Account getUser() {
+        
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             String username = auth.getName();
-            this.user = this.userRepository.findByUsername(username);
+            user = this.userRepository.findByUsername(username);
         }
         return user;
+        
     }
     
     public Account getUser(String signal) {
+        
         this.user = this.userRepository.findBySignal(signal);
         return user;
+        
     }
 
-    public List<Message> getMessages() {
+    public List<Message> getMessages(String signal) {
+        
+        user = getUser(signal);
         if(!user.getMessages().isEmpty()) {
             Pageable pageable = PageRequest.of(0, user.getMessages().size(), Sort.by("time").descending());
             return this.messageRepository.findByUser(user, pageable);
@@ -55,19 +57,26 @@ public class AccountService {
     }
 
     public List<Followingship> getFollowings() {
+        
         return user.getFollowings();
+        
     }
 
     public List<Followership> getFollowers() {
+        
         return user.getFollowers();
+        
     }
 
     public List<FollowingMessage> getFollowingMessages() {
+        
         Pageable pageable = PageRequest.of(0, 25, Sort.by("time").descending());
         return this.msgFRepository.findByUser(user, pageable);
+        
     }
 
     public String postNewMessage(Message message) {
+        
         if(message.getContent().isEmpty()) {
             return "The field must not be empty!";
         }
@@ -79,7 +88,6 @@ public class AccountService {
         m.setUser(user);
         this.messageRepository.save(m);
 
-        List<FollowingMessage> userMsgF = new ArrayList<>();
         for (Followership f : user.getFollowers()) {
             FollowingMessage msgF = new FollowingMessage();
             msgF.setContent(m.getContent());
