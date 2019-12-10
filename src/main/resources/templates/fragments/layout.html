@@ -29,7 +29,7 @@
             <h1>Welcome To TwitWee</h1>
         </header>
 
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:fragment="navbar">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" th:fragment="navbar()">
             <a class="navbar-brand" href="#">TwitWee</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -50,6 +50,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/logout}">Log out</a>
+                    </li>
+                    <li class="nav-item justify-content-end">
+                        <a class="nav-link" href="#"><span th:text="'Logged in as ' + ${name}"></span></a>
                     </li>    
                 </ul>
             </div>  

@@ -12,7 +12,7 @@
     </head>
     <body>
 
-        <div th:replace="fragments/layout :: navbar"></div>
+        <div th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></div>
 
         <div class="container" style="margin-top:30px">
             <h3>My posts:</h3>
@@ -21,9 +21,15 @@
             </div>
 
             <div class="container" th:each="message: ${messages}" style="margin-top:30px">
-
                 <div class="media border p-3">
-                    <img th:src="@{/myAlbum/{id}(id=${user.profilePic.id})}" alt="ProfilePic" class="mr-3 mt-3 rounded-circle" style="width:50px;">
+                    
+                    <div th:if="${user.profilePic == null}">
+                        <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" style="width:50px;">
+                    </div>
+                    <div th:unless="${user.profilePic == null}">
+                        <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${user.profilePic.id})}" alt="profilePic" tyle="width:50px;">
+                    </div>
+
                     
                     <div class="media-body" >
                         <h5 th:text="${message.user.firstname} + ' ' + ${message.user.familyname}"></h5>

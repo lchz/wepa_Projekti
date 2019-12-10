@@ -12,7 +12,7 @@
     </head>
     <body>
 
-        <div th:replace="fragments/layout :: navbar"></div>
+        <div th:replace="fragments/layout :: navbar(name=${person.firstname} + ' ' + ${person.familyname})"></div>
 
         <span th:text="${user.firstname} + ' ' + ${user.familyname}">etunimi</span>
         </br><br>

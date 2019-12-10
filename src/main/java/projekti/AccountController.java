@@ -61,6 +61,7 @@ public class AccountController {
     @GetMapping("/profile/{signal}")
     public String goToVisit(Model model, @PathVariable String signal) {
         
+        model.addAttribute("person", this.accountService.getUser());
         model.addAttribute("user", this.accountService.getUser(signal));
         model.addAttribute("messages", this.accountService.getMessages(signal));
         model.addAttribute("followings", this.accountService.getFollowings());
