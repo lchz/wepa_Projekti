@@ -16,20 +16,11 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account extends AbstractPersistable<Long> {
-    @NotEmpty
+    
     private String firstname;
-    
-    @NotEmpty
     private String familyname;
-    
-    @NotEmpty
     private String username;
-    
-    @NotEmpty
     private String password;
-    
-    @NotEmpty
-    @Size(min=4, max=20)
     private String signal;
     
     @OneToOne

@@ -29,25 +29,24 @@ public class RegisterController {
 
     @PostMapping("/register")
     @Transactional
-    public String register(@Valid @ModelAttribute Account account, BindingResult bindingResult, Model model) {
+    public String register(@ModelAttribute Account account, Model model) {
         
         String result = this.registrationService.newRegistration(account);
-        
-        if (bindingResult.hasErrors()) {
-            return "register";
-        }
         
         if (result.contains("Username")) {
             model.addAttribute("unique", result);
             return "register";
         }
         
-        if (result.contains("string")) {
+        if (result.contains("This string has already existed!")) {
             model.addAttribute("signalUnique", result);
             return "register";
         }
-
         
+        if(result.contains("Length")) {
+            model.addAttribute("signalLength", result);
+            return "register";
+        }
 
         return "redirect:/register";
 

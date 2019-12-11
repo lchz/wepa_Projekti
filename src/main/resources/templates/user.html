@@ -11,155 +11,99 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div th:replace="fragments/layout :: header"></div>
+        <header th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></header>
 
-        <div th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></div>
+        <main class="mt-5">
+            <div class="container" style="margin-top:100px">
+                <div class="row"> 
+                    <div class="col-sm-4">
+                        <div th:replace="fragments/layout :: aboutMe"></div>
 
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a href="#following" data-toggle="collapse">
+                                    <div class="container"><h5><small><span th:text="'Follow ' + ${followings.size()}">how many</span></small></h5></div>
+                                </a>
+                            </li>
+                            <div id="following" class="collapse"><br>
+                                <div class="container"><h5>Following: </h5></div>
+                                <ul class="list-group list-group-flush" th:fragment="following">
+                                    <li class="list-group-item" th:each="f : ${followings}">
+                                        <a th:href="@{/profile/{signal}(signal=${f.signal})}">
+                                            <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                        </a>
+                                        <i th:text="'Started from ' +  ${f.time}"></i>
+                                        <form th:action="@{/myWall/deleteFollowing/{followingId}(followingId=${f.following})}" method="POST">
+                                            <input type="submit" value="Cancel following" />
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
 
-        <div class="container" style="margin-top:30px">
-            <div class="row"> 
-                <div class="col-sm-4">
-                    <div th:replace="fragments/layout :: aboutMe"></div>
+                            <li class="nav-item">
+                                <a href="#follower" data-toggle="collapse">
+                                    <div class="container"><h5><small><span th:text="'Followers ' + ${followers.size()}">how many</span></small></h5></div>
+                                </a>
+                            </li>
+                            <div id="follower" class="collapse"><br>
+                                <div class="container"><h5>Follower: </h5></div>
+                                <ul class="list-group list-group-flush" th:fragment="follower">
+                                    <li class="list-group-item" th:each="f : ${followers}">
+                                        <a th:href="@{/profile/{signal}(signal=${f.signal})}">
+                                            <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                        </a>
+                                        <i th:text="'Started from ' +  ${f.time}"></i>
+                                        <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST">
+                                            <input type="submit" value="Block" />
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
 
-                    <ul class="nav nav-pills flex-column">
-                        <li class="nav-item">
-                            <a href="#following" data-toggle="collapse">
-                                <div class="container"><h5><small><span th:text="'Follow ' + ${followings.size()}">how many</span></small></h5></div>
-                            </a>
-                        </li>
-                        <div id="following" class="collapse"><br>
-                            <div class="container"><h5>Following: </h5></div>
-                            <ul class="list-group list-group-flush" th:fragment="following">
-                                <li class="list-group-item" th:each="f : ${followings}">
-                                    <a th:href="@{/profile/{signal}(signal=${f.signal})}">
-                                        <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
-                                    </a>
-                                    <i th:text="'Started from ' +  ${f.time}"></i>
-                                    <form th:action="@{/myWall/deleteFollowing/{followingId}(followingId=${f.following})}" method="POST">
-                                        <input type="submit" value="Cancel following" />
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
+                        </ul>
 
-                        <li class="nav-item">
-                            <a href="#follower" data-toggle="collapse">
-                                <div class="container"><h5><small><span th:text="'Followers ' + ${followers.size()}">how many</span></small></h5></div>
-                            </a>
-                        </li>
-                        <div id="follower" class="collapse"><br>
-                            <div class="container"><h5>Follower: </h5></div>
-                            <ul class="list-group list-group-flush" th:fragment="follower">
-                                <li class="list-group-item" th:each="f : ${followers}">
-                                    <a th:href="@{/profile/{signal}(signal=${f.signal})}">
-                                        <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
-                                    </a>
-                                    <i th:text="'Started from ' +  ${f.time}"></i>
-                                    <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST">
-                                        <input type="submit" value="Block" />
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </ul>
-
-                </div>
-
-
-                <div class="col-8">
-                    <h2>New post</h2>
-                    <form th:action="@{/myWall}" method="POST" >
-                        <input type="text" name="content" placeholder="New message..." /> 
-                        <span th:if="${error != null}" class="text-danger" th:text="${error}">messageEmpty error</span><br><br>
-                        <input type="submit" value="Post" />
-                    </form><br><br>
-
-                    <h2>Posts</h2>
-                    <div th:unless="${msgFList.empty}">
-
-                        <div class="container mt-3" style="margin-top:30px">
-                            <div class="media border p-3" th:each="message : ${msgFList}">
-                                
-                                <div th:if="${message.writer.profilePic == null}">
-                                    <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="50px;">
-                                </div>
-                                <div th:unless="${message.writer.profilePic == null}">
-                                    <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${message.writer.profilePic.id})}" alt="profilePic" width="70px;" height="70">
-                                </div>
-                                
-                                <!--<div th:replace="fragments/layout :: image"></div>-->
-                                <div class="media-body" >
-                                    <div th:replace="fragments/layout :: mediaBody"></div>
-
-                                    <form th:action="@{/myWall/likes/{messageId}(messageId=${message.messageIdentity})}" method="POST">
-                                        <input type="submit" value="Like!" /> <span th:text="${message.likes} + ' likes'">likes</span>
-                                    </form>
-
-                                    <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${message.messageIdentity}, signal=${user.signal})}">Comments </a>
-
-                                </div>
-                        </div>
                     </div>
 
-<!--                    <h2>Posts</h2>
-                    <div th:unless="${msgFList.empty}">
 
-                        <div th:each="msgF : ${msgFList}">
-                            <table class="table table-hover">
-                                <thead>
-                                <th><span th:text="${msgF.writerFirstname} + ' ' + ${msgF.writerFamilyname}">message writer</span></th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="container">
-                                                <span th:text="${msgF.content}">msgF content</span><br>
-                                                <p th:text="${msgF.time}">time</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>       
+                    <div class="col-8">
+                        <h2>New post</h2>
+                        <form th:action="@{/myWall}" method="POST" >
+                            <input type="text" name="content" placeholder="New message..." /> 
+                            <span th:if="${error != null}" class="text-danger" th:text="${error}">messageEmpty error</span><br><br>
+                            <input type="submit" value="Post" />
+                        </form><br><br>
+
+                        <h2>Posts</h2>
+                        <div th:unless="${msgFList.empty}">
+
+                            <div class="container mt-3" style="margin-top:30px">
+                                <div class="media border p-3" th:each="message : ${msgFList}">
+
+                                    <div th:if="${message.writer.profilePic == null}">
+                                        <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="50px;">
+                                    </div>
+                                    <div th:unless="${message.writer.profilePic == null}">
+                                        <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${message.writer.profilePic.id})}" alt="profilePic" width="70px;" height="70">
+                                    </div>
+
+                                    <div class="media-body" >
+                                        <div th:replace="fragments/layout :: mediaBody"></div>
+
+                                        <form th:action="@{/myWall/likes/{messageId}(messageId=${message.messageIdentity})}" method="POST">
+                                            <button type="submit" class="btn btn-outline-success">Like!</button>
+                                            <span th:text="${message.likes} + ' likes'">likes</span>
+                                        </form>
+
+                                        <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${message.messageIdentity}, signal=${user.signal})}">Comments </a>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
-                    </div>-->
-
+                    </div>
                 </div>
             </div>
-        </div>
-
-
-
-        ===================================================
-
-
-        <ul>
-            <li th:each="f : ${followings}">
-                Name: <a th:href="@{/profile/{signal}(signal=${f.signal})}"> <span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span></a><br>
-                Time: <span th:text="${f.time}">date</span> <br>
-                <form th:action="@{/myWall/deleteFollowing/{followingId}(followingId=${f.following})}" method="POST">
-                    <input type="submit" value="Cancel following" />
-                </form>
-            </li>
-        </ul>
-
-        Followers <span th:text="${followers.size()}">how many</span>:
-        <div th:if="${followers.size() == 0}">
-            <p>You have no followers yet. Get to know more people!</p>
-        </div>
-
-        <ul>
-            <li th:each="f : ${followers}">
-                <span th:unless="${f.follower == user.id}">
-                    Name: <a th:href="@{/profile/{signal}(signal=${f.signal})}"><span th:text="${f.firstname} + ' ' + ${f.familyname}">name</span></a> <br>
-                    Time: <span th:text="${f.time}">date</span> <br>
-                    <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST">
-                        <input type="submit" value="Block" />
-                    </form>
-                </span>
-            </li><br><br>
-        </ul>
+        </main>
 
     </body>
 </html>

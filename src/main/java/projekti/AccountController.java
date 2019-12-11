@@ -53,14 +53,32 @@ public class AccountController {
     // like a message
     @PostMapping("/myWall/likes/{messageId}")
     @Transactional
-    public String addALike(@PathVariable Long messageId) {
+    public String addLikesFromMyWall(@PathVariable Long messageId) {
         
         this.thumbService.addLike(messageId);
         return "redirect:/myWall";
         
     }
+    
+    @PostMapping("/profile/{signal}/likes/{messageId}")
+    @Transactional
+    public String addLikesFromProfile(@PathVariable Long messageId, @PathVariable String signal) {
+        
+        this.thumbService.addLike(messageId);
+        return "redirect:/profile/" + signal;
+        
+    }
+    
+    @PostMapping("/myPosts/likes/{messageId}")
+    @Transactional
+    public String addLikesFromMyPosts(@PathVariable Long messageId) {
+        
+        this.thumbService.addLike(messageId);
+        return "redirect:/myPosts";
+        
+    }
 
-    // to other's wall
+    // to signal's wall
     @GetMapping("/profile/{signal}")
     public String goToVisit(Model model, @PathVariable String signal) {
         

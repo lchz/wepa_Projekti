@@ -42,7 +42,7 @@ public class CommentController {
 
         if (comment.isEmpty()) {
             this.error = "The field must not be empty!";
-            return "redirect:/myWall/messages/" + messageId + "/comments";
+            return "redirect:/myWall/messages/" + messageId + "/comments/" + signal;
         }
 
         this.commentService.postComment(comment, messageId);

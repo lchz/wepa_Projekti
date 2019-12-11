@@ -5,42 +5,60 @@
         <title>Register</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <form th:action="@{/register}" th:object="${account}" method="POST">
-            <table>
-                <tr>
-                    <td>Username:</td>
-                    <td><input type="text" th:field="*{username}" /></td>
-                    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username errors</td>
-                    <td th:if="${unique != null}" th:text="${unique}"></td>
-                </tr>
-                <tr>
-                    <td>First name:</td>
-                    <td><input type="text" th:field="*{firstname}" /></td>
-                    <td th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}">firstname errors</td>
-                </tr>
-                <tr>
-                    <td>Family name:</td>
-                    <td><input type="text" th:field="*{familyname}" /></td>
-                    <td th:if="${#fields.hasErrors('familyname')}" th:errors="*{familyname}">familyname errors</td>
-                </tr>
-                <tr>
-                    <td>Password:</td>
-                    <td><input type="password" th:field="*{password}" /></td>
-                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password errors</td>
-                </tr>
-                <tr>
-                    <td>Set a string for finding your profile:</td>
-                    <td><input type="text" th:field="*{signal}" /></td>
-                    <td th:if="${#fields.hasErrors('signal')}" th:errors="*{signal}">signal errors</td>
-                    <td th:if="${signalUnique != null}" th:text="${signalUnique}"></td>
-                </tr>
-                <tr>
-                    <td><input name="submit" type="submit" value="register" /></td>
-                </tr>
-            </table>
-        </form>
+        <main class="container" style="margin-top:30px">
+            
+            <form th:action="@{/register}" method="POST" class="justify-content-center">
+                <div class="mx-auto" style="width:900px;">
+                    <div class="mb-4">
+                        <h1 >Register</h1>
+                    </div>
+                
+                    <div class="form-group row">
+                        <label for="username" class="col-2 col-form-label">Username:</label>
+                        <div class="col-5">
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required />
+                            <span th:if="${unique != null}" class="text-danger" th:text="${unique}"></span>
+                        </div>
+                    </div>
+                
+                    <div class="form-group row">
+                        <label for="firstname" class="col-2 col-form-label">First name:</label>
+                        <div class="col-5">
+                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter first name" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="familyname" class="col-2 col-form-label">Family name:</label>
+                        <div class="col-5">
+                            <input type="text" name="familyname" id="familyname" class="form-control" placeholder="Enter family name" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="psw" class="col-2 col-form-label">Password:</label>
+                        <div class="col-5">
+                            <input type="password" name="password" id="psw" class="form-control" placeholder="Enter password" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="signal" class="col-2 col-form-label">String:</label>
+                        <div class="col-5">
+                            <input type="text" name="signal" id="signal" class="form-control" placeholder="Set a string for you profile" required />
+                            <span th:if="${signalUnique != null}" class="text-danger" th:text="${signalUnique}"></span>
+                            <span th:if="${signalLength != null}" class="text-danger" th:text="${signalLength}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <button class="btn btn-primary" type="submit">Register</button>
+                    </div>
+                </div>
+            </form>
+        </main>
 
         <ol>
             <li th:each="account : ${accounts}">
@@ -49,7 +67,5 @@
         </ol><br><br>
 
         <a th:href="@{/login}" >Log in</a>
-        <!--            <input type="submit" value="Log in" />
-                </form>-->
     </body>
 </html>

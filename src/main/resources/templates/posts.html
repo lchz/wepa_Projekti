@@ -12,13 +12,28 @@
     </head>
     <body>
 
-        <div th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></div>
+        <header th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></header>
 
-        <div class="container" style="margin-top:30px">
+        <main style="margin-top:100px">
             <div class="container">
-                <h2>My posts:</h2>
+                <div class="container">
+                    <h2>My posts:</h2>
+                </div>
+
+                <div class="container mt-3">
+                    <div class="media border p-3" th:each="message: ${messages}">
+                        <div th:replace="fragments/layout :: image">Media body ibtn-smallmage</div>
+                        <div class="media-body" >
+                            <div th:replace="fragments/layout :: mediaBodyWithoutLike">media body without like</div>
+                            <form th:action="@{/myPosts/likes/{messageId}(messageId=${message.id})}" method="POST">
+                                <button type="submit" class="btn btn-outline-success">Like!</button> 
+                                <span th:text="${message.likes.size()} + ' likes'">likes</span>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div th:replace="fragments/layout :: posts"></div>
-        </div>
+        </main>
     </body>
 </html>
