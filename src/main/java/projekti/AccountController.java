@@ -73,7 +73,6 @@ public class AccountController {
         model.addAttribute("pictures", this.albumService.getPictures(signal));
         model.addAttribute("followings", this.accountService.getFollowings());
         model.addAttribute("followers", this.accountService.getFollowers());
-//        model.addAttribute("msgFList", this.accountService.getFollowingMessages());
 
         return "visit";
     }
@@ -83,16 +82,10 @@ public class AccountController {
         
         Account user = this.accountService.getUser();
         
-//        model.addAttribute("signal", user.getSignal());
+        model.addAttribute("signal", user.getSignal());
         model.addAttribute("user", this.accountService.getUser());
         model.addAttribute("messages", this.accountService.getMessages(this.accountService.getUser().getSignal()));
         return "posts";
         
     }
-    
-    // to my profile
-//    @GetMapping("/boot")
-//    public String goToProfile() {
-//        return "bootstrap";
-//    }
 }

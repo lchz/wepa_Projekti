@@ -84,13 +84,23 @@ public class AccountService {
         
         user = this.getUser();
         
-//        Message m = new Message();
         message.setComments(new ArrayList<>());
         message.setTime(LocalDateTime.now());
         message.setUser(user);
         this.messageRepository.save(message);
+        
+        FollowingMessage myMessage = new FollowingMessage();
+        myMessage.setContent(message.getContent());
+        myMessage.setTime(message.getTime());
+        myMessage.setWriterIdentity(user.getId());
+        myMessage.setWriterFamilyname(user.getFamilyname());
+        myMessage.setWriterFirstname(user.getFirstname());
+        myMessage.setMessageIdentity(message.getId());
+        myMessage.setLikes(0);
+        myMessage.setWithPic(false);
+        myMessage.setUser(user);
+        this.msgFRepository.save(myMessage);
 
-//        List<Followership>
         for (Followership f : user.getFollowers()) {
             FollowingMessage msgF = new FollowingMessage();
             msgF.setContent(message.getContent());
@@ -104,6 +114,7 @@ public class AccountService {
 
             Account person = this.userRepository.getOne(f.getFollower());
             msgF.setUser(person);
+            
             this.msgFRepository.save(msgF);
         }
 

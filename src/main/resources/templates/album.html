@@ -40,7 +40,7 @@
                         <input type="submit" value="Like!" /> <span th:text="${p.message.likes.size()} + ' likes'">likes</span>
                     </form>
 
-                    <a th:href="@{/myAlbum/messages/{messageId}/comments/(messageId=${p.message.id})}">Comments</a>
+                    <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${p.message.id}, signal=${user.signal})}">Comments</a>
                 </li>
             </ul>
             

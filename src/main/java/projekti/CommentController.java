@@ -36,23 +36,9 @@ public class CommentController {
 
         return "comment";
     }
-    
-    @GetMapping("/myWall/messages/{messageId}/comments")
-    public String showCommentsWithoutSignal(Model model, @PathVariable Long messageId) {
 
-        Account user = this.accountService.getUser();
-        
-        model.addAttribute("user", user);
-        model.addAttribute("comments", this.commentService.showComments(messageId));
-        model.addAttribute("messageId", messageId);
-        model.addAttribute("error", error);
-        error="";
-
-        return "comment";
-    }
-
-    @PostMapping("/myWall/messages/{messageId}/comments")
-    public String postCommentToOthers(@RequestParam String comment, @PathVariable Long messageId, Model model) {
+    @PostMapping("/myWall/messages/{messageId}/comments/{signal}")
+    public String postCommentToOthers(@RequestParam String comment, @PathVariable Long messageId, @PathVariable String signal, Model model) {
 
         if (comment.isEmpty()) {
             this.error = "The field must not be empty!";
@@ -60,6 +46,6 @@ public class CommentController {
         }
 
         this.commentService.postComment(comment, messageId);
-        return "redirect:/myWall/messages/" + messageId + "/comments";
+        return "redirect:/myWall/messages/" + messageId + "/comments/" + signal;
     }
 }

@@ -94,6 +94,8 @@ public class FollowingService {
 
         Followership follower = this.followershipRepository.findByUserAndFollower(person, user.getId());
         this.followershipRepository.delete(follower);
+        
+        this.msgFRepository.deleteByUser(user);
     }
 
     public void deleteFollowership(Long followerId) {
@@ -105,6 +107,8 @@ public class FollowingService {
 
         Followingship f = this.followingshipRepository.findByUserAndFollowing(person, user.getId());
         this.followingshipRepository.delete(f);
+        
+        this.msgFRepository.deleteByUser(person);
     }
 
 }

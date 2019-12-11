@@ -36,19 +36,6 @@ public class RegistrationService {
         account.setPassword(this.passwordEncoder.encode(account.getPassword()));
         this.accountRepository.save(account);
         
-        Followership f = new Followership();
-        f.setUser(account);
-        f.setFamilyname(account.getFamilyname());
-        f.setFirstname(account.getFirstname());
-        f.setFollower(account.getId());
-        f.setTime(LocalDateTime.now());
-        f.setUsername(account.getUsername());
-        
-        account.getFollowers().add(f);
-
-        this.followershipRepository.save(f);
-        this.accountRepository.save(account);
-        
         return "";
         
     }

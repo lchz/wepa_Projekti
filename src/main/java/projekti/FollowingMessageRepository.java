@@ -10,4 +10,5 @@ public interface FollowingMessageRepository extends JpaRepository<FollowingMessa
     List<FollowingMessage> findByUser(Account user, Pageable page);
     List<FollowingMessage> findByMessageIdentity(Long messageId);
     void deleteByMessageIdentity(Long messageId);
+    void deleteByUser(Account user);
 }

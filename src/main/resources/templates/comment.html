@@ -19,7 +19,7 @@
         
         </div>
         <div class="container" style="margin-top:30px">
-            <form th:action="@{/myWall/messages/{messageId}/comments(messageId=${messageId})}" method="POST">
+            <form th:action="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${messageId}, signal=${signal})}" method="POST">
                 <table>
                     <tr>
                         <td><input type="text" name ="comment" placeholder="Add a comment..." /></td>

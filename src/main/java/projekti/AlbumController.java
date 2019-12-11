@@ -19,8 +19,6 @@ public class AlbumController {
     private AlbumService albumService;
     @Autowired
     private ThumbService thumbService;
-    @Autowired
-    private CommentService commentService;
     private String error;
     
 
@@ -54,7 +52,6 @@ public class AlbumController {
         return "redirect:/myAlbum";
         
     }
-    
 
     // show every pic
     @GetMapping(path = "/myAlbum/{id}", produces = "image/*")
@@ -63,27 +60,6 @@ public class AlbumController {
         
         return this.albumService.viewPic(id);
 
-    }
-
-    // add comment to a pic
-    @PostMapping("/myAlbum/messages/{messageId}/comments")
-    @Transactional
-    public String addComment(@PathVariable Long messageId,@RequestParam String comment) {
-        
-        this.commentService.postComment(comment, messageId);
-        return "redirect:comment";
-        
-    }
-
-    // show comments of the pic
-    @GetMapping("/myAlbum/messages/{messageId}/comments")
-    public String showComments(Model model, @PathVariable Long messageId) {
-
-        model.addAttribute("user", this.accountService.getUser());
-        model.addAttribute("comments", this.commentService.showComments(messageId));
-        model.addAttribute("messageId", messageId);
-        return "comment";
-        
     }
     
     // like a pic on Album page

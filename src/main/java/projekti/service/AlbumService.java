@@ -74,6 +74,18 @@ public class AlbumService {
 
         user.getPicAlbum().add(pi);
         this.userRepository.save(user);
+        
+        FollowingMessage myPic = new FollowingMessage();
+        myPic.setContent(m.getContent());
+        myPic.setTime(m.getTime());
+        myPic.setWriterIdentity(user.getId());
+        myPic.setWriterFamilyname(user.getFamilyname());
+        myPic.setWriterFirstname(user.getFirstname());
+        myPic.setMessageIdentity(m.getId());
+        myPic.setLikes(0);
+        myPic.setWithPic(true);
+        myPic.setUser(user);
+        this.msgFRepository.save(myPic);
 
         List<FollowingMessage> userMsgF = new ArrayList<>();
         for (Followership f : user.getFollowers()) {

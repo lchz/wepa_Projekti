@@ -18,8 +18,55 @@
 
         <div class="container" style="margin-top:30px">
             <div class="row"> 
-                
-                <div th:replace="fragments/layout :: aboutMe"></div>
+                <div class="col-sm-4">
+                    <div th:replace="fragments/layout :: aboutMe"></div>
+
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a href="#following" data-toggle="collapse">
+                                <div class="container"><h5><small><span th:text="'Follow ' + ${followings.size()}">how many</span></small></h5></div>
+                            </a>
+                        </li>
+                        <div id="following" class="collapse"><br>
+                            <div class="container"><h5>Following: </h5></div>
+                            <ul class="list-group list-group-flush" th:fragment="following">
+                                <li class="list-group-item" th:each="f : ${followings}">
+                                    <a th:href="@{/profile/{signal}(signal=${f.signal})}">
+                                        <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                    </a>
+                                    <i th:text="'Started from ' +  ${f.time}"></i>
+                                    <form th:action="@{/myWall/deleteFollowing/{followingId}(followingId=${f.following})}" method="POST">
+                                        <input type="submit" value="Cancel following" />
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <li class="nav-item">
+                            <a href="#follower" data-toggle="collapse">
+                                <div class="container"><h5><small><span th:text="'Followers ' + ${followers.size()}">how many</span></small></h5></div>
+                            </a>
+                        </li>
+                        <div id="follower" class="collapse"><br>
+                            <div class="container"><h5>Follower: </h5></div>
+                            <ul class="list-group list-group-flush" th:fragment="follower">
+                                <li class="list-group-item" th:each="f : ${followers}">
+                                    <a th:href="@{/profile/{signal}(signal=${f.signal})}">
+                                        <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                    </a>
+                                    <i th:text="'Started from ' +  ${f.time}"></i>
+                                    <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST">
+                                        <input type="submit" value="Block" />
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </ul>
+
+                </div>
+
+
 
                 <div class="col-8">
                     <h2>New post</h2>
@@ -47,7 +94,7 @@
                                                     <input type="submit" value="Like!" /> <span th:text="${msgF.likes} + ' likes'">likes</span>
                                                 </form>
 
-                                                <a th:href="@{/myWall/messages/{messageId}/comments(messageId=${msgF.messageIdentity})}">Comments </a>
+                                                <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${msgF.messageIdentity}, signal=${user.signal})}">Comments </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -64,13 +111,6 @@
 
 
 
-
-        <br><br>
-
-        Following <span th:text="${followings.size()}">how many</span>:
-        <div th:if="${followings.size() == 0}">
-            <p>Start to follow!</p>
-        </div>
 
         <ul>
             <li th:each="f : ${followings}">
