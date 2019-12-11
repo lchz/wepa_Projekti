@@ -30,8 +30,12 @@ public class RegisterController {
     @PostMapping("/register")
     @Transactional
     public String register(@Valid @ModelAttribute Account account, BindingResult bindingResult, Model model) {
-
+        
         String result = this.registrationService.newRegistration(account);
+        
+        if (bindingResult.hasErrors()) {
+            return "register";
+        }
         
         if (result.contains("Username")) {
             model.addAttribute("unique", result);
@@ -43,9 +47,7 @@ public class RegisterController {
             return "register";
         }
 
-        if (bindingResult.hasErrors()) {
-            return "register";
-        }
+        
 
         return "redirect:/register";
 

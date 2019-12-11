@@ -51,16 +51,12 @@ public class FollowingService {
                 FollowingMessage msgF = new FollowingMessage();
                 msgF.setContent(m.getContent());
                 msgF.setTime(m.getTime());
-                msgF.setWriterIdentity(personId);
-                msgF.setWriterFamilyname(person.getFamilyname());
-                msgF.setWriterFirstname(person.getFirstname());
                 msgF.setUser(user);
                 msgF.setMessageIdentity(m.getId());
+                msgF.setWriter(person);
                 msgF.setLikes(m.getLikes().size());
                 if (m.getPicture() != null) {
-                    msgF.setWithPic(true);
-                } else {
-                    msgF.setWithPic(false);
+                    msgF.setPicture(m.getPicture());
                 }
 
                 user.getMsgF().add(msgF);
@@ -95,7 +91,7 @@ public class FollowingService {
         Followership follower = this.followershipRepository.findByUserAndFollower(person, user.getId());
         this.followershipRepository.delete(follower);
         
-        this.msgFRepository.deleteByUser(user);
+        this.msgFRepository.deleteByUserAndWriter(user, person);
     }
 
     public void deleteFollowership(Long followerId) {
@@ -108,7 +104,7 @@ public class FollowingService {
         Followingship f = this.followingshipRepository.findByUserAndFollowing(person, user.getId());
         this.followingshipRepository.delete(f);
         
-        this.msgFRepository.deleteByUser(person);
+        this.msgFRepository.deleteByUserAndWriter(person, user);
     }
 
 }

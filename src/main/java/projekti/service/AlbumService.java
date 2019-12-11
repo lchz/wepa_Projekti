@@ -3,12 +3,8 @@ package projekti.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -78,26 +74,21 @@ public class AlbumService {
         FollowingMessage myPic = new FollowingMessage();
         myPic.setContent(m.getContent());
         myPic.setTime(m.getTime());
-        myPic.setWriterIdentity(user.getId());
-        myPic.setWriterFamilyname(user.getFamilyname());
-        myPic.setWriterFirstname(user.getFirstname());
         myPic.setMessageIdentity(m.getId());
         myPic.setLikes(0);
-        myPic.setWithPic(true);
+        myPic.setPicture(m.getPicture());
         myPic.setUser(user);
+        myPic.setWriter(user);
         this.msgFRepository.save(myPic);
 
-        List<FollowingMessage> userMsgF = new ArrayList<>();
         for (Followership f : user.getFollowers()) {
             FollowingMessage msgF = new FollowingMessage();
             msgF.setContent(m.getContent());
             msgF.setTime(m.getTime());
-            msgF.setWriterIdentity(user.getId());
-            msgF.setWriterFamilyname(user.getFamilyname());
-            msgF.setWriterFirstname(user.getFirstname());
             msgF.setMessageIdentity(m.getId());
             msgF.setLikes(0);
-            msgF.setWithPic(true);
+            msgF.setPicture(m.getPicture());
+            msgF.setWriter(user);
 
             Account person = this.userRepository.getOne(f.getFollower());
             msgF.setUser(person);
@@ -153,6 +144,7 @@ public class AlbumService {
         
         Account user = this.accountService.getUser();
         user.setProfilePic(this.pictureRepository.getOne(picId));
+        this.userRepository.save(user);
         
     }
     

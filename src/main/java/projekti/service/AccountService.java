@@ -92,25 +92,19 @@ public class AccountService {
         FollowingMessage myMessage = new FollowingMessage();
         myMessage.setContent(message.getContent());
         myMessage.setTime(message.getTime());
-        myMessage.setWriterIdentity(user.getId());
-        myMessage.setWriterFamilyname(user.getFamilyname());
-        myMessage.setWriterFirstname(user.getFirstname());
         myMessage.setMessageIdentity(message.getId());
         myMessage.setLikes(0);
-        myMessage.setWithPic(false);
         myMessage.setUser(user);
+        myMessage.setWriter(user);
         this.msgFRepository.save(myMessage);
 
         for (Followership f : user.getFollowers()) {
             FollowingMessage msgF = new FollowingMessage();
             msgF.setContent(message.getContent());
             msgF.setTime(message.getTime());
-            msgF.setWriterIdentity(user.getId());
-            msgF.setWriterFamilyname(user.getFamilyname());
-            msgF.setWriterFirstname(user.getFirstname());
             msgF.setMessageIdentity(message.getId());
+            msgF.setWriter(user);
             msgF.setLikes(0);
-            msgF.setWithPic(false);
 
             Account person = this.userRepository.getOne(f.getFollower());
             msgF.setUser(person);

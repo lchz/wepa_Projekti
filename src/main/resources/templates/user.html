@@ -67,7 +67,6 @@
                 </div>
 
 
-
                 <div class="col-8">
                     <h2>New post</h2>
                     <form th:action="@{/myWall}" method="POST" >
@@ -77,6 +76,33 @@
                     </form><br><br>
 
                     <h2>Posts</h2>
+                    <div th:unless="${msgFList.empty}">
+
+                        <div class="container mt-3" style="margin-top:30px">
+                            <div class="media border p-3" th:each="message : ${msgFList}">
+                                
+                                <div th:if="${message.writer.profilePic == null}">
+                                    <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="50px;">
+                                </div>
+                                <div th:unless="${message.writer.profilePic == null}">
+                                    <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${message.writer.profilePic.id})}" alt="profilePic" width="70px;" height="70">
+                                </div>
+                                
+                                <!--<div th:replace="fragments/layout :: image"></div>-->
+                                <div class="media-body" >
+                                    <div th:replace="fragments/layout :: mediaBody"></div>
+
+                                    <form th:action="@{/myWall/likes/{messageId}(messageId=${message.messageIdentity})}" method="POST">
+                                        <input type="submit" value="Like!" /> <span th:text="${message.likes} + ' likes'">likes</span>
+                                    </form>
+
+                                    <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${message.messageIdentity}, signal=${user.signal})}">Comments </a>
+
+                                </div>
+                        </div>
+                    </div>
+
+<!--                    <h2>Posts</h2>
                     <div th:unless="${msgFList.empty}">
 
                         <div th:each="msgF : ${msgFList}">
@@ -90,11 +116,6 @@
                                             <div class="container">
                                                 <span th:text="${msgF.content}">msgF content</span><br>
                                                 <p th:text="${msgF.time}">time</p>
-                                                <form th:action="@{/myWall/likes/{messageId}(messageId=${msgF.messageIdentity})}" method="POST">
-                                                    <input type="submit" value="Like!" /> <span th:text="${msgF.likes} + ' likes'">likes</span>
-                                                </form>
-
-                                                <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${msgF.messageIdentity}, signal=${user.signal})}">Comments </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -102,7 +123,7 @@
                             </table>       
                         </div>
 
-                    </div>
+                    </div>-->
 
                 </div>
             </div>
@@ -110,6 +131,7 @@
 
 
 
+        ===================================================
 
 
         <ul>

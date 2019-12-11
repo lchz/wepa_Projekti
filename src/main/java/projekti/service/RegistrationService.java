@@ -25,6 +25,10 @@ public class RegistrationService {
     
     public String newRegistration(Account account) {
         
+//        if(account == null) {
+//            return
+//        }
+        
         if (this.accountRepository.findByUsername(account.getUsername()) != null) {
             return "Username has already existed!";
         }
