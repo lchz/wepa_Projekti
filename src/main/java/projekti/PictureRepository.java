@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PictureRepository extends JpaRepository<Picture, Long> {
 
+    List<Picture> findByUser(Account user, Pageable page);
     List<Picture> findByUser(Account user);
 
 }

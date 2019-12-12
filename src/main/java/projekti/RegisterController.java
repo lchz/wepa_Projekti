@@ -1,12 +1,10 @@
 package projekti;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,11 +19,6 @@ public class RegisterController {
     @Autowired
     private RegistrationService registrationService;
     
-
-    @ModelAttribute
-    private Account getAccount() {
-        return new Account();
-    }
 
     @PostMapping("/register")
     @Transactional
@@ -48,7 +41,7 @@ public class RegisterController {
             return "register";
         }
 
-        return "redirect:/register";
+        return "redirect:/login";
 
     }
 

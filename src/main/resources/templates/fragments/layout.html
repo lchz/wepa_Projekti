@@ -12,9 +12,6 @@
 
     <body>
 
-<!--        <header class="jumbotron text-center" style="margin-bottom:0" th:fragment="header">
-            <h1>Welcome To TwitWee</h1>
-        </header>-->
         <header>
             <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top" th:fragment="navbar(name)">
                 <a class="navbar-brand" href="#">TwitWee</a>
@@ -98,7 +95,7 @@
                         <div th:fragment="mediaBodyWithoutLike">
                             <h5 th:text="${message.user.firstname} + ' ' + ${message.user.familyname}"></h5>
 
-                            <small><i th:text="'Posted on ' +  ${message.time}"></small></i>
+                            <small><i th:text="'Posted on ' +  ${#temporals.format(message.time, 'HH.mm dd.MM.yyy')}"></small></i>
 
                             <p th:text="${message.content}">message content</p> 
 
@@ -121,7 +118,7 @@
             <div th:fragment="mediaBody">
                 <h5 th:text="${message.writer.firstname} + ' ' + ${message.writer.familyname}"></h5>
 
-                <small><i th:text="'Posted on ' +  ${message.time}"></small></i>
+                <small><i th:text="'Posted on ' +  ${#temporals.format(message.time, 'HH.mm dd.MM.yyy')}"></i></small>
 
                 <p th:text="${message.content}">message content</p> 
 
@@ -131,10 +128,10 @@
             </div>
         </div>
 
-
-        ======================================================================
-        <div class="jumbotron text-center" style="margin-bottom:0">
-            <p>Footer</p>
+        <div class="container" th:fragment="footer">
+            <footer class="footer mt-auto py-3">
+                <small class="text-muted">TwitWee &copy; 2019</small>
+            </footer>
         </div>
 
     </body>

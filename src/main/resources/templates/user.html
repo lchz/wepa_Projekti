@@ -6,10 +6,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
+    
     <body>
         <header th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></header>
 
@@ -30,11 +28,11 @@
                                 <ul class="list-group list-group-flush" th:fragment="following">
                                     <li class="list-group-item" th:each="f : ${followings}">
                                         <a th:href="@{/profile/{signal}(signal=${f.signal})}">
-                                            <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                            <span th:text="${f.firstname} + ' ' + ${f.familyname}" style='margin-bottom: 20px'>name</span>
                                         </a>
-                                        <i th:text="'Started from ' +  ${f.time}"></i>
-                                        <form th:action="@{/myWall/deleteFollowing/{followingId}(followingId=${f.following})}" method="POST">
-                                            <input type="submit" value="Cancel following" />
+                                        <h6><small><i th:text="'Started from ' +  ${#temporals.format(f.time, 'HH.mm dd.MM.yyyy')}"></i></small></h6>
+                                        <form th:action="@{/myWall/deleteFollowing/{followingId}(followingId=${f.following})}" method="POST" style='margin-top: 20px'>
+                                            <button type="submit" class='btn btn-danger btn-sm'>Cancel</button>     
                                         </form>
                                     </li>
                                 </ul>
@@ -47,14 +45,14 @@
                             </li>
                             <div id="follower" class="collapse"><br>
                                 <div class="container"><h5>Follower: </h5></div>
-                                <ul class="list-group list-group-flush" th:fragment="follower">
+                                <ul class="list-group list-group-flush">
                                     <li class="list-group-item" th:each="f : ${followers}">
                                         <a th:href="@{/profile/{signal}(signal=${f.signal})}">
-                                            <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                            <span th:text="${f.firstname} + ' ' + ${f.familyname}" style='margin-bottom: 20px'>name</span>
                                         </a>
-                                        <i th:text="'Started from ' +  ${f.time}"></i>
-                                        <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST">
-                                            <input type="submit" value="Block" />
+                                        <h6><small><i th:text="'Started from ' +  ${#temporals.format(f.time, 'HH.mm dd.MM.yyyy')}"></i></small></h6>
+                                        <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST" style='margin-top: 20px'>
+                                            <button type="submit" class='btn btn-danger btn-sm'>Block</button>  
                                         </form>
                                     </li>
                                 </ul>
@@ -66,14 +64,15 @@
 
 
                     <div class="col-8">
-                        <h2>New post</h2>
-                        <form th:action="@{/myWall}" method="POST" >
-                            <input type="text" name="content" placeholder="New message..." /> 
-                            <span th:if="${error != null}" class="text-danger" th:text="${error}">messageEmpty error</span><br><br>
-                            <input type="submit" value="Post" />
+                        <h3 style="margin-bottom: 20px">New post</h3>
+                        
+                        <form th:action="@{/myWall}" method="POST" class="form-group" >
+                            <textarea class="form-control" name="content" rows="5" placeholder="New post..." style="margin-bottom: 20px"></textarea> 
+                            <span th:if="${error != null}" class="text-danger" th:text="${error}">messageEmpty error</span>
+                            <button type="submit" class="btn btn-primary btn-sm">Post</button>
                         </form><br><br>
 
-                        <h2>Posts</h2>
+                        <h3>Posts</h3>
                         <div th:unless="${msgFList.empty}">
 
                             <div class="container mt-3" style="margin-top:30px">
@@ -89,7 +88,7 @@
                                     <div class="media-body" >
                                         <div th:replace="fragments/layout :: mediaBody"></div>
 
-                                        <form th:action="@{/myWall/likes/{messageId}(messageId=${message.messageIdentity})}" method="POST">
+                                        <form th:action="@{/myWall/likes/{messageId}(messageId=${message.messageIdentity})}" method="POST" style="margin-top: 20px">
                                             <button type="submit" class="btn btn-outline-success">Like!</button>
                                             <span th:text="${message.likes} + ' likes'">likes</span>
                                         </form>
@@ -104,6 +103,8 @@
                 </div>
             </div>
         </main>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
 
     </body>
 </html>

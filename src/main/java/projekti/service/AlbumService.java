@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -101,7 +104,8 @@ public class AlbumService {
     // show the collection of pics and messages
     public List<Picture> getPictures(String signal) {
         Account user = this.accountService.getUser(signal);
-        return this.pictureRepository.findByUser(user);
+        Pageable page = PageRequest.of(0, 10, Sort.by("message.time").descending());
+        return this.pictureRepository.findByUser(user, page);
     
     }
 

@@ -6,66 +6,71 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" th:href="@{/public/signup.css}"/>
     </head>
     <body>
-        <main class="container" style="margin-top:30px">
-            
-            <form th:action="@{/register}" method="POST" class="justify-content-center">
-                <div class="mx-auto" style="width:900px;">
-                    <div class="mb-4">
-                        <h1 >Register</h1>
-                    </div>
-                
-                    <div class="form-group row">
-                        <label for="username" class="col-2 col-form-label">Username:</label>
-                        <div class="col-5">
-                            <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required />
-                            <span th:if="${unique != null}" class="text-danger" th:text="${unique}"></span>
-                        </div>
-                    </div>
-                
-                    <div class="form-group row">
-                        <label for="firstname" class="col-2 col-form-label">First name:</label>
-                        <div class="col-5">
-                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter first name" required />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="familyname" class="col-2 col-form-label">Family name:</label>
-                        <div class="col-5">
-                            <input type="text" name="familyname" id="familyname" class="form-control" placeholder="Enter family name" required />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="psw" class="col-2 col-form-label">Password:</label>
-                        <div class="col-5">
-                            <input type="password" name="password" id="psw" class="form-control" placeholder="Enter password" required />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="signal" class="col-2 col-form-label">String:</label>
-                        <div class="col-5">
-                            <input type="text" name="signal" id="signal" class="form-control" placeholder="Set a string for you profile" required />
-                            <span th:if="${signalUnique != null}" class="text-danger" th:text="${signalUnique}"></span>
-                            <span th:if="${signalLength != null}" class="text-danger" th:text="${signalLength}"></span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <button class="btn btn-primary" type="submit">Register</button>
-                    </div>
-                </div>
-            </form>
-        </main>
+        
+        <form th:action="@{/register}" method="POST" class="form-signup">
 
-        <ol>
+            <div class="text-center mb-4">
+                <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
+            </div>
+            
+            <div class="form-label-group row">
+                <label for="username" class="col-4 col-form-label">Username:</label>
+                <div class="col-8">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required />
+                    <span th:if="${unique != null}" class="text-danger" th:text="${unique}"></span>
+                </div>
+            </div>
+
+            <div class="form-label-group row">
+                <label for="firstname" class="col-4 col-form-label">First name:</label>
+                <div class="col-8">
+                    <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter first name" required />
+                </div>
+            </div>
+            
+            <div class="form-label-group row">
+                <label for="familyname" class="col-4 col-form-label">Family name:</label>
+                <div class="col-8">
+                    <input type="text" name="familyname" id="familyname" class="form-control" placeholder="Enter family name" required />
+                </div>
+            </div>
+            
+            <div class="form-label-group row">
+                <label for="psw" class="col-4 col-form-label">Password:</label>
+                <div class="col-8">
+                    <input type="password" name="password" id="psw" class="form-control" placeholder="Enter password" required />
+                </div>
+            </div>
+            
+            <div class="form-label-group row">
+                <label for="signal" class="col-4 col-form-label">String:</label>
+                <div class="col-8">
+                    <input type="text" name="signal" id="signal" class="form-control" placeholder="Set a string for you profile" required />
+                    <small id="stringHelpInline" class="text-muted col-4">
+                        Must be 4-20 characters long.
+                    </small>
+                    <p th:if="${signalUnique != null}" class="text-danger" th:text="${signalUnique}"></p>
+                    <p th:if="${signalLength != null}" class="text-danger" th:text="${signalLength}"></p>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button class="btn btn-primary" type="submit">Sign up</button>
+            </div>
+            
+        </form>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
+
+<!--        <ol>
             <li th:each="account : ${accounts}">
                 <span th:text="${account.username}">msg</span>
             </li>
         </ol><br><br>
 
-        <a th:href="@{/login}" >Log in</a>
+        <a th:href="@{/login}" >Log in</a>-->
     </body>
 </html>

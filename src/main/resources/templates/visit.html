@@ -29,12 +29,12 @@
                             </li>
                             <div id="following" class="collapse"><br>
                                 <div class="container"><h5>Following: </h5></div>
-                                <ul class="list-group list-group-flush" th:fragment="following">
+                                <ul class="list-group list-group-flush">
                                     <li class="list-group-item" th:each="f : ${followings}">
                                         <a th:href="@{/profile/{signal}(signal=${f.signal})}">
-                                            <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                            <span th:text="${f.firstname} + ' ' + ${f.familyname}" style='margin-bottom: 20px'>name</span>
                                         </a>
-                                        <i th:text="'Started from ' +  ${f.time}"></i>
+                                        <h6><small><i th:text="'Started from ' +  ${#temporals.format(f.time, 'HH.mm dd.MM.yyy')}"></i></small></h6>
                                     </li>
                                 </ul>
                             </div>
@@ -46,12 +46,12 @@
                             </li>
                             <div id="follower" class="collapse"><br>
                                 <div class="container"><h5>Follower: </h5></div>
-                                <ul class="list-group list-group-flush" th:fragment="follower">
+                                <ul class="list-group list-group-flush">
                                     <li class="list-group-item" th:each="f : ${followers}">
                                         <a th:href="@{/profile/{signal}(signal=${f.signal})}">
-                                            <p th:text="${f.firstname} + ' ' + ${f.familyname}">name</p>
+                                            <span th:text="${f.firstname} + ' ' + ${f.familyname}" style='margin-bottom: 20px'>name</span>
                                         </a>
-                                        <i th:text="'Started from ' +  ${f.time}"></i>
+                                        <h6><small><i th:text="'Started from ' +  ${#temporals.format(f.time, 'HH.mm dd.MM.yyy')}"></i></small></h6>
 
                                     </li>
                                 </ul>

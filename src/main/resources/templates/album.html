@@ -5,24 +5,24 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
+    
     <body>
 
         <header th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></header>
         
         <main style="margin-top:100px">
             <div class="container">
-                <div>
+                
+                <div style="margin-bottom: 20px">
                     <h3>New Picture</h3>
                 </div>
-                <form th:action="@{/myAlbum}" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="file" /> 
-                    <input type="text" name="text" placeholder="Add a description" /> 
-                    <input type="submit" value="Send!"/>
+                
+                <form th:action="@{/myAlbum}" method="POST" enctype="multipart/form-data" class="form-group">
+                    <input type="file" name="file"/> <br><br>
+                    <textarea class="form-control" name="text" rows="5" placeholder="Description" style="margin-bottom: 20px"></textarea>
                     <span th:if="${error != null}" class="text-danger" th:text="${error}">Error</span>
+                    <button type="submit" class="btn btn-primary btn-sm">Post</button>
                 </form>
 
                 <div class="container" style="margin-top:50px;">
@@ -36,7 +36,8 @@
                         </div>
 
                         <div class="media-body" >
-                            <p th:text="${p.message.content}">message of the pic</p>
+                            <span th:text="${p.message.content}" style="margin-bottom: 20px">message of the pic</span>
+                            <h6><small><i th:text="'Posted on ' + ${#temporals.format(p.message.time, 'dd.MM.yyy HH.mm')}"  style="margin-bottom: 20px"></i></small></h6>
                             <a th:href="@{/myAlbum/{pId}(pId=${p.id})}">
                                 <img class="img-fluid" alt="${p.name}" th:src="@{/myAlbum/{id}(id=${p.id})}" width = "200" height = "150">
                             </a><br><br>
@@ -60,5 +61,7 @@
 
             </div>
         </main>
+        
+        <footer th:replace="fragments/layout :: footer"></footer>
     </body>
 </html>

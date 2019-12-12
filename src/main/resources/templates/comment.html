@@ -6,28 +6,21 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
 
     <body>
 
         <header th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></header>
         <!--<a th:href="@{/profile/{signal}(signal=${signal})}">Back to visit</a>-->
-        
+
         <main style="margin-top:100px">
             <div class="container">
                 <h3>Add a comment</h3>
-                <form th:action="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${messageId}, signal=${signal})}" method="POST">
-                    <table>
-                        <tr>
-                            <td><input type="text" name ="comment" placeholder="Add a comment..." /></td>
-                            <td><input type="submit" value="Comment! " /></td>
-                            <td th:if="${error != null}" class="text-danger" th:text="${error}">commentEmpty error</td>
-                        </tr>
 
-                    </table>
+                <form th:action="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${messageId}, signal=${signal})}" method="POST" class="form-group" >
+                    <textarea class="form-control" name="comment" rows="3" placeholder="Add a comment..." style="margin-bottom: 20px"></textarea> 
+                    <span th:if="${error != null}" class="text-danger" th:text="${error}">commentEmpty error</span>
+                    <button type="submit" class="btn btn-primary btn-sm">Comment</button>
                 </form>
 
                 <div class="container" style="margin-top:30px">
@@ -49,7 +42,7 @@
                             <div class="media-body" >
                                 <h5 th:text="${c.writer.firstname} + ' ' + ${c.writer.familyname}">Comment writer</h5>
 
-                                <small><i th:text="'Posted on ' +  ${c.time}">time</small></i><br><br>
+                                <small><i th:text="'Posted on ' +  ${#temporals.format(c.time, 'HH.mm dd.MM.yyy')}">time</i></small><br><br>
 
                                 <p th:text="${c.content}">comment content</p> 
                             </div>
