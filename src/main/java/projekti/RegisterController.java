@@ -36,7 +36,7 @@ public class RegisterController {
             return "register";
         }
         
-        if(result.contains("Length")) {
+        if(result.contains("characters")) {
             model.addAttribute("signalLength", result);
             return "register";
         }

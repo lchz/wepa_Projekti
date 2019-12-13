@@ -1,15 +1,12 @@
 
 package projekti.service;
 
-import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import projekti.Account;
 import projekti.AccountRepository;
-import projekti.Followership;
-import projekti.FollowershipRepository;
 
 @Service
 @Profile({"production", "default"})
@@ -32,7 +29,7 @@ public class RegistrationService {
         }
         
         if(account.getSignal().length() < 4 || account.getSignal().length() > 20) {
-            return "String must be 4-20 characters loong";
+            return "String must be 4-20 characters long!";
         }
 
         account.setPassword(this.passwordEncoder.encode(account.getPassword()));

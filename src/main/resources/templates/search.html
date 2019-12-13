@@ -46,19 +46,17 @@
 
         <div class="container">
             <ul th:each="person : ${findings}">
-                <span th:text="${person.firstname}">etunimi</span>
-                <span th:text="${person.familyname}">sukunimi</span>
+                <span th:text="${person.firstname} + ' ' + ${person.familyname}">etunimi</span>
                 <span th:if="${person.id != user.id}">
                     <form th:action="@{/myWall/follow/{personId}(personId=${person.id})}" method="POST">
-                        <button type="submit" value="Follow" />
+                        <button type="submit" class="btn btn-success btn-sm">Follow</button>
                     </form>
                 </span>
             </ul>
             
             <ul th:each="person : ${followed}">
-                <span th:text="${person.firstname}">etunimi</span>
-                <span th:text="${person.familyname}">sukunimi</span>
-                <button type="button" disabled>Following</button>
+                <span th:text="${person.firstname} + ' ' + ${person.familyname}">etunimi</span>
+                <button type="button" class='btn btn-light btn-sm'>Following</button>
             </ul>
         </div>
 

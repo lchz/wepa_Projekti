@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import projekti.*;
 
-@Service
-@Profile({"production", "default"})
+@Service(value = "accountService")
+//@Profile({"production", "default"})
 public class AccountService {
 
     @Autowired
@@ -25,6 +26,7 @@ public class AccountService {
     private FollowingMessageRepository msgFRepository;
     
     private Account user;
+    
 
     public Account getUser() {
         
