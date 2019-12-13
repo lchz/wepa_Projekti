@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 
 <html>
-    <head th:replace="fragments/layout :: head">
-        <title>Posts</title>
+    <head>
+        <title>My Posts</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -26,7 +26,7 @@
                         <div class="media-body" >
                             <div th:replace="fragments/layout :: mediaBodyWithoutLike">media body without like</div>
                             <form th:action="@{/myPosts/likes/{messageId}(messageId=${message.id})}" method="POST">
-                                <button type="submit" class="btn btn-outline-success btn-sm">Like!</button> 
+                                <button type="submit" class="btn btn-outline-success btn-sm" id="likeButton">Like!</button> 
                                 <span th:text="${message.likes.size()} + ' likes'">likes</span>
                             </form>
                         </div>

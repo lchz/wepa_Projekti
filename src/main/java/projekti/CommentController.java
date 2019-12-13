@@ -12,7 +12,7 @@ import projekti.service.AccountService;
 import projekti.service.CommentService;
 
 @Controller
-@Profile({"production", "default"})
+@Profile({"production", "default", "test"})
 public class CommentController {
 
     @Autowired

@@ -9,7 +9,7 @@ import projekti.Account;
 import projekti.AccountRepository;
 
 @Service
-@Profile({"production", "default"})
+@Profile({"production", "default", "test"})
 public class RegistrationService {
     
     @Autowired

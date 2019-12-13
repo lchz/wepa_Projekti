@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 
 <html>
-    <head th:replace="fragments/layout :: head">
-        <title>TwitterWall</title>
+    <head>
+        <title>TwitWee Wall</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
     </head>
-    
+
     <body>
         <header th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></header>
 
@@ -19,7 +23,7 @@
 
                         <ul class="nav nav-pills flex-column">
                             <li class="nav-item">
-                                <a href="#following" data-toggle="collapse">
+                                <a href="#following" data-toggle="collapse" data-target='#following' id="followingToggle">
                                     <div class="container"><h5><small><span th:text="'Follow ' + ${followings.size()}">how many</span></small></h5></div>
                                 </a>
                             </li>
@@ -27,19 +31,19 @@
                                 <div class="container"><h5>Following: </h5></div>
                                 <ul class="list-group list-group-flush" th:fragment="following">
                                     <li class="list-group-item" th:each="f : ${followings}">
-                                        <a th:href="@{/profile/{signal}(signal=${f.signal})}">
+                                        <a th:href="@{/profile/{signal}(signal=${f.signal})}" id="visitFollowing">
                                             <span th:text="${f.firstname} + ' ' + ${f.familyname}" style='margin-bottom: 20px'>name</span>
                                         </a>
                                         <h6><small><i th:text="'Started from ' +  ${#temporals.format(f.time, 'HH.mm dd.MM.yyyy')}"></i></small></h6>
                                         <form th:action="@{/myWall/deleteFollowing/{followingId}(followingId=${f.following})}" method="POST" style='margin-top: 20px'>
-                                            <button type="submit" class='btn btn-danger btn-sm'>Cancel</button>     
+                                            <button type="submit" class='btn btn-danger btn-sm' id="cancelFollowingButton">Cancel</button>     
                                         </form>
                                     </li>
                                 </ul>
                             </div>
 
                             <li class="nav-item">
-                                <a href="#follower" data-toggle="collapse">
+                                <a href="#follower" data-toggle="collapse" data-target="#follower" id="followerToggle">
                                     <div class="container"><h5><small><span th:text="'Followers ' + ${followers.size()}">how many</span></small></h5></div>
                                 </a>
                             </li>
@@ -47,12 +51,12 @@
                                 <div class="container"><h5>Follower: </h5></div>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item" th:each="f : ${followers}">
-                                        <a th:href="@{/profile/{signal}(signal=${f.signal})}">
+                                        <a th:href="@{/profile/{signal}(signal=${f.signal})}" id="visitFollower">
                                             <span th:text="${f.firstname} + ' ' + ${f.familyname}" style='margin-bottom: 20px'>name</span>
                                         </a>
                                         <h6><small><i th:text="'Started from ' +  ${#temporals.format(f.time, 'HH.mm dd.MM.yyyy')}"></i></small></h6>
                                         <form th:action="@{/myWall/deleteFollower/{followerId}(followerId=${f.follower})}" method="POST" style='margin-top: 20px'>
-                                            <button type="submit" class='btn btn-danger btn-sm'>Block</button>  
+                                            <button type="submit" class='btn btn-danger btn-sm' id="blockFollowerButton">Block</button>  
                                         </form>
                                     </li>
                                 </ul>
@@ -65,8 +69,8 @@
 
                     <div class="col-8">
                         <h3 style="margin-bottom: 20px">New post</h3>
-                        
-                        <form th:action="@{/myWall}" method="POST" class="form-group" >
+
+                        <form th:action="@{/myWall}" method="POST" class="form-group" id="postForm">
                             <textarea class="form-control" name="content" rows="5" placeholder="New post..." style="margin-bottom: 20px"></textarea> 
                             <span th:if="${error != null}" class="text-danger" th:text="${error}">messageEmpty error</span>
                             <button type="submit" class="btn btn-primary btn-sm">Post</button>
@@ -85,16 +89,15 @@
                                         <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${message.writer.profilePic.id})}" alt="profilePic" width="70px;" height="70">
                                     </div>
 
-                                    <div class="media-body" >
+                                    <div class="media-body" id="myMessage" >
                                         <div th:replace="fragments/layout :: mediaBody"></div>
 
                                         <form th:action="@{/myWall/likes/{messageId}(messageId=${message.messageIdentity})}" method="POST" style="margin-top: 20px">
-                                            <button type="submit" class="btn btn-outline-success">Like!</button>
+                                            <button type="submit" class="btn btn-outline-success" id="messageButton">Like!</button>
                                             <span th:text="${message.likes} + ' likes'">likes</span>
                                         </form>
 
-                                        <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${message.messageIdentity}, signal=${user.signal})}">Comments </a>
-
+                                        <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${message.messageIdentity}, signal=${user.signal})}">Comments</a>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +106,7 @@
                 </div>
             </div>
         </main>
-        
+
         <footer th:replace="fragments/layout :: footer"></footer>
 
     </body>

@@ -11,7 +11,7 @@ import projekti.service.AccountService;
 import projekti.service.SearchService;
 
 @Controller
-@Profile({"production", "default"})
+@Profile({"production", "default", "test"})
 public class SearchController {
     
     @Autowired

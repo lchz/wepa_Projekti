@@ -6,7 +6,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-        <link rel="stylesheet" th:href="@{/public/signin.css}"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <!--<link rel="stylesheet" th:href="@{/public/signin.css}"/>-->
         <style>
             html,
             body {
@@ -14,7 +17,7 @@
             }
 
             .jumbotron {
-                background-color: #f4511e; /* Orange */
+                background-color: #f4511e;
                 color: #ffffff;
             }
 
@@ -38,56 +41,16 @@
             }
 
             .form-label-group > label {
-                position: absolute;
-                top: 0;
-                left: 0;
-                display: block;
                 width: 100%;
-                margin-bottom: 0; /* Override default `<label>` margin */
-                line-height: 1.5;
-                color: #495057;
-                pointer-events: none;
-                cursor: text; /* Match the input under the label */
-                border: 1px solid transparent;
-                border-radius: .25rem;
-                transition: all .1s ease-in-out;
             }
 
             .nav-item {
                 width: 100%;
                 text-align: center;
             }
-
-            .form-label-group input::-webkit-input-placeholder {
-                color: transparent;
-            }
-
-            .form-label-group input:-ms-input-placeholder {
-                color: transparent;
-            }
-
-            .form-label-group input::-ms-input-placeholder {
-                color: transparent;
-            }
-
-            .form-label-group input::-moz-placeholder {
-                color: transparent;
-            }
-
+            
             .form-label-group input::placeholder {
-                color: transparent;
-            }
-
-            .form-label-group input:not(:placeholder-shown) {
-                padding-top: 1.25rem;
-                padding-bottom: .25rem;
-            }
-
-            .form-label-group input:not(:placeholder-shown) ~ label {
-                padding-top: .25rem;
-                padding-bottom: .25rem;
-                font-size: 12px;
-                color: #777;
+                font-size: 16px;
             }
         </style>
     </head>
@@ -103,17 +66,21 @@
             </div>
 
             <div class="form-label-group row">
-                <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" required />
-                <label for="username" class="col-2 col-form-label">Username:</label>
+                <label for="username" class="col-4 col-form-label">Username:</label>
+                <div class="col-8">
+                    <input type="text" name="username" id="username"  placeholder="Enter username"  class="form-control" required />
+                </div>
             </div>
 
             <div class="form-label-group row">
-                <input type="password" name="password" id="psw" class="form-control" placeholder="Enter password" required />
-                <label for="psw" class="col-2 col-form-label">Password:</label>
+                <label for="psw" class="col-4 col-form-label">Password:</label>
+                <div class="col-8">
+                    <input type="password" name="password" id="psw"  placeholder="Enter password"  class="form-control" required />
+                </div>
             </div>
 
-            <div class="form-label-group row">
-                <button class="btn btn-primary btn-block" type="submit">Log in</button>
+            <div class="form-label-group row" style="margin-top: 40px">
+                <button class="btn btn-primary btn-block" type="submit">Sign in</button>
             </div>
 
             <div class="nav nav-pills row">

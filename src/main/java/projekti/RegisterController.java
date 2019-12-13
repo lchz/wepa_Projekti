@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import projekti.service.RegistrationService;
 
 @Controller
-@Profile({"production", "default"})
+@Profile({"production", "default", "test"})
 public class RegisterController {
 
     @Autowired

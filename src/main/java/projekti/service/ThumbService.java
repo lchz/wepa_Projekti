@@ -13,7 +13,7 @@ import projekti.ThumbUp;
 import projekti.ThumbUpRepository;
 
 @Service
-@Profile({"production", "default"})
+@Profile({"production", "default", "test"})
 public class ThumbService {
 
     @Autowired

@@ -10,7 +10,7 @@ import projekti.AccountRepository;
 import projekti.Followingship;
 
 @Service
-@Profile({"production", "default"})
+@Profile({"production", "default", "test"})
 public class SearchService {
 
     @Autowired

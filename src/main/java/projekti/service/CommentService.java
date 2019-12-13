@@ -16,7 +16,7 @@ import projekti.Message;
 import projekti.MessageRepository;
 
 @Service
-@Profile({"production", "default"})
+@Profile({"production", "default", "test"})
 public class CommentService {
     
     @Autowired

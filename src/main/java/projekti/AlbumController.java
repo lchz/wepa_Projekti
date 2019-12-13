@@ -3,6 +3,7 @@ package projekti;
 import java.io.IOException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import projekti.service.*;
 
 @Controller
+@Profile({"production", "default", "test"})
 public class AlbumController {
     
     @Autowired

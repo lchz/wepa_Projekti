@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-    <head th:replace="fragments/layout :: head">
+    <head>
         <title>Search</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +29,7 @@
                                         <label for="familyname" >Family name:</label> 
                                         <input class="form-control" type="text" name="familyname" />
                                     </div>
-                                    <button type="submit" class="btn btn-info">Search!</button>
+                                    <button type="submit" class="btn btn-info" id='searchButton'>Search!</button>
                                 </form>
                             </div>
                         </td>
@@ -49,7 +49,7 @@
                 <span th:text="${person.firstname} + ' ' + ${person.familyname}">etunimi</span>
                 <span th:if="${person.id != user.id}">
                     <form th:action="@{/myWall/follow/{personId}(personId=${person.id})}" method="POST">
-                        <button type="submit" class="btn btn-success btn-sm">Follow</button>
+                        <button type="submit" class="btn btn-success btn-sm" id='followButton'>Follow</button>
                     </form>
                 </span>
             </ul>

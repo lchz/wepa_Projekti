@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head th:replace="fragments/layout :: head">
+    <head>
         <title>Album</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,10 +19,10 @@
                 </div>
                 
                 <form th:action="@{/myAlbum}" method="POST" enctype="multipart/form-data" class="form-group">
-                    <input type="file" name="file"/> <br><br>
+                    <input type="file" name="file" id="inputPic"/> <br><br>
                     <textarea class="form-control" name="text" rows="5" placeholder="Description" style="margin-bottom: 20px"></textarea>
                     <span th:if="${error != null}" class="text-danger" th:text="${error}">Error</span>
-                    <button type="submit" class="btn btn-primary btn-sm">Post</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="fileButton">Post</button>
                 </form>
 
                 <div class="container" style="margin-top:50px;">
@@ -37,16 +37,16 @@
 
                         <div class="media-body" >
                             <span th:text="${p.message.content}" style="margin-bottom: 20px">message of the pic</span>
-                            <h6><small><i th:text="'Posted on ' + ${#temporals.format(p.message.time, 'dd.MM.yyy HH.mm')}"  style="margin-bottom: 20px"></i></small></h6>
+                            <h6><small><i th:text="'Posted on ' + ${#temporals.format(p.message.time, 'HH.mm dd.MM.yyy')}"  style="margin-bottom: 20px"></i></small></h6>
                             <a th:href="@{/myAlbum/{pId}(pId=${p.id})}">
                                 <img class="img-fluid" alt="${p.name}" th:src="@{/myAlbum/{id}(id=${p.id})}" width = "200" height = "150">
                             </a><br><br>
 
-                            <form th:action="@{/myAlbum/delete/{picId}(picId=${p.id})}" method="POST">
-                                <input type="submit" value="Delete" />
+                            <form th:action="@{/myAlbum/delete/{picId}(picId=${p.id})}" method="POST" id="deletePic">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
-                            <form th:action="@{/myAlbum/profilePic/{picId}(picId=${p.id})}" method="POST">
-                                <input type="submit" value="Set as my profile picture" />
+                            <form th:action="@{/myAlbum/profilePic/{picId}(picId=${p.id})}" method="POST" style="margin-top: 10px">
+                                <button type="submit" class="btn btn-info btn-sm">Set as my profile picture</button>
                             </form><br>
 
                             <form th:action="@{/myAlbum/likes/{messageId}(messageId=${p.message.id})}" method="POST">
@@ -55,6 +55,7 @@
                             </form>
 
                             <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${p.message.id}, signal=${user.signal})}">Comments</a>
+                            
                         </div>
                     </div>
                 </div>

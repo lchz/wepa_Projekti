@@ -15,7 +15,7 @@ import projekti.FollowingshipRepository;
 import projekti.Message;
 
 @Service
-@Profile({"production", "default"})
+@Profile({"production", "default", "test"})
 public class FollowingService {
 
     @Autowired

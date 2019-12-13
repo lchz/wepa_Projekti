@@ -11,7 +11,7 @@ import projekti.service.AlbumService;
 import projekti.service.ThumbService;
 
 @Controller
-@Profile({"production", "default"})
+@Profile({"production", "default", "test"})
 public class AccountController {
 
     @Autowired

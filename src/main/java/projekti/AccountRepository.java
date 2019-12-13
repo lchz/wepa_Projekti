@@ -1,12 +1,15 @@
 
 package projekti;
 
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.OneToMany;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+
+@Repository
+@Profile({"production", "default", "test"})
 public interface AccountRepository extends JpaRepository<Account, Long>{
 //    @EntityGraph(attributePaths={"messages", "comments", "followers", "followings"})
 
