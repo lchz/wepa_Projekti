@@ -36,10 +36,10 @@
                         <div class="media border p-3">
 
                             <div th:if="${c.writer.profilePic == null}">
-                                <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="50px;">
+                                <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="70px;">
                             </div>
                             <div th:unless="${c.writer.profilePic == null}">
-                                <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${c.writer.profilePic.id})}" alt="profilePic" width="70px;" height="70">
+                                <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${c.writer.profilePic.id})}" alt="profilePic" width="70px;" height="70px;">
                             </div>
 
                             <div class="media-body" >

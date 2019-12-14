@@ -82,10 +82,10 @@
                                 <div class="media border p-3" th:each="message : ${msgFList}">
 
                                     <div th:if="${message.writer.profilePic == null}">
-                                        <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="50px;">
+                                        <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="70px;">
                                     </div>
                                     <div th:unless="${message.writer.profilePic == null}">
-                                        <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${message.writer.profilePic.id})}" alt="profilePic" width="70px;" height="70">
+                                        <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${message.writer.profilePic.id})}" alt="profilePic" width="70px;" height="70px;">
                                     </div>
 
                                     <div class="media-body" id="myMessage" >

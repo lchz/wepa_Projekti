@@ -29,6 +29,7 @@ public class DevelopmentSecurityConfiguration extends WebSecurityConfigurerAdapt
         http.authorizeRequests()
             .antMatchers("/h2-console", "/h2-console/**").permitAll()
             .antMatchers("/register", "/register/**").permitAll()
+            .antMatchers("/css/**", "/img/**").permitAll()
             .anyRequest().authenticated()
             .and().formLogin().loginPage("/login").successForwardUrl("/myWall").failureForwardUrl("/login").permitAll()
             .and().logout().logoutSuccessUrl("/login").permitAll();

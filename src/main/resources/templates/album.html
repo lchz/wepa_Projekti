@@ -32,10 +32,10 @@
                     <h3>My Album</h3>
                     <div class="media border p-3" th:each="p : ${pictures}">
                         <div th:if="${p.user.profilePic == null}">
-                            <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="50px;">
+                            <img class="mr-3 mt-3 rounded-circle" th:src="@{/img/default.png}" alt="default" width="70px;">
                         </div>
                         <div th:unless="${p.user.profilePic == null}">
-                            <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${p.user.profilePic.id})}" alt="profilePic" width="70px;" height="70">
+                            <img class="mr-3 mt-3 rounded-circle" th:src="@{/myAlbum/{id}(id=${p.user.profilePic.id})}" alt="profilePic" width="70px;" height="70px;">
                         </div>
 
                         <div class="media-body" >
