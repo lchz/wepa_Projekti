@@ -71,8 +71,8 @@
 
                         <form th:action="@{/myWall}" method="POST" class="form-group" id="postForm">
                             <textarea class="form-control" name="content" rows="5" placeholder="New post..." style="margin-bottom: 20px"></textarea> 
-                            <span th:if="${error != null}" class="text-danger" th:text="${error}">messageEmpty error</span>
                             <button type="submit" class="btn btn-primary btn-sm">Post</button>
+                            <span th:if="${error != null}" class="text-danger" th:text="${error}">messageEmpty error</span>
                         </form><br><br>
 
                         <h3>Posts</h3>
