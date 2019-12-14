@@ -200,15 +200,19 @@ public class myWallTest extends org.fluentlenium.adapter.junit.FluentTest {
 
         goTo(uri + "/search");
         find(By.name("firstname")).fill().with("first1");
+        find(By.name("familyname")).fill().with("family1");
         find("#searchButton").click();
         find("#followButton").click();
         assertTrue(window().title().equals("TwitWee Wall"));
         assertTrue(pageSource().contains("Follow 1"));
         
-        assertTrue(pageSource().contains("first1 family1"));
-       
         find("#followingToggle").click();
-        find("#cancelFollowingButton").click();
+        assertTrue(pageSource().contains("first1 family1"));
+        
+        find("#cancelFollowingForm").submit();
+        
+//        assertTrue(pageSource().contains("first1 family1"));
+        // ????????????????????
         assertFalse(pageSource().contains("first1 family1"));
     }
     
@@ -238,12 +242,11 @@ public class myWallTest extends org.fluentlenium.adapter.junit.FluentTest {
         find("form").first().submit();
         
         find("#followerToggle").click();
-        assertTrue(pageSource().contains("first1 family1"));
+        assertTrue(pageSource().contains("firstname familyname"));
         
-        find("#followerToggle").click();
-        assertTrue(window().title().equals("TwitWee Wall"));
-        find("#blockFollowerButton").click();
-        assertFalse(pageSource().contains("first1 family1"));
+//        find("#blockFollowerButton").click();
+        find("#blockFollowerForm").submit();
+        assertFalse(pageSource().contains("firstname familyname"));
     }
 
 }
