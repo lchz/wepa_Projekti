@@ -4,12 +4,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import projekti.Account;
-import projekti.FollowingMessage;
+import projekti.domain.Account;
+import projekti.domain.FollowingMessage;
 import projekti.FollowingMessageRepository;
-import projekti.Message;
+import projekti.domain.Message;
 import projekti.MessageRepository;
-import projekti.ThumbUp;
+import projekti.domain.ThumbUp;
 import projekti.ThumbUpRepository;
 
 @Service

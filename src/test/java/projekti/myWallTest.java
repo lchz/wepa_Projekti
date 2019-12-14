@@ -210,43 +210,48 @@ public class myWallTest extends org.fluentlenium.adapter.junit.FluentTest {
         assertTrue(pageSource().contains("first1 family1"));
         
         find("#cancelFollowingForm").submit();
-        
-//        assertTrue(pageSource().contains("first1 family1"));
-        // ????????????????????
-        assertFalse(pageSource().contains("first1 family1"));
+        assertTrue(pageSource().contains("Follow 0"));
     }
     
     @Test
     public void authUserCanBlockFollowers() throws Throwable {
         goTo(uri + "/register");
-        find("#username").fill().with("test1");
-        find("#firstname").fill().with("first1");
-        find("#familyname").fill().with("family1");
-        find("#psw").fill().with("test1");
-        find("#signal").fill().with("signal1");
+        find("#username").fill().with("test5");
+        find("#firstname").fill().with("first5");
+        find("#familyname").fill().with("family5");
+        find("#psw").fill().with("test5");
+        find("#signal").fill().with("signal5");
+        find("form").first().submit();
+        
+        goTo(uri + "/register");
+        find("#username").fill().with("test4");
+        find("#firstname").fill().with("first4");
+        find("#familyname").fill().with("family4");
+        find("#psw").fill().with("test4");
+        find("#signal").fill().with("signal4");
         find("form").first().submit();
 
         goTo(uri);
-        find("#username").fill().with("test1");
-        find("#psw").fill().with("test1");
+        find("#username").fill().with("test5");
+        find("#psw").fill().with("test5");
         find("form").first().submit();
         
         goTo(uri + "/search");
-        find(By.name("firstname")).fill().with("firstname");
+        find(By.name("firstname")).fill().with("first4");
         find("#searchButton").click();
         find("#followButton").click();
+        assertTrue(pageSource().contains("Follow 1"));
         
         goTo(uri + "/login");
-        find("#username").fill().with("username");
-        find("#psw").fill().with("password");
+        find("#username").fill().with("test4");
+        find("#psw").fill().with("test4");
         find("form").first().submit();
         
         find("#followerToggle").click();
-        assertTrue(pageSource().contains("firstname familyname"));
+        assertTrue(pageSource().contains("Followers 1"));
         
-//        find("#blockFollowerButton").click();
-        find("#blockFollowerForm").submit();
-        assertFalse(pageSource().contains("firstname familyname"));
+        find("#blockFollowerButton").click();
+        assertTrue(pageSource().contains("Followers 0"));
     }
 
 }

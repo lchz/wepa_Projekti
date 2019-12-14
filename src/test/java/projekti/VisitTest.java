@@ -1,7 +1,6 @@
 
 package projekti;
 
-import static org.fluentlenium.core.filter.FilterConstructor.withText;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -26,10 +25,6 @@ public class VisitTest extends org.fluentlenium.adapter.junit.FluentTest {
     public void setUp() {
         this.uri = "http://localhost:" + port;
     }
-    
-//    @After
-//    public void tearDown() {
-//    }
 
      @Test
      public void authUserCanVisiFollowingANDFollowerPersonsWall() {

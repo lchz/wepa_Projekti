@@ -1,5 +1,5 @@
 
-package projekti;
+package projekti.domain;
 
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
@@ -15,6 +15,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FollowingMessage extends AbstractPersistable<Long> {
+    
     // user is following writer, user owns this relationship
     @ManyToOne
     private Account user;

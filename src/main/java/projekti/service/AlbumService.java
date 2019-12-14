@@ -1,6 +1,11 @@
 
 package projekti.service;
 
+import projekti.domain.FollowingMessage;
+import projekti.domain.Followership;
+import projekti.domain.Message;
+import projekti.domain.Picture;
+import projekti.domain.Account;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;

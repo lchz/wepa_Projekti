@@ -1,9 +1,7 @@
 
-package projekti;
+package projekti.domain;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -16,6 +14,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Picture extends AbstractPersistable<Long>{
+    
     @OneToOne
     private Message message;
     private Boolean profilePic;

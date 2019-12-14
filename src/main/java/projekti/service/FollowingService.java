@@ -4,15 +4,15 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import projekti.Account;
+import projekti.domain.Account;
 import projekti.AccountRepository;
-import projekti.Followership;
+import projekti.domain.Followership;
 import projekti.FollowershipRepository;
-import projekti.FollowingMessage;
+import projekti.domain.FollowingMessage;
 import projekti.FollowingMessageRepository;
-import projekti.Followingship;
+import projekti.domain.Followingship;
 import projekti.FollowingshipRepository;
-import projekti.Message;
+import projekti.domain.Message;
 
 @Service
 @Profile({"production", "default", "test"})

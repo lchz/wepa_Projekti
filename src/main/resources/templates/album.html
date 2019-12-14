@@ -5,19 +5,22 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
-    
+
     <body>
 
         <header th:replace="fragments/layout :: navbar(name=${user.firstname} + ' ' + ${user.familyname})"></header>
-        
+
         <main style="margin-top:100px">
             <div class="container">
-                
+
                 <div style="margin-bottom: 20px">
                     <h3>New Picture</h3>
                 </div>
-                
+
                 <form th:action="@{/myAlbum}" method="POST" enctype="multipart/form-data" class="form-group">
                     <input type="file" name="file" id="inputPic"/> <br><br>
                     <textarea class="form-control" name="text" rows="5" placeholder="Description" style="margin-bottom: 20px"></textarea>
@@ -55,14 +58,14 @@
                             </form>
 
                             <a th:href="@{/myWall/messages/{messageId}/comments/{signal}(messageId=${p.message.id}, signal=${user.signal})}">Comments</a>
-                            
+
                         </div>
                     </div>
                 </div>
 
             </div>
         </main>
-        
+
         <footer th:replace="fragments/layout :: footer"></footer>
     </body>
 </html>

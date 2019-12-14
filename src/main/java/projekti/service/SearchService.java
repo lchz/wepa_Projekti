@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import projekti.Account;
+import projekti.domain.Account;
 import projekti.AccountRepository;
-import projekti.Followingship;
+import projekti.domain.Followingship;
 
 @Service
 @Profile({"production", "default", "test"})

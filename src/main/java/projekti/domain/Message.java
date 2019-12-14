@@ -1,4 +1,4 @@
-package projekti;
+package projekti.domain;
 
 import java.time.*;
 import java.util.*;
@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -15,6 +14,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message extends AbstractPersistable<Long> {
+    
     @ManyToOne
     private Account user;
     

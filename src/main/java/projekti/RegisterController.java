@@ -1,5 +1,6 @@
 package projekti;
 
+import projekti.domain.Account;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;

@@ -1,5 +1,7 @@
 package projekti;
 
+import projekti.domain.FollowingMessage;
+import projekti.domain.Account;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

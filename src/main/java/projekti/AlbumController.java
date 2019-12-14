@@ -1,5 +1,7 @@
 package projekti;
 
+import projekti.domain.Message;
+import projekti.domain.Account;
 import java.io.IOException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

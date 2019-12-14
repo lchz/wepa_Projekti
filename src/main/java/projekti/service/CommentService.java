@@ -9,10 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import projekti.Account;
-import projekti.Comment;
+import projekti.domain.Account;
+import projekti.domain.Comment;
 import projekti.CommentRepository;
-import projekti.Message;
+import projekti.domain.Message;
 import projekti.MessageRepository;
 
 @Service
