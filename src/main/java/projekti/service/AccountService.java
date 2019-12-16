@@ -1,14 +1,12 @@
 package projekti.service;
 
-import projekti.domain.FollowingMessage;
-import projekti.domain.Followership;
-import projekti.domain.Followingship;
-import projekti.domain.Message;
-import projekti.domain.Account;
+import projekti.domain.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +48,7 @@ public class AccountService {
         
     }
 
+    @Cacheable("messages")
     public List<Message> getMessages(String signal) {
         
         user = getUser(signal);
@@ -82,6 +81,7 @@ public class AccountService {
         
     }
 
+    @CacheEvict(value = "messages", allEntries = true)
     public String postNewMessage(Message message) {
         
         if(message.getContent().isEmpty()) {

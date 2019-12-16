@@ -85,9 +85,11 @@ public class AccountController {
     public String goToVisit(Model model, @PathVariable String signal) {
         
         Account user = this.accountService.getUser(signal);
+        Account person = this.accountService.getUser();
         
         model.addAttribute("signal", user.getSignal());
-        model.addAttribute("person", this.accountService.getUser());
+        model.addAttribute("firstname", person.getFirstname());
+        model.addAttribute("familyname", person.getFamilyname());
         model.addAttribute("user", user);
         model.addAttribute("messages", this.accountService.getMessages(signal));
         model.addAttribute("pictures", this.albumService.getPictures(signal));
@@ -103,8 +105,9 @@ public class AccountController {
         Account user = this.accountService.getUser();
         
         model.addAttribute("signal", user.getSignal());
-        model.addAttribute("user", this.accountService.getUser());
-        model.addAttribute("messages", this.accountService.getMessages(this.accountService.getUser().getSignal()));
+        model.addAttribute("firstname", user.getFirstname());
+        model.addAttribute("familyname", user.getFamilyname());
+        model.addAttribute("messages", this.accountService.getMessages(user.getSignal()));
         return "posts";
         
     }

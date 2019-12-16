@@ -1,15 +1,13 @@
 
 package projekti.service;
 
-import projekti.domain.FollowingMessage;
-import projekti.domain.Followership;
-import projekti.domain.Message;
-import projekti.domain.Picture;
-import projekti.domain.Account;
+import projekti.domain.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +41,7 @@ public class AlbumService {
     
     
     // add m and p to the followingMessage
+    @CacheEvict(value = "pictures", allEntries = true)
     public String saveNewPic(MultipartFile file, String text) throws IOException {
         
         
@@ -109,6 +108,7 @@ public class AlbumService {
     }
 
     // show the collection of pics and messages
+    @Cacheable("pictures")
     public List<Picture> getPictures(String signal) {
         Account user = this.accountService.getUser(signal);
         Pageable page = PageRequest.of(0, 10, Sort.by("message.time").descending());
@@ -116,11 +116,18 @@ public class AlbumService {
     
     }
 
+    @CacheEvict(value = "pictures", allEntries = true)
     public void deletePic(Long picId) {
         
         Account user = this.accountService.getUser();
 
         Picture pic = this.pictureRepository.getOne(picId);
+        
+        if(user.getProfilePic() != null && user.getProfilePic().getId() == picId) {
+            pic.setProfilePic(false);
+            user.setProfilePic(null);
+        }
+        
         Message m = pic.getMessage();
         Long messageId = m.getId();
 
@@ -151,6 +158,7 @@ public class AlbumService {
     }
     
     // set profile pic
+    @CacheEvict(value = "pictures", allEntries = true)
     public void setProfilePic(Long picId) {
         
         Account user = this.accountService.getUser();

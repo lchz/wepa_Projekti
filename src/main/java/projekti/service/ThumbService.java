@@ -2,6 +2,7 @@ package projekti.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import projekti.domain.Account;
@@ -26,6 +27,7 @@ public class ThumbService {
     private ThumbUpRepository likeRepository;
 
     
+    @CacheEvict(value = "messages", allEntries = true)
     public void addLike(Long messageId) {
         Account user = this.accountService.getUser();
         Message m = this.messageRepository.getOne(messageId);

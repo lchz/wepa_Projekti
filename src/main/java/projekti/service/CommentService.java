@@ -4,15 +4,15 @@ package projekti.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import projekti.domain.Account;
-import projekti.domain.Comment;
 import projekti.CommentRepository;
-import projekti.domain.Message;
+import projekti.domain.*;
 import projekti.MessageRepository;
 
 @Service
@@ -27,6 +27,7 @@ public class CommentService {
     private AccountService accountService;
 
     
+    @Cacheable("comments")
     public List<Comment> showComments(Long messageId) {
         
         Pageable page = PageRequest.of(0, 10, Sort.by("time").descending());
@@ -34,6 +35,7 @@ public class CommentService {
         return this.commentRepository.findByMessageIdentity(messageId, page);
     }
 
+    @CacheEvict(value = "comments", allEntries = true)
     public void postComment(String comment, Long messageId) {
         
         Account user = this.accountService.getUser();

@@ -92,7 +92,7 @@
                         <div th:fragment="mediaBodyWithoutLike">
                             <h5 th:text="${message.user.firstname} + ' ' + ${message.user.familyname}"></h5>
 
-                            <small><i th:text="'Posted on ' +  ${#temporals.format(message.time, 'HH.mm dd.MM.yyy')}"></small></i>
+                            <small><i th:text="'Posted on ' +  ${#temporals.format(message.time, 'HH.mm dd.MM.yyy')}"></i></small>
 
                             <p th:text="${message.content}">message content</p> 
 

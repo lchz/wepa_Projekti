@@ -19,6 +19,7 @@ public class SearchService {
     private AccountService accountService;
     private List<Account> users;
 
+    
     public List<Account> foundUsers(String firstname, String familyname) {
         this.users = new ArrayList<>();
 

@@ -2,17 +2,11 @@ package projekti.service;
 
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import projekti.domain.Account;
-import projekti.AccountRepository;
-import projekti.domain.Followership;
-import projekti.FollowershipRepository;
-import projekti.domain.FollowingMessage;
-import projekti.FollowingMessageRepository;
-import projekti.domain.Followingship;
-import projekti.FollowingshipRepository;
-import projekti.domain.Message;
+import projekti.*;
+import projekti.domain.*;
 
 @Service
 @Profile({"production", "default", "test"})
@@ -30,6 +24,7 @@ public class FollowingService {
     private FollowingMessageRepository msgFRepository;
     
 
+//    @CacheEvict(value = "following", allEntries = true)
     public void following(Long personId) {
         // user is going to follow person
         Account user = this.accountService.getUser();
@@ -81,6 +76,7 @@ public class FollowingService {
         this.userRepository.save(person);
     }
 
+//    @CacheEvict(value = "following", allEntries = true)
     public void deleteFollowingship(Long followingId) {
         Account user = this.accountService.getUser();
         Account person = this.userRepository.getOne(followingId);
@@ -94,6 +90,7 @@ public class FollowingService {
         this.msgFRepository.deleteByUserAndWriter(user, person);
     }
 
+//    @CacheEvict(value = "following", allEntries = true)
     public void deleteFollowership(Long followerId) {
         Account user = this.accountService.getUser();
         Account person = this.userRepository.getOne(followerId);
