@@ -93,8 +93,8 @@ public class AccountController {
         model.addAttribute("user", user);
         model.addAttribute("messages", this.accountService.getMessages(signal));
         model.addAttribute("pictures", this.albumService.getPictures(signal));
-        model.addAttribute("followings", this.accountService.getFollowings());
-        model.addAttribute("followers", this.accountService.getFollowers());
+        model.addAttribute("followings", user.getFollowings());
+        model.addAttribute("followers", user.getFollowers());
 
         return "visit";
     }
